@@ -2,7 +2,9 @@ name: Hexo Github Pages Deploy
 
 # https://github.com/marketplace/actions/hexo-action?version=v1.0.4
 
-on: [push]
+on:
+  push: # push 时触发ci
+    branches: [main] # 作用于main分支
 
 jobs:
   build:
@@ -10,7 +12,7 @@ jobs:
     name: A job to deploy blog.
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           submodules: true # Checkout private submodules(themes or something else).
 
@@ -28,7 +30,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: yarn install
 
       # Deploy hexo blog website.
       - name: Deploy
