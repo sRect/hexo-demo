@@ -3,8 +3,8 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 主标题
-subtitle: 网站副标题
+title: sRect的个人博客
+subtitle: 前端提桶人
 description: 一个小菜鸟的成长之路
 keywords: 前端, Vue, React
 author: sRect
@@ -109,7 +109,7 @@ deploy:
 # https://hexo.fluid-dev.com/docs/guide
 
 navbar:
-  blog_title: 左上角大标题
+  blog_title: sRect的个人博客
 
 index:
   slogan:
@@ -193,17 +193,26 @@ dark_mode:
 
 # 关于页配置
 about:
-  # avatar: /img/avatar.png
-  name: "关于页"
-  intro: "关于页的介绍"
+  avatar: /assets/img/avatar.png
+  name: "关于我"
+  intro: "生而为人，我很抱歉"
   icons:
     - {
         class: "iconfont icon-github-fill",
         link: "https://github.com/srect",
         tip: "GitHub",
       }
-    - { class: "iconfont icon-wechat-fill", qrcode: "/img/favicon.png" }
+    - {
+        class: "iconfont icon-wechat-fill",
+        qrcode: "/assets/img/wechat-qrcode.jpg",
+      }
+    - {
+        class: "iconfont icon-notebook",
+        link: "http://121.199.8.71",
+        tip: "Next.js打造的blog",
+      }
 
 # 自定义 JS / CSS / HTML
 # 指定自定义 css 文件路径，路径是相对 source 目录
 custom_css: /assets/css/custom.css
+custom_js: /assets/js/resetFavicon.js
