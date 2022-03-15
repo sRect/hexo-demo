@@ -102,7 +102,16 @@ ssh-keygen -t rsa -C "用户名@example.com "
 
 3. 在仓库`Settings > Secrets`中添加私钥，key 为`DEPLOY_KEY`，内容为私钥内容
 
-4. `.github/workflows/deploy.yml`
+4. 项目`_config.yml`配置文件和主题配置文件配置`deploy`字段
+
+```yml
+deploy:
+  type: git
+  repo: <你的github仓库 SSH下载链接>
+  branch: gh-pages
+```
+
+5. `.github/workflows/deploy.yml`
 
 ```yml
 name: Hexo Github Pages Deploy
@@ -141,7 +150,7 @@ jobs:
         with:
           deploy_key: ${{ secrets.DEPLOY_KEY }}
           user_name: <你的github用户名> # (or delete this input setting to use bot account)
-          user_email: <你的邮箱> # (or delete this input setting to use bot account)
+          user_email: <你的github邮箱> # (or delete this input setting to use bot account)
           commit_msg: ${{ github.event.head_commit.message }} # (or delete this input setting to use hexo default settings)
       # Use the output from the `deploy` step(use for test action)
       - name: Get the output
