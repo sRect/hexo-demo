@@ -24,7 +24,7 @@ yarn install
   echo "旧的镜像不存在==>"
 }
 
-sudo docker login --username=srect2018 registry.cn-hangzhou.aliyuncs.com --password=Fcq.898268123.
+sudo docker login --username=srect2018 registry.cn-hangzhou.aliyuncs.com --password=xxx
 
 sudo docker image build -t hexo-blog .
 
