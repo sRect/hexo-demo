@@ -104,10 +104,10 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:sRect/srect.github.io.git
-  branch: gh-pages
-  name: srect
-  email: srect2017@gmail.com
+  repo: git@github.com:sRect/sRect.github.io.git
+  # branch: gh-pages
+  # name: srect
+  # email: srect2017@gmail.com
 
 # 下面配置来自fluid主题配置手册
 # https://hexo.fluid-dev.com/docs/guide
