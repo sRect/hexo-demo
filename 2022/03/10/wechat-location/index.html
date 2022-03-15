@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/hexo-blog/img/favicon.png">
-  <link rel="icon" href="/hexo-blog/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -19,12 +19,12 @@
     <meta name="description" content="github 源码仓库  1. 客户端详情 文章内使用 Tarojs 开发微信小程序   手机型号：小米 10 操作系统及版本：Android 10 客户端平台：android SDKVersion：2.20.2  2. 注意点 taro 项目配置文件src&#x2F;app.config.js中要添加以下配置  12345678export default &amp;#123;  requiredBackgro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序持续定位">
-<meta property="og:url" content="https://srect.github.io/hexo-blog/2022/03/10/wechat-location/index.html">
+<meta property="og:url" content="https://srect.github.io/2022/03/10/wechat-location/index.html">
 <meta property="og:site_name" content="sRect的个人博客">
 <meta property="og:description" content="github 源码仓库  1. 客户端详情 文章内使用 Tarojs 开发微信小程序   手机型号：小米 10 操作系统及版本：Android 10 客户端平台：android SDKVersion：2.20.2  2. 注意点 taro 项目配置文件src&#x2F;app.config.js中要添加以下配置  12345678export default &amp;#123;  requiredBackgro">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-10T02:36:39.000Z">
-<meta property="article:modified_time" content="2022-03-15T03:06:29.750Z">
+<meta property="article:modified_time" content="2022-03-15T03:46:10.939Z">
 <meta property="article:author" content="sRect">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="微信小程序">
@@ -61,21 +61,21 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
-<link  rel="stylesheet" href="/hexo-blog/css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
   
-<link rel="stylesheet" href="/hexo-blog/assets/css/custom.css">
+<link rel="stylesheet" href="/assets/css/custom.css">
 
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"srect.github.io","root":"/hexo-blog/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/hexo-blog/local-search.xml"};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
-  <script  src="/hexo-blog/js/utils.js" ></script>
-  <script  src="/hexo-blog/js/color-schema.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 6.0.0"></head>
 
 
@@ -83,7 +83,7 @@
   <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="/hexo-blog/">
+    <a class="navbar-brand" href="/">
       <strong>sRect的个人博客</strong>
     </a>
 
@@ -102,7 +102,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/hexo-blog/">
+              <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
                 首页
               </a>
@@ -114,7 +114,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/hexo-blog/archives/">
+              <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
                 归档
               </a>
@@ -126,7 +126,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/hexo-blog/categories/">
+              <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
               </a>
@@ -138,7 +138,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/hexo-blog/tags/">
+              <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
                 标签
               </a>
@@ -150,7 +150,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/hexo-blog/about/">
+              <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 关于
               </a>
@@ -176,7 +176,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('/hexo-blog/img/default.png') no-repeat center center;
+         style="background: url('/img/default.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -304,7 +304,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/hexo-blog/categories/develop/">develop</a>
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
                     
                   </div>
                 
@@ -312,9 +312,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/hexo-blog/tags/javascript/">javascript</a>
+                      <a class="hover-with-bg" href="/tags/javascript/">javascript</a>
                     
-                      <a class="hover-with-bg" href="/hexo-blog/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a>
+                      <a class="hover-with-bg" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a>
                     
                   </div>
                 
@@ -331,7 +331,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/hexo-blog/2022/03/10/redux/">
+                      <a href="/2022/03/10/redux/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">test</span>
                         <span class="visible-mobile">上一篇</span>
@@ -341,7 +341,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/hexo-blog/2022/03/09/foo-bar/">
+                      <a href="/2022/03/09/foo-bar/">
                         <span class="hidden-mobile">foo bar</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -459,18 +459,18 @@
 
 <script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
 <script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
-<script  src="/hexo-blog/js/events.js" ></script>
-<script  src="/hexo-blog/js/plugins.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
 
 <!-- Plugins -->
 
 
-  <script  src="/hexo-blog/js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
 
 
 
   
-    <script  src="/hexo-blog/js/img-lazyload.js" ></script>
+    <script  src="/js/img-lazyload.js" ></script>
   
 
 
@@ -531,12 +531,12 @@
 
 
   
-<script src="/hexo-blog/assets/js/resetFavicon.js"></script>
+<script src="/assets/js/resetFavicon.js"></script>
 
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/hexo-blog/js/boot.js" ></script>
+<script  src="/js/boot.js" ></script>
 
 
 </body>
