@@ -26,7 +26,9 @@ FROM base AS result
 COPY --from=install $APP_PATH/public .
 
 # 3. 最终基于nginx进行构建
-FROM nginx:latest
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/hexo
 
 # 删除nginx 默认配置
 # RUN rm /etc/nginx/conf.d/default.conf
