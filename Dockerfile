@@ -36,6 +36,6 @@ WORKDIR /usr/share/nginx/hexo
 # 添加自己的配置 default.conf 在下面
 ADD nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=result . .
+COPY --from=result /usr/share/nginx/hexo .
 
 EXPOSE 80
