@@ -30,7 +30,7 @@ sudo docker image build -t hexo-blog .
 
 sudo docker tag hexo-blog registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
 
-sudo docker container run -d -p 8002:8002 --name hexo-blog registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
+sudo docker container run -d -p 8002:80 --name hexo-blog registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
 
 sudo docker push registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
 

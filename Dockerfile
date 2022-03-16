@@ -29,11 +29,11 @@ COPY --from=install $APP_PATH/public .
 FROM nginx:latest
 
 # 删除nginx 默认配置
-RUN rm /etc/nginx/conf.d/default.conf
+# RUN rm /etc/nginx/conf.d/default.conf
 
 # 添加自己的配置 default.conf 在下面
 ADD nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=result . .
+COPY --from=result . /usr/share/nginx/hexo
 
-EXPOSE 8002
+EXPOSE 80
