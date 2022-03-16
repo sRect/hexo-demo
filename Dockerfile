@@ -14,7 +14,7 @@ RUN apk add --no-cache --update nodejs=16.14.0-r0 yarn=1.22.17-r0
 # 2. 基于基础镜像安装项目依赖
 FROM base AS install
 
-COPY package.json yarn.lock ./
+COPY . ./
 
 RUN yarn install
 
