@@ -177,7 +177,7 @@ code:
     line_number: true
     lib: "highlightjs"
     highlightjs:
-      style: "Github Gist"
+      style: "Atom One Dark"
       bg_color: true
     prismjs:
       style: "default"
