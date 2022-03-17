@@ -4,9 +4,14 @@ date: 2022-3-10 10:36:39
 tags:
   - javascript
   - 微信小程序
+  - wechat
+  - tarojs
 categories:
   - develop
-sticky: 100 # https://hexo.fluid-dev.com/docs/guide/#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F
+  - wechat
+banner_img: /assets/img/wechat-location/wyy.png # 文章页顶部大图
+index_img: /assets/img/wechat-location/wyy.png # 文章在首页的封面图
+# sticky: 100 # https://hexo.fluid-dev.com/docs/guide/#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F
 author: sRect
 ---
 
