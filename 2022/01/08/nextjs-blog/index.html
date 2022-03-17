@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="1. Next.js 简介 [The React Framework for Production] Next.js gives you the best developer experience with all the features you need for production: hybrid static &amp; server rendering, TypeScript suppo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Next.js + Docker 打造一个属于你的私人博客">
+<meta property="og:url" content="https://srect.github.io/2022/01/08/nextjs-blog/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="1. Next.js 简介 [The React Framework for Production] Next.js gives you the best developer experience with all the features you need for production: hybrid static &amp; server rendering, TypeScript suppo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/nextjs-blog/nextjs.webp">
+<meta property="article:published_time" content="2022-01-08T02:36:39.000Z">
+<meta property="article:modified_time" content="2022-03-17T11:20:01.185Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="next.js">
+<meta property="article:tag" content="github actions">
+<meta property="article:tag" content="CI">
+<meta property="article:tag" content="CD">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/nextjs-blog/nextjs.webp">
+  
+  
+  <title>使用 Next.js + Docker 打造一个属于你的私人博客 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="使用 Next.js + Docker 打造一个属于你的私人博客">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-08 10:36" pubdate>
+        2022年1月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      10k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      86 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用 Next.js + Docker 打造一个属于你的私人博客</h1>
+            
+            <div class="markdown-body">
+              <h3 id="1-Next-js-简介"><a href="#1-Next-js-简介" class="headerlink" title="1. Next.js 简介"></a>1. Next.js 简介</h3><blockquote>
+<p>[The React Framework for Production] Next.js gives you the best developer experience with all the features you need for production: hybrid static &amp; server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.</p>
+</blockquote>
+<p>一顿牛皮下来，就是 Next.js 在生产和开发环境下都能带给你最佳体验，开箱体验，无需任何配置</p>
+<h3 id="2-为什么选择-Next-js"><a href="#2-为什么选择-Next-js" class="headerlink" title="2. 为什么选择 Next.js"></a>2. 为什么选择 Next.js</h3><blockquote>
+<p>老表，咋回事哦，vue 不能满足了吗，搞这玩意干嘛，<a target="_blank" rel="noopener" href="https://www.vuepress.cn/">vuepress</a> 写所谓的静态博客网站不香？香，还比这简单，但请容许我介绍完这个 Next.js</p>
+</blockquote>
+<p><img src="/assets/img/nextjs-blog/gs.jpg" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-1-那-Next-js-有哪些优点呢？"><a href="#2-1-那-Next-js-有哪些优点呢？" class="headerlink" title="2.1 那 Next.js 有哪些优点呢？"></a>2.1 那 Next.js 有哪些优点呢？</h4><ul>
+<li>图片优化</li>
+<li>支持国际化</li>
+<li>零配置</li>
+<li>支持 SSG + SSR</li>
+<li>文件系统路由</li>
+<li>优点太多…</li>
+</ul>
+<p><img src="/assets/img/nextjs-blog/yd.jpg" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-2-那-Next-js-比这-vue-和-react-造出来的单页面有何不同？"><a href="#2-2-那-Next-js-比这-vue-和-react-造出来的单页面有何不同？" class="headerlink" title="2.2 那 Next.js 比这 vue 和 react 造出来的单页面有何不同？"></a>2.2 那 Next.js 比这 vue 和 react 造出来的单页面有何不同？</h4><ol>
+<li>vue 和 react 造出来的单页面应用 SEO 不友好，搜索引擎抓不到 html 的内容，内容都在 js 里</li>
+<li>vue 和 react 造出来的单页面首屏白屏时间过长，在不对项目 webpack 专门优化的情况下，那个 bundle.js 很大，严重影响体验</li>
+</ol>
+<p><strong>总结</strong>：如果项目对 SEO 要求比较高，建议上 Next 或<a target="_blank" rel="noopener" href="https://www.nuxtjs.cn/">Nuxt</a></p>
+<h4 id="2-3-Next-js-和传统的-php、jsp-有何区别？"><a href="#2-3-Next-js-和传统的-php、jsp-有何区别？" class="headerlink" title="2.3 Next.js 和传统的 php、jsp 有何区别？"></a>2.3 Next.js 和传统的 php、jsp 有何区别？</h4><blockquote>
+<p>简单了解</p>
+</blockquote>
+<ol>
+<li>客户端渲染</li>
+</ol>
+<p>前后端分离，通过 ajax 进行数据交互，vue 和 react 就是这种模式</p>
+<ol start="2">
+<li>服务端模板渲染</li>
+</ol>
+<p>php 和 jsp 是解析模板文件，将数据渲染到文件上，最后将模板文件变为 html，生成 html 返回给浏览器，前后端不用同一套代码</p>
+<ol start="3">
+<li>前后端同构渲染</li>
+</ol>
+<p>也是服务端生成 html 返回给浏览器，区别在于前后端会共用一部分组件代码逻辑，这部分代码既可以用于服务端，也可以用于客户端，而模板渲染是两套代码</p>
+<h3 id="3-Next-js-主要-api-快速上手"><a href="#3-Next-js-主要-api-快速上手" class="headerlink" title="3. Next.js 主要 api 快速上手"></a>3. Next.js 主要 api 快速上手</h3><blockquote>
+<p><strong>注意</strong>：Node.js 版本 12.22.0 起步</p>
+</blockquote>
+<h4 id="3-1-使用create-next-app脚手架创建项目"><a href="#3-1-使用create-next-app脚手架创建项目" class="headerlink" title="3.1 使用create-next-app脚手架创建项目"></a>3.1 使用<code>create-next-app</code>脚手架创建项目</h4><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npx create-next-app@latest<br><span class="hljs-comment"># or</span><br>yarn create next-app<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-2-项目目录结构"><a href="#3-2-项目目录结构" class="headerlink" title="3.2 项目目录结构"></a>3.2 项目目录结构</h4><figure class="highlight mipsasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mipsasm">│  .eslintrc.<span class="hljs-keyword">json</span><br><span class="hljs-keyword"></span>│  .gitignore<br>│  next.config.<span class="hljs-keyword">js </span>    <span class="hljs-comment"># next配置文件</span><br>│  package.<span class="hljs-keyword">json</span><br><span class="hljs-keyword"></span>│  README.md<br>│  yarn.lock<br>│<br>├─pages               <span class="hljs-comment"># 页面路由</span><br>│  │  index.<span class="hljs-keyword">js</span><br><span class="hljs-keyword"></span>│  │  _app.<span class="hljs-keyword">js</span><br><span class="hljs-keyword"></span>│  │<br>│  └─api              <span class="hljs-comment"># api服务</span><br>│          hello.<span class="hljs-keyword">js</span><br><span class="hljs-keyword"></span>│<br>├─public              <span class="hljs-comment"># 静态资源</span><br>│      favicon.ico<br>│      vercel.svg<br>│<br>└─styles              <span class="hljs-comment"># css样式</span><br>        globals.css   <span class="hljs-comment"># 全局样式</span><br>        Home.module.css<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-3-路由"><a href="#3-3-路由" class="headerlink" title="3.3 路由"></a>3.3 路由</h4><ol>
+<li>文件系统路由</li>
+</ol>
+<ul>
+<li><code>/pages/index.js</code> 路径为 <code>/</code></li>
+<li><code>/pages/posts/about.js</code> 路径为 <code>/posts/about</code></li>
+<li><code>/pages/posts/[id].js</code> 动态路径为 <code>/posts/foo</code> 或者<code>/posts/bar</code> 等等</li>
+</ul>
+<ol start="2">
+<li>Link 组件</li>
+</ol>
+<blockquote>
+<p>Link 组件会自动执行 prefetch 预加载</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Link</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/link&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/posts/about&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">a</span>&gt;</span>about page<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br>  );<br>&#125;<br><br><span class="hljs-comment">// 或者不用a标签，传参示例</span><br>&lt;<span class="hljs-title class_">Link</span><br>  href=&#123;&#123;<br>    <span class="hljs-attr">pathname</span>: <span class="hljs-string">&quot;/about&quot;</span>,<br>    <span class="hljs-attr">query</span>: &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;test&quot;</span> &#125;,<br>  &#125;&#125;<br>  passHref<br>&gt;<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>about page<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br>&lt;/<span class="hljs-title class_">Link</span>&gt;;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>useRouter</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useRouter &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/router&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; useCallback, useEffect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">List</span>() &#123;<br>  <span class="hljs-keyword">const</span> router = <span class="hljs-title function_">useRouter</span>();<br><br>  <span class="hljs-keyword">const</span> gotoDetail = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">fileName</span>: detailid &#125; = data;<br><br>    <span class="hljs-comment">// https://www.nextjs.cn/docs/api-reference/next/router#with-url-object</span><br>    router.<span class="hljs-title function_">push</span>(&#123;<br>      <span class="hljs-attr">pathname</span>: <span class="hljs-string">&quot;/posts/[detailid]&quot;</span>,<br>      <span class="hljs-attr">query</span>: &#123;<br>        detailid,<br>      &#125;,<br>    &#125;);<br>  &#125;, []);<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// Prefetch the dashboard page</span><br>    router.<span class="hljs-title function_">prefetch</span>(<span class="hljs-string">&#x27;/dashboard&#x27;</span>);<br>  &#125;, []);<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      ...</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  )<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>动态路由</li>
+</ol>
+<p>就是<code>/pages/posts/[id].js</code>这样的路由</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; getAllPostIds, getPostData &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/posts&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getStaticPaths</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> allListData = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getAllPostIds</span>();<br>  <span class="hljs-keyword">const</span> paths = allListData.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">params</span>: &#123; <span class="hljs-attr">id</span>: item.<span class="hljs-property">fileName</span> &#125;,<br>    &#125;;<br>  &#125;);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    paths,<br>    <span class="hljs-attr">fallback</span>: <span class="hljs-literal">false</span>,<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getStaticProps</span>(<span class="hljs-params">&#123; params &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> postData = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getPostData</span>(params.<span class="hljs-property">id</span>);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">props</span>: &#123;<br>      postData,<br>    &#125;,<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">List</span>(<span class="hljs-params">&#123; postData &#125;</span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-4-Head-组件"><a href="#3-4-Head-组件" class="headerlink" title="3.4 Head 组件"></a>3.4 Head 组件</h4><blockquote>
+<p>用于自定义 head 标签内容</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Head</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/head&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Layout</span>(<span class="hljs-params">&#123; children &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">Head</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charSet</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">        /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;keywords&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;Next.js&quot;</span> /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;description&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;Next.js&quot;</span> /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Next.js<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">Head</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span>&#123;children&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-5-Image-组件"><a href="#3-5-Image-组件" class="headerlink" title="3.5 Image 组件"></a>3.5 Image 组件</h4><blockquote>
+<p>使用适当的属性，可以大幅优化图像，提升页面渲染</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Image</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/image&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">MyImg</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Image</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">className</span>=<span class="hljs-string">&#123;styles.homeBgImg&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">src</span>=<span class="hljs-string">&#123;bgImg&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">layout</span>=<span class="hljs-string">&quot;fill&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">objectFit</span>=<span class="hljs-string">&quot;cover&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">objectPosition</span>=<span class="hljs-string">&quot;center&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">quality</span>=<span class="hljs-string">&#123;65&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">priority</span>=<span class="hljs-string">&#123;true&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;blur&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">blurDataURL</span>=<span class="hljs-string">&#123;DEFAULT_BASE64&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;img&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">    /&gt;</span></span><br>  );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-6-Script-组件"><a href="#3-6-Script-组件" class="headerlink" title="3.6 Script 组件"></a>3.6 Script 组件</h4><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">Script</span></span></span><br><span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://Jquery.js&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">        <span class="hljs-attr">onLoad</span>=<span class="hljs-string">&#123;()</span> =&gt;</span><span class="language-javascript"> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">          $.<span class="hljs-title function_">ajax</span>(&#123;</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-comment">// ...</span></span></span><br><span class="language-javascript"><span class="language-xml">          &#125;);</span></span><br><span class="language-javascript"><span class="language-xml">        &#125;&#125;</span></span><br><span class="language-javascript"><span class="language-xml">      /&gt;</span></span><br><span class="language-javascript"><span class="language-xml">    &lt;/&gt;</span></span><br>  );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-7-CSS"><a href="#3-7-CSS" class="headerlink" title="3.7 CSS"></a>3.7 CSS</h4><ol>
+<li>CSS Modules（已内置）</li>
+<li>Sass（已内置）</li>
+<li>styled-jsx（已内置）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/vercel/next.js/tree/canary/examples/with-styled-components">styled-components</a>（需自行配置）</li>
+<li><a target="_blank" rel="noopener" href="https://tailwindcss.com/docs/installation/using-postcss">Tailwind CSS</a>（需自行配置）</li>
+</ol>
+<h4 id="3-8-Next-js-的-3-种基本渲染方式"><a href="#3-8-Next-js-的-3-种基本渲染方式" class="headerlink" title="3.8 Next.js 的 3 种基本渲染方式"></a>3.8 Next.js 的 3 种基本渲染方式</h4><ol>
+<li>Client-side Rendering</li>
+</ol>
+<blockquote>
+<p>就是常见的前后端分离</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> useSWR <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;swr&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">fetcher</span> = (<span class="hljs-params">url</span>) =&gt; <span class="hljs-title function_">fetch</span>(url).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> res.<span class="hljs-title function_">json</span>());<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Profile</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; data, error &#125; = <span class="hljs-title function_">useSWR</span>(<span class="hljs-string">&quot;/api/user&quot;</span>, fetcher);<br><br>  <span class="hljs-keyword">if</span> (error) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>failed to load<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>  <span class="hljs-keyword">if</span> (!data) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>hello &#123;data.name&#125;!<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>Static Generation (Recommended)</li>
+</ol>
+<blockquote>
+<p>一般以展示一些静态固定数据为主，打包的时候就直接生成，比如博客页面、固定营销页面、帮助文档等</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; getAllPostIds &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/posts&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getStaticProps</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> allListData = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getAllPostIds</span>();<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">props</span>: &#123;<br>      allListData,<br>    &#125;,<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">List</span>(<span class="hljs-params">&#123; allListData &#125;</span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>Server-side Rendering<blockquote>
+<p>以动态数据为主，每次请求的时候都在服务端执行，对服务器压力比较大</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getServerSideProps</span>(<span class="hljs-params">context</span>) &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">props</span>: &#123;<br>      <span class="hljs-attr">list</span>: [...]<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">List</span>(<span class="hljs-params">&#123; list &#125;</span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="4-部署"><a href="#4-部署" class="headerlink" title="4. 部署"></a>4. 部署</h3><h4 id="4-1-使用-Vercel-快速部署"><a href="#4-1-使用-Vercel-快速部署" class="headerlink" title="4.1 使用 Vercel 快速部署"></a>4.1 使用 Vercel 快速部署</h4><p>使用 github 账户注册登录<a target="_blank" rel="noopener" href="https://vercel.com/">Vercel</a>官网，授权访问该仓库，即可快速部署，部署完即可访问。还能看到部署日志。</p>
+<h4 id="4-2-部署到自己的服务器"><a href="#4-2-部署到自己的服务器" class="headerlink" title="4.2 部署到自己的服务器"></a>4.2 部署到自己的服务器</h4><h5 id="4-2-1-在服务器上进行-docker-镜像制作，然后部署"><a href="#4-2-1-在服务器上进行-docker-镜像制作，然后部署" class="headerlink" title="4.2.1 在服务器上进行 docker 镜像制作，然后部署"></a>4.2.1 在服务器上进行 docker 镜像制作，然后部署</h5><blockquote>
+<p>这里服务器以 centos 为例</p>
+</blockquote>
+<h6 id="第-1-步：Dockerfile-文件"><a href="#第-1-步：Dockerfile-文件" class="headerlink" title="第 1 步：Dockerfile 文件"></a>第 1 步：Dockerfile 文件</h6><ol>
+<li>使用 Next.js<a target="_blank" rel="noopener" href="https://www.nextjs.cn/docs/deployment#docker-image">官方 Dockerfile</a></li>
+</ol>
+<p><strong>注意</strong>：如果使用官方 Dockerfile，比如在阿里云上进行部署，会遇到网络问题，下载某些包会很慢，跟你本地访问 github 官网一样，所以要设置国内镜像下载，速度就会变快</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dockerfile"><span class="hljs-comment"># Install dependencies only when needed</span><br><span class="hljs-keyword">FROM</span> node:alpine AS deps<br><span class="hljs-comment"># Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apk add --no-cache libc6-compat</span><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> package.json yarn.lock ./</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> yarn install --frozen-lockfile</span><br><br><span class="hljs-comment"># Rebuild the source code only when needed</span><br><span class="hljs-keyword">FROM</span> node:alpine AS builder<br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=deps /app/node_modules ./node_modules</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> yarn build &amp;&amp; yarn install --production --ignore-scripts --prefer-offline</span><br><br><span class="hljs-comment"># Production image, copy all the files and run next</span><br><span class="hljs-keyword">FROM</span> node:alpine AS runner<br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span><br><br><span class="hljs-keyword">ENV</span> NODE_ENV production<br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> addgroup -g 1001 -S nodejs</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> adduser -S nextjs -u 1001</span><br><br><span class="hljs-comment"># You only need to copy next.config.js if you are NOT using the default configuration</span><br><span class="hljs-comment"># COPY --from=builder /app/next.config.js ./</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/public ./public</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder --<span class="hljs-built_in">chown</span>=nextjs:nodejs /app/.next ./.next</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/node_modules ./node_modules</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/package.json ./package.json</span><br><br><span class="hljs-keyword">USER</span> nextjs<br><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3000</span><br><br><span class="hljs-keyword">ENV</span> PORT <span class="hljs-number">3000</span><br><br><span class="hljs-comment"># Next.js collects completely anonymous telemetry data about general usage.</span><br><span class="hljs-comment"># Learn more here: https://nextjs.org/telemetry</span><br><span class="hljs-comment"># Uncomment the following line in case you want to disable telemetry.</span><br><span class="hljs-comment"># ENV NEXT_TELEMETRY_DISABLED 1</span><br><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;node_modules/.bin/next&quot;</span>, <span class="hljs-string">&quot;start&quot;</span>]</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>使用自己的 Dockerfile</li>
+</ol>
+<blockquote>
+<p>这里可以对 Docker 进行多阶段构建，使打包出来的镜像体积变小</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 构建基础镜像</span><br>FROM alpine:3.15 AS base<br><span class="hljs-comment">#纯净版镜像</span><br><br>ENV NODE_ENV=production \<br>  APP_PATH=/app<br><br>WORKDIR <span class="hljs-variable">$APP_PATH</span><br><br><span class="hljs-comment"># 使用国内镜像，加速下面 apk add下载安装alpine不稳定情况</span><br>RUN sed -i <span class="hljs-string">&#x27;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&#x27;</span> /etc/apk/repositories<br><br><span class="hljs-comment"># 使用apk命令安装 nodejs 和 yarn</span><br>RUN apk add --no-cache --update nodejs=16.13.1-r0 yarn=1.22.17-r0<br><br><span class="hljs-comment"># 2. 基于基础镜像安装项目依赖</span><br>FROM base AS install<br><br>COPY package.json yarn.lock ./<br><br>RUN yarn install<br><br><span class="hljs-comment"># 3. 基于基础镜像进行最终构建</span><br>FROM base<br><br><span class="hljs-comment"># 拷贝 上面生成的 node_modules 文件夹复制到最终的工作目录下</span><br>COPY --from=install <span class="hljs-variable">$APP_PATH</span>/node_modules ./node_modules<br><br><span class="hljs-comment"># 拷贝当前目录下的所有文件(除了.dockerignore里排除的)，都拷贝到工作目录下</span><br>COPY . .<br><br>RUN yarn build<br><br>EXPOSE 3000<br><br>CMD [<span class="hljs-string">&quot;yarn&quot;</span>, <span class="hljs-string">&quot;start&quot;</span>]<br></code></pre></div></td></tr></table></figure>
+
+<h6 id="第-2-步：-将源代码搞到服务器上"><a href="#第-2-步：-将源代码搞到服务器上" class="headerlink" title="第 2 步： 将源代码搞到服务器上"></a>第 2 步： 将源代码搞到服务器上</h6><ol>
+<li>使用<code>scp</code>命令手动将本地源代码上传至服务器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">scp -r local_dir root@121.xxx.xxx.xxx:remote_dir<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>或者在远程服务器上<code>wget</code>下载 github 源码，然后解压</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">wget https://github.com/xxx/main.zip -O main.zip &amp;&amp; unzip main.zip -d .<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>使用<code>xshell</code>工具上传文件到服务器</li>
+</ol>
+<p>上面 3 种方法都可以把本地文件传到服务器对应目录</p>
+<h6 id="第-3-步：-docker-镜像制作"><a href="#第-3-步：-docker-镜像制作" class="headerlink" title="第 3 步： docker 镜像制作"></a>第 3 步： docker 镜像制作</h6><blockquote>
+<p>前提是安装好了 docker 并启动</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 切换都源码目录执行</span><br>docker image build -t blog-demo .<br></code></pre></div></td></tr></table></figure>
+
+<p>接着会看到命令行上正在执行镜像制作过程，顺利的话，就成功了</p>
+<p><img src="/assets/img/nextjs-blog/build.jpg" srcset="/img/loading.gif" lazyload alt="build"></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 不出意外，可以看到刚才制作的镜像</span><br>docker image <span class="hljs-built_in">ls</span><br></code></pre></div></td></tr></table></figure>
+
+<h6 id="第-4-步：-启动容器"><a href="#第-4-步：-启动容器" class="headerlink" title="第 4 步： 启动容器"></a>第 4 步： 启动容器</h6><blockquote>
+<p>前提要在服务器上开好安全组</p>
+</blockquote>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> container run -d -p <span class="hljs-number">80</span>:<span class="hljs-number">3000</span> -it blog-demo<br><span class="hljs-comment"># -d： 后台运行容器</span><br><span class="hljs-comment"># -p: 前面80是本机服务器开放端口，后面3000是容器暴露出来的端口</span><br><span class="hljs-comment"># --name：给容器命名</span><br></code></pre></div></td></tr></table></figure>
+
+<p>不出意外，容器成功运行。可以在浏览器里进行访问了。</p>
+<h5 id="4-2-2-使用github-actions自动部署"><a href="#4-2-2-使用github-actions自动部署" class="headerlink" title="4.2.2 使用github actions自动部署"></a>4.2.2 使用<code>github actions</code>自动部署</h5><blockquote>
+<p>上面手动步骤太麻烦了，需要解放双手</p>
+</blockquote>
+<p>这里也可以选择 dockerhub，注册好后，创建仓库，即可推送。阿里云的镜像容器服务，也需要提前开通准备好（命名空间+私人仓库）。</p>
+<h6 id="第-1-步：提前准备好"><a href="#第-1-步：提前准备好" class="headerlink" title="第 1 步：提前准备好"></a>第 1 步：提前准备好</h6><ul>
+<li>容器登录账号+密码</li>
+<li>服务器的 HOST + 登录账户 + 密码</li>
+<li>阿里云或者 dockerhub 的镜像容器仓库</li>
+</ul>
+<h6 id="第-2-步：github-该仓库-Settings-gt-Secrets-添加秘钥，即上面准备好的这-5-个"><a href="#第-2-步：github-该仓库-Settings-gt-Secrets-添加秘钥，即上面准备好的这-5-个" class="headerlink" title="第 2 步：github 该仓库 Settings-&gt;Secrets 添加秘钥，即上面准备好的这 5 个"></a>第 2 步：github 该仓库 Settings-&gt;Secrets 添加秘钥，即上面准备好的这 5 个</h6><blockquote>
+<p>我这里买的是阿里云的屌丝 1 核 2G 机器，生产环境别这么玩，账号密码可能泄露</p>
+</blockquote>
+<p><img src="/assets/img/nextjs-blog/secrets.jpg" srcset="/img/loading.gif" lazyload alt="secrets"></p>
+<h6 id="第-3-步：项目根目录添加github-yml配置文件"><a href="#第-3-步：项目根目录添加github-yml配置文件" class="headerlink" title="第 3 步：项目根目录添加github yml配置文件"></a>第 3 步：项目根目录添加<code>github yml</code>配置文件</h6><blockquote>
+<p>.github&#x2F;workflows&#x2F;deploy.yml</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">name: Docker Image CI<br><br>on:<br>  push: <span class="hljs-comment"># push 时触发ci</span><br>    branches: [main] <span class="hljs-comment"># 作用于main分支</span><br>  <span class="hljs-comment"># pull_request:</span><br>  <span class="hljs-comment">#   branches: [main]</span><br><br><span class="hljs-built_in">jobs</span>:<br>  build:<br>    runs-on: ubuntu-latest<br><br>    steps:<br>      <span class="hljs-comment"># 拉取main分支代码</span><br>      - name: Checkout<br>        uses: actions/checkout@v2<br><br>      <span class="hljs-comment"># 制作docker镜像并推送到阿里云容器镜像服务</span><br>      - name: build and push docker image<br>        run: |<br>          <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;&#123; secrets.ALIYUN_DOCKER_PASSWORD &#125;</span>&#125; | docker login registry.cn-hangzhou.aliyuncs.com --username <span class="hljs-variable">$&#123;&#123; secrets.ALIYUN_DOCKER_USERNAME &#125;</span>&#125; --password-stdin<br><br>          docker image build -t myblog:latest .<br>          docker tag myblog registry.cn-hangzhou.aliyuncs.com/test-blog/myblog:latest<br>          docker push registry.cn-hangzhou.aliyuncs.com/test-blog/myblog:latest<br>          docker <span class="hljs-built_in">logout</span><br>      <span class="hljs-comment"># 登录远程服务器，拉取镜像，制作并重启容器</span><br>      <span class="hljs-comment"># https://github.com/marketplace/actions/remote-ssh-commands</span><br>      - name: ssh remote deploy<br>        uses: fifsky/ssh-action@master<br>        with:<br>          <span class="hljs-built_in">command</span>: |<br>            <span class="hljs-built_in">cd</span> /<br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;1.docker login start==&gt;&quot;</span><br>            <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;&#123; secrets.ALIYUN_DOCKER_PASSWORD &#125;</span>&#125; | docker login registry.cn-hangzhou.aliyuncs.com --username <span class="hljs-variable">$&#123;&#123; secrets.ALIYUN_DOCKER_USERNAME &#125;</span>&#125; --password-stdin<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;2.docker stop myblog container==&gt;&quot;</span><br>            docker container stop myblog<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;3.docker conatainer rm==&gt;&quot;</span><br>            docker container <span class="hljs-built_in">rm</span> myblog<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;4.docker image rm==&gt;&quot;</span><br>            docker image <span class="hljs-built_in">rm</span> registry.cn-hangzhou.aliyuncs.com/test-blog/myblog:latest<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;5.docker pull==&gt;&quot;</span><br>            docker pull registry.cn-hangzhou.aliyuncs.com/test-blog/myblog:latest<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;6.docker container create and start==&gt;&quot;</span><br>            docker container run -d -p 80:3000 --name myblog registry.cn-hangzhou.aliyuncs.com/test-blog/myblog:latest<br><br>            <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;7.docker logout==&gt;&quot;</span><br>            docker <span class="hljs-built_in">logout</span><br>          host: <span class="hljs-variable">$&#123;&#123; secrets.HOST &#125;</span>&#125;<br>          user: <span class="hljs-variable">$&#123;&#123; secrets.USER &#125;</span>&#125;<br>          pass: <span class="hljs-variable">$&#123;&#123; secrets.PASSWORD &#125;</span>&#125;<br><br></code></pre></div></td></tr></table></figure>
+
+<h6 id="第-4-步：提交代码，自动部署"><a href="#第-4-步：提交代码，自动部署" class="headerlink" title="第 4 步：提交代码，自动部署"></a>第 4 步：提交代码，自动部署</h6><blockquote>
+<p>不出意外，在仓库的 Actions 里看到一切 ok</p>
+</blockquote>
+<figure class="highlight armasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs armasm"><span class="hljs-symbol">git</span> <span class="hljs-keyword">add</span> .<br><span class="hljs-symbol">git</span> commit -m <span class="hljs-string">&quot;chore: add github actions yml&quot;</span><br><span class="hljs-symbol">git</span> <span class="hljs-keyword">push</span> -u origin main<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/assets/img/nextjs-blog/deploy.jpg" srcset="/img/loading.gif" lazyload alt="deploy"></p>
+<p><a target="_blank" rel="noopener" href="https://nextjs-blog-nine-delta-65.vercel.app/">当前博客点击预览</a></p>
+<p><img src="/assets/img/nextjs-blog/666.png" srcset="/img/loading.gif" lazyload alt="666"></p>
+<h3 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h3><ol>
+<li><p><a target="_blank" rel="noopener" href="https://nextjs.org/docs/getting-started">Next.js 官方文档</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6991689670027542564">如何优化 node 项目的 docker 镜像</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/379598562">前后端同构和模板渲染的区别是什么呢？</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6950799922178310152">手把手教你用 Github Actions 部署前端项目</a></p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/nextjs/">nextjs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/next-js/">next.js</a>
+                    
+                      <a class="hover-with-bg" href="/tags/github-actions/">github actions</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CI/">CI</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CD/">CD</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/29/docker-compose-portainer/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">超详细手摸手带你docker-compose + portainer部署你的todolist小应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/25/qiankun/">
+                        <span class="hidden-mobile">微前端qiankun上手体验</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

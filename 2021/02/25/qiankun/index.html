@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="qiankun 官方文档 single-spa 微前端-最容易看懂的微前端知识   微前端的类型：  受路由控制渲染的子应用 不受路由控制的组件 非渲染组件，应用间通信逻辑  1.子应用-vue1. vue-cli 创建子应用1vue create qiankun_vue  2. 修改入口main.js文件12345678910111213141516171819202122232425262">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微前端qiankun上手体验">
+<meta property="og:url" content="https://srect.github.io/2021/02/25/qiankun/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="qiankun 官方文档 single-spa 微前端-最容易看懂的微前端知识   微前端的类型：  受路由控制渲染的子应用 不受路由控制的组件 非渲染组件，应用间通信逻辑  1.子应用-vue1. vue-cli 创建子应用1vue create qiankun_vue  2. 修改入口main.js文件12345678910111213141516171819202122232425262">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/qiankun/yq.jpg">
+<meta property="article:published_time" content="2021-02-25T02:36:39.000Z">
+<meta property="article:modified_time" content="2022-03-17T11:20:01.185Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="qiankun">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/qiankun/yq.jpg">
+  
+  
+  <title>微前端qiankun上手体验 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="微前端qiankun上手体验">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-02-25 10:36" pubdate>
+        2021年2月25日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      71 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">微前端qiankun上手体验</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://qiankun.umijs.org/zh">qiankun 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/getting-started-overview/">single-spa</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904162509979662#heading-0">微前端-最容易看懂的微前端知识</a></li>
+</ol>
+</blockquote>
+<p>微前端的类型：</p>
+<ol>
+<li>受路由控制渲染的子应用</li>
+<li>不受路由控制的组件</li>
+<li>非渲染组件，应用间通信逻辑</li>
+</ol>
+<h3 id="1-子应用-vue"><a href="#1-子应用-vue" class="headerlink" title="1.子应用-vue"></a>1.子应用-vue</h3><h4 id="1-vue-cli-创建子应用"><a href="#1-vue-cli-创建子应用" class="headerlink" title="1. vue-cli 创建子应用"></a>1. vue-cli 创建子应用</h4><figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">vue create qiankun_vue<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="2-修改入口main-js文件"><a href="#2-修改入口main-js文件" class="headerlink" title="2. 修改入口main.js文件"></a>2. 修改入口<code>main.js</code>文件</h4><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// https://qiankun.umijs.org/zh/guide/tutorial#vue-微应用</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Vue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App.vue&quot;</span>;<br><span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./router&quot;</span>;<br><br><span class="hljs-comment">// Vue.config.productionTip = false</span><br><br><span class="hljs-keyword">let</span> vueInstance = <span class="hljs-literal">null</span>;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params">props = &#123;&#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; container &#125; = props;<br><br>  vueInstance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    router,<br>    <span class="hljs-attr">render</span>: <span class="hljs-function">(<span class="hljs-params">h</span>) =&gt;</span> <span class="hljs-title function_">h</span>(<span class="hljs-title class_">App</span>),<br>    <span class="hljs-comment">// 这里是挂载到自己的html上，基座会拿到这个挂载后的html，将其插入到相应的容器里</span><br><br>    <span class="hljs-comment">// Application died in status NOT_MOUNTED: Target container with #container not existed after xxx mounted!</span><br>    <span class="hljs-comment">// 微应用的根 id 与其他 DOM 冲突。解决办法是：修改根 id 的查找范围。</span><br>  &#125;).$mount(container ? container.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#app&quot;</span>) : <span class="hljs-string">&quot;#app&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">// 使用 webpack 运行时 publicPath 配置</span><br><span class="hljs-comment">// 动态设置publicPath</span><br><span class="hljs-keyword">if</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">__POWERED_BY_QIANKUN__</span>) &#123;<br>  __webpack_public_path__ = <span class="hljs-variable language_">window</span>.<span class="hljs-property">__INJECTED_PUBLIC_PATH_BY_QIANKUN__</span>;<br>&#125;<br><br><span class="hljs-comment">// https://qiankun.umijs.org/zh/faq#如何独立运行微应用？</span><br><span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">window</span>.<span class="hljs-property">__POWERED_BY_QIANKUN__</span>) &#123;<br>  <span class="hljs-title function_">render</span>();<br>&#125;<br><br><span class="hljs-comment">// 暴露3个异步方法 bootstrap mount unmount</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">bootstrap</span>(<span class="hljs-params">props</span>) &#123;&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">mount</span>(<span class="hljs-params">props</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;props=====&gt;&quot;</span>, props);<br>  <span class="hljs-title function_">render</span>(props);<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">unmount</span>(<span class="hljs-params">props</span>) &#123;<br>  vueInstance &amp;&amp; vueInstance.$destroy();<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-修改路由router-index-js文件"><a href="#3-修改路由router-index-js文件" class="headerlink" title="3. 修改路由router/index.js文件"></a>3. 修改路由<code>router/index.js</code>文件</h4><figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">  const router = new VueRouter(&#123;<br>    mode: &#x27;history&#x27;,<br><span class="hljs-deletion">-    base: process.env.BASE_URL,</span><br><span class="hljs-addition">+    base: window.__POWERED_BY_QIANKUN__ ? &#x27;/vue&#x27; : process.env.BASE_URL,</span><br>    routes<br>  &#125;)<br><br></code></pre></div></td></tr></table></figure>
+
+<h4 id="4-根目录新建vue-config-js，修改打包配置"><a href="#4-根目录新建vue-config-js，修改打包配置" class="headerlink" title="4. 根目录新建vue.config.js，修改打包配置"></a>4. 根目录新建<code>vue.config.js</code>，修改打包配置</h4><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">devServer</span>: &#123;<br>    <span class="hljs-attr">port</span>: <span class="hljs-number">8000</span>,<br>    <span class="hljs-attr">headers</span>: &#123;<br>      <span class="hljs-string">&quot;Access-Control-Allow-Origin&quot;</span>: <span class="hljs-string">&quot;*&quot;</span>,<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-comment">// https://webpack.docschina.org/configuration/output/#outputlibrary</span><br>  <span class="hljs-attr">configureWebpack</span>: &#123;<br>    <span class="hljs-attr">output</span>: &#123;<br>      <span class="hljs-attr">library</span>: <span class="hljs-string">&quot;vueApp&quot;</span>, <span class="hljs-comment">// 打包成一个类库</span><br>      <span class="hljs-attr">libraryTarget</span>: <span class="hljs-string">&quot;umd&quot;</span>, <span class="hljs-comment">// umd最终会把bootstrap/mount/unmount挂载到window上</span><br>    &#125;,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="2-子应用-react"><a href="#2-子应用-react" class="headerlink" title="2.子应用-react"></a>2.子应用-react</h3><h4 id="1-create-react-app-创建子应用"><a href="#1-create-react-app-创建子应用" class="headerlink" title="1. create-react-app 创建子应用"></a>1. create-react-app 创建子应用</h4><figure class="highlight dsconfig"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dsconfig"><span class="hljs-built_in">create-react-app</span> <span class="hljs-string">qiankun_react</span><br></code></pre></div></td></tr></table></figure>
+
+<h4 id="2-修改入口index-js文件"><a href="#2-修改入口index-js文件" class="headerlink" title="2. 修改入口index.js文件"></a>2. 修改入口<code>index.js</code>文件</h4><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">BrowserRouter</span>, <span class="hljs-title class_">Link</span>, <span class="hljs-title class_">Route</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-dom&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;./index.css&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App&quot;</span>;<br><span class="hljs-comment">// import reportWebVitals from &#x27;./reportWebVitals&#x27;;</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params">props</span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; container &#125; = props;<br>  <span class="hljs-comment">// https://reactrouter.com/web/api/BrowserRouter</span><br>  <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">React.StrictMode</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">BrowserRouter</span> <span class="hljs-attr">basename</span>=<span class="hljs-string">&quot;/react&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>react-home<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span> |<span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>react-about<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span></span><br><span class="language-xml">        &#123;/* exact 严格模式 */&#125;</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/&quot;</span> <span class="hljs-attr">exact</span> <span class="hljs-attr">render</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span>&#125;&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">Route</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Route</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;/about&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">exact</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">render</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>react about page<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>&#125;</span><br><span class="language-xml">        &gt;<span class="hljs-tag">&lt;/<span class="hljs-name">Route</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">BrowserRouter</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">React.StrictMode</span>&gt;</span></span>,<br>    container<br>      ? container.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#root&quot;</span>)<br>      : <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#root&quot;</span>)<br>  );<br>&#125;<br><br><span class="hljs-comment">// 独立运行</span><br><span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">window</span>.<span class="hljs-property">__POWERED_BY_QIANKUN__</span>) &#123;<br>  <span class="hljs-title function_">render</span>();<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">bootstrap</span>(<span class="hljs-params">props</span>) &#123;&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">mount</span>(<span class="hljs-params">props</span>) &#123;<br>  <span class="hljs-title function_">render</span>(props);<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">unmount</span>(<span class="hljs-params">props</span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; container &#125; = props;<br>  <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">unmountComponentAtNode</span>(<br>    container<br>      ? container.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#root&quot;</span>)<br>      : <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#root&quot;</span>)<br>  );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-修改打包配置文件"><a href="#3-修改打包配置文件" class="headerlink" title="3. 修改打包配置文件"></a>3. 修改打包配置文件</h4><h5 id="1-安装react-app-rewired"><a href="#1-安装react-app-rewired" class="headerlink" title="1. 安装react-app-rewired"></a>1. 安装<code>react-app-rewired</code></h5><figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">yarn add react-app-rewired -D<br></code></pre></div></td></tr></table></figure>
+
+<h5 id="2-子应用根目录新建config-overrides-js文件"><a href="#2-子应用根目录新建config-overrides-js文件" class="headerlink" title="2. 子应用根目录新建config-overrides.js文件"></a>2. 子应用根目录新建<code>config-overrides.js</code>文件</h5><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// https://github.com/timarney/react-app-rewired/blob/HEAD/README_zh.md#扩展配置选项</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">webpack</span>: <span class="hljs-function">(<span class="hljs-params">config</span>) =&gt;</span> &#123;<br>    config.<span class="hljs-property">output</span>.<span class="hljs-property">library</span> = <span class="hljs-string">&quot;reactApp&quot;</span>;<br>    config.<span class="hljs-property">output</span>.<span class="hljs-property">libraryTarget</span> = <span class="hljs-string">&quot;umd&quot;</span>;<br>    config.<span class="hljs-property">output</span>.<span class="hljs-property">publicPath</span> = <span class="hljs-string">&quot;http://localhost:9000/&quot;</span>;<br>    <span class="hljs-keyword">return</span> config;<br>  &#125;,<br>  <span class="hljs-attr">devServer</span>: <span class="hljs-function">(<span class="hljs-params">configFunc</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">proxy, allowedHost</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> config = <span class="hljs-title function_">configFunc</span>(proxy, allowedHost);<br>      <span class="hljs-comment">// 设置开发服务允许跨域</span><br>      config.<span class="hljs-property">headers</span> = &#123;<br>        <span class="hljs-string">&quot;Access-Control-Allow-Origin&quot;</span>: <span class="hljs-string">&quot;*&quot;</span>,<br>      &#125;;<br><br>      <span class="hljs-keyword">return</span> config;<br>    &#125;;<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h5 id="3-设置环境变量"><a href="#3-设置环境变量" class="headerlink" title="3. 设置环境变量"></a>3. 设置环境变量</h5><ol>
+<li>子应用根目录新建<code>.env</code>文件</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">PORT</span>=<span class="hljs-number">4000</span><br><span class="hljs-attr">WDS_SOCKET_PORT</span>=<span class="hljs-number">4000</span><br></code></pre></div></td></tr></table></figure>
+
+<p>或者在<code>package.json</code>启动脚本中修改端口</p>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"> &quot;scripts&quot;: &#123;<br><span class="hljs-deletion">-     &quot;start&quot;: &quot;react-app-rewired start&quot;,</span><br><span class="hljs-addition">+     &quot;start&quot;: &quot;set PORT=4000 &amp;&amp; react-app-rewired start&quot;,</span><br>   &#125;,<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>修改<code>package.json</code>文件</li>
+</ol>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"> &quot;scripts&quot;: &#123;<br><span class="hljs-deletion">-     &quot;start&quot;: &quot;react-scripts start&quot;,</span><br><span class="hljs-deletion">-     &quot;build&quot;: &quot;react-scripts build&quot;,</span><br><span class="hljs-deletion">-     &quot;test&quot;: &quot;react-scripts test&quot;,</span><br><span class="hljs-deletion">-     &quot;eject&quot;: &quot;react-scripts eject&quot;</span><br><span class="hljs-addition">+     &quot;start&quot;: &quot;react-app-rewired start&quot;,</span><br><span class="hljs-addition">+     &quot;build&quot;: &quot;react-app-rewired build&quot;,</span><br><span class="hljs-addition">+     &quot;test&quot;: &quot;react-app-rewired test&quot;,</span><br><span class="hljs-addition">+     &quot;eject&quot;: &quot;react-app-rewired eject&quot;</span><br>   &#125;,<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="3-子应用-非-webpack-构建-jquery-bootstrap"><a href="#3-子应用-非-webpack-构建-jquery-bootstrap" class="headerlink" title="3.子应用(非 webpack 构建)-jquery+bootstrap"></a>3.子应用(非 webpack 构建)-jquery+bootstrap</h3><h4 id="1-新建index-html文件"><a href="#1-新建index-html文件" class="headerlink" title="1. 新建index.html文件"></a>1. 新建<code>index.html</code>文件</h4><figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh-CN&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Bootstrap 101 Template<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;//localhost:5000/lib/bootstrap.min.css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>你好，世界！<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input-group&quot;</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input-group-addon&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;basic-addon1&quot;</span>&gt;</span>@<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">input</span></span><br><span class="hljs-tag">            <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;form-control&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Username&quot;</span></span><br><span class="hljs-tag">            <span class="hljs-attr">aria-describedby</span>=<span class="hljs-string">&quot;basic-addon1&quot;</span></span><br><span class="hljs-tag">          /&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//localhost:5000/lib/jquery.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//localhost:5000/lib/bootstrap.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--  entry js为入口文件 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//localhost:5000/entry.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h4 id="2-新建entry-js入口文件"><a href="#2-新建entry-js入口文件" class="headerlink" title="2. 新建entry.js入口文件"></a>2. 新建<code>entry.js</code>入口文件</h4><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">render</span> = (<span class="hljs-params">$</span>) =&gt; &#123;<br>  $(<span class="hljs-string">&quot;#purehtml-container&quot;</span>).<span class="hljs-title function_">html</span>(<span class="hljs-string">&quot;Hello, render with jQuery&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>();<br>&#125;;<br>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-variable language_">global</span></span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">global</span>[<span class="hljs-string">&quot;purehtml&quot;</span>] = &#123;<br>    <span class="hljs-attr">bootstrap</span>: <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;purehtml bootstrap&quot;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>();<br>    &#125;,<br>    <span class="hljs-attr">mount</span>: <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;purehtml mount&quot;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title function_">render</span>($);<br>    &#125;,<br>    <span class="hljs-attr">unmount</span>: <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;purehtml unmount&quot;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>();<br>    &#125;,<br>  &#125;;<br>&#125;)(<span class="hljs-variable language_">window</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="4-基座应用-vue"><a href="#4-基座应用-vue" class="headerlink" title="4.基座应用-vue"></a>4.基座应用-vue</h3><h4 id="1-修改入口main-js文件"><a href="#1-修改入口main-js文件" class="headerlink" title="1.修改入口main.js文件"></a>1.修改入口<code>main.js</code>文件</h4><figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">import Vue from &#x27;vue&#x27;<br>import App from &#x27;./App.vue&#x27;<br>import router from &#x27;./router&#x27;<br><span class="hljs-addition">+ import &#123; registerMicroApps, start &#125; from &#x27;qiankun&#x27;;</span><br><span class="hljs-addition">+ import ElementUI from &#x27;element-ui&#x27;;</span><br><span class="hljs-addition">+ import &#x27;element-ui/lib/theme-chalk/index.css&#x27;;</span><br><br>Vue.config.productionTip = false<br><br><span class="hljs-addition">+ Vue.use(ElementUI);</span><br><br><span class="hljs-addition">+ const apps = [</span><br><span class="hljs-addition">+   &#123;</span><br><span class="hljs-addition">+     name: &quot;vueApp&quot;,</span><br><span class="hljs-addition">+     // 默认通过fetch加载这个html，解析里面的js，动态的执行</span><br><span class="hljs-addition">+     // 注意：子应用必须支持跨域</span><br><span class="hljs-addition">+     entry: &quot;http://localhost:8000&quot;,</span><br><span class="hljs-addition">+     container: &quot;#vueDOM&quot;, // 容器名</span><br><span class="hljs-addition">+     activeRule: &quot;/vue&quot;, // 激活路径</span><br><span class="hljs-addition">+     props: &#123; a: 1, b: 2 &#125;, // 传给子应用的参数</span><br><span class="hljs-addition">+   &#125;,</span><br><span class="hljs-addition">+   &#123;</span><br><span class="hljs-addition">+     name: &quot;reactApp&quot;,</span><br><span class="hljs-addition">+     entry: &quot;//localhost:9000&quot;,</span><br><span class="hljs-addition">+     container: &quot;#react&quot;,</span><br><span class="hljs-addition">+     activeRule: &quot;/react&quot;,</span><br><span class="hljs-addition">+   &#125;,</span><br><span class="hljs-addition">+   &#123;</span><br><span class="hljs-addition">+     name: &quot;jqueryApp&quot;,</span><br><span class="hljs-addition">+     entry: &quot;//localhost:5000&quot;,</span><br><span class="hljs-addition">+     container: &quot;#jquery&quot;,</span><br><span class="hljs-addition">+     activeRule: &quot;/jquery&quot;,</span><br><span class="hljs-addition">+     props: &#123; a: 100, b: 200 &#125;,</span><br><span class="hljs-addition">+   &#125;,</span><br><span class="hljs-addition">+ ];</span><br><span class="hljs-addition">+</span><br><span class="hljs-addition">+ registerMicroApps(apps); // 注册应用</span><br><span class="hljs-addition">+ // 启动应用</span><br><span class="hljs-addition">+ start(&#123;</span><br><span class="hljs-addition">+   // https://qiankun.umijs.org/zh/api#startopts</span><br><span class="hljs-addition">+   prefetch: false, // 取消预加载</span><br><span class="hljs-addition">+ &#125;);</span><br><br>new Vue(&#123;<br>  router,<br>  render: h =&gt; h(App)<br>&#125;).$mount(&#x27;#app&#x27;)<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="2-修改App-vue组件"><a href="#2-修改App-vue组件" class="headerlink" title="2. 修改App.vue组件"></a>2. 修改<code>App.vue</code>组件</h4><figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">el-menu</span> <span class="hljs-attr">:router</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">mode</span>=<span class="hljs-string">&quot;horizontal&quot;</span>&gt;</span><br>      <span class="hljs-comment">&lt;!-- 基座自己的路由 --&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>base-home<span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/about&quot;</span>&gt;</span>base-about<span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span><br>      <span class="hljs-comment">&lt;!-- 引用其他子应用 --&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/vue&quot;</span>&gt;</span>vue 应用<span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/react&quot;</span>&gt;</span>react 应用<span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">el-menu-item</span> <span class="hljs-attr">index</span>=<span class="hljs-string">&quot;/jquery&quot;</span>&gt;</span>jquery + bootstrap 应用<span class="hljs-tag">&lt;/<span class="hljs-name">el-menu-item</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">el-menu</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">router-view</span> /&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;vueDOM&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;react&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;jquery&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/javascript/">javascript</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/qiankun/">qiankun</a>
+                    
+                      <a class="hover-with-bg" href="/tags/javascript/">javascript</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/08/nextjs-blog/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用 Next.js + Docker 打造一个属于你的私人博客</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/09/redux-toolkit/">
+                        <span class="hidden-mobile">redux toolkit 的使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
