@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="没听错，只需要3分钟，你就拥有了自己的专属博客。适合新手，简单易上手，博客主题随意挑选，还没自己博客的，快快动手造起来吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3分钟使用Hexo搭建自己的博客">
+<meta property="og:url" content="https://srect.github.io/2022/03/24/hexo-blog/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="没听错，只需要3分钟，你就拥有了自己的专属博客。适合新手，简单易上手，博客主题随意挑选，还没自己博客的，快快动手造起来吧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/hexo-blog/hexo-blog.jpg">
+<meta property="article:published_time" content="2022-03-24T05:27:46.000Z">
+<meta property="article:modified_time" content="2022-03-24T09:51:35.569Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="github actions">
+<meta property="article:tag" content="CI">
+<meta property="article:tag" content="CD">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/hexo-blog/hexo-blog.jpg">
+  
+  
+  <title>3分钟使用Hexo搭建自己的博客 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/assets/img/hexo-blog/banner.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="3分钟使用Hexo搭建自己的博客">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-24 13:27" pubdate>
+        2022年3月24日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">3分钟使用Hexo搭建自己的博客</h1>
+            
+            <div class="markdown-body">
+              <ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sRect/sRect.github.io">本文 github 仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/srect/hexo-blog">本文 gitee 仓库</a></li>
+<li><a href="https://srect.github.io/">博客预览</a></li>
+</ul>
+<h2 id="1-Hexo-是什么？"><a href="#1-Hexo-是什么？" class="headerlink" title="1. Hexo 是什么？"></a>1. Hexo 是什么？</h2><p>Hexo 是一个快速、简洁且高效的博客框架。可以使用 Markdown 写文章，方便高效，无需后台服务，静态资源即可展示。搭配 github pages 或者个人云服务器都可以部署。</p>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h2><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install -g hexo-cli<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="3-初始化"><a href="#3-初始化" class="headerlink" title="3. 初始化"></a>3. 初始化</h2><figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo init &lt;project-name&gt;<br><span class="hljs-built_in">cd</span> &lt;project-name&gt;<br>npm install<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="4-主要-api"><a href="#4-主要-api" class="headerlink" title="4. 主要 api"></a>4. 主要 api</h2><ol>
+<li>创建新文章</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo new &lt;title&gt;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>在<code>source/_posts/</code>下新建</li>
+</ul>
+<p>例如创建 foo 页，在<code>source/_posts/</code>目录下就会多出一个<code>foo.md</code>文件，就在那里面写文章</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo new foo<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>在<code>source</code>下新建其它的目录</li>
+</ul>
+<p>例如在<code>source/about/</code>下创建<code>bar.md</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo new page --path about/bar <span class="hljs-string">&quot;bar&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>生成静态文件</li>
+</ol>
+<p>项目根目录会多出一个<code>public</code>文件夹，就是编译过后的<code>html</code>静态文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo generate<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>清除缓存</li>
+</ol>
+<p>把上面生成的<code>public</code>文件夹删掉</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo clean<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>启动服务</li>
+</ol>
+<p>默认情况下，<code>http://localhost:4000</code>访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">hexo server<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="5-安装心仪的主题"><a href="#5-安装心仪的主题" class="headerlink" title="5. 安装心仪的主题"></a>5. 安装心仪的主题</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/themes/">hexo themes</a></li>
+</ol>
+<p>这么多主题，总有一款适合你</p>
+<ol start="2">
+<li>本文选择的主题<a target="_blank" rel="noopener" href="https://github.com/fluid-dev/hexo-theme-fluid"><code>hexo-theme-fluid</code></a></li>
+</ol>
+<ul>
+<li>主题安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install --save hexo-theme-fluid<br></code></pre></div></td></tr></table></figure>
+
+<p>然后在博客目录下创建 _config.fluid.yml，将主题的 _config.yml 内容复制进去</p>
+<ul>
+<li>配置主题</li>
+</ul>
+<p>修改 Hexo 博客目录中的 _config.yml:</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs avrasm"><span class="hljs-symbol">theme:</span> fluid  <span class="hljs-meta"># 指定主题</span><br><br><span class="hljs-symbol">language:</span> <span class="hljs-built_in">zh</span>-CN  <span class="hljs-meta"># 指定语言，会影响主题显示的语言，按需修改</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="6-部署"><a href="#6-部署" class="headerlink" title="6. 部署"></a>6. 部署</h2><h3 id="6-1-github-pages-部署"><a href="#6-1-github-pages-部署" class="headerlink" title="6.1 github pages 部署"></a>6.1 github pages 部署</h3><ol>
+<li><p>在你的 github 上创建一个名为<code>&lt;你的github用户名&gt;.github.io</code>的仓库</p>
+</li>
+<li><p>本地生成 ssh 密钥对</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">&quot;用户名@example.com &quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在仓库<code>Settings &gt; Deploy Keys</code>中添加公钥内容，并勾选访问权限，最后确定</p>
+</li>
+<li><p>在仓库<code>Settings &gt; Secrets</code>中添加私钥，key 为<code>DEPLOY_KEY</code>，内容为私钥内容</p>
+</li>
+<li><p>项目<code>_config.yml</code>配置文件和主题配置文件配置<code>deploy</code>字段</p>
+</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yml"><span class="hljs-attr">deploy:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">git</span><br>  <span class="hljs-attr">repo:</span> <span class="hljs-string">&lt;你的github仓库</span> <span class="hljs-string">SSH下载链接&gt;</span><br>  <span class="hljs-attr">branch:</span> <span class="hljs-string">gh-pages</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="6">
+<li><code>.github/workflows/deploy.yml</code></li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">Hexo</span> <span class="hljs-string">Github</span> <span class="hljs-string">Pages</span> <span class="hljs-string">Deploy</span><br><br><span class="hljs-comment"># https://github.com/marketplace/actions/hexo-action?version=v1.0.4</span><br><br><span class="hljs-attr">on:</span> [<span class="hljs-string">push</span>]<br><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-attr">build:</span><br>    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">A</span> <span class="hljs-string">job</span> <span class="hljs-string">to</span> <span class="hljs-string">deploy</span> <span class="hljs-string">blog.</span><br>    <span class="hljs-attr">steps:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">submodules:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># Checkout private submodules(themes or something else).</span><br><br>      <span class="hljs-comment"># Caching dependencies to speed up workflows. (GitHub will remove any cache entries that have not been accessed in over 7 days.)</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Cache</span> <span class="hljs-string">node</span> <span class="hljs-string">modules</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/cache@v1</span><br>        <span class="hljs-attr">id:</span> <span class="hljs-string">cache</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">path:</span> <span class="hljs-string">node_modules</span><br>          <span class="hljs-attr">key:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">runner.os</span> <span class="hljs-string">&#125;&#125;-node-$&#123;&#123;</span> <span class="hljs-string">hashFiles(&#x27;**/package-lock.json&#x27;)</span> <span class="hljs-string">&#125;&#125;</span><br>          <span class="hljs-attr">restore-keys:</span> <span class="hljs-string">|</span><br><span class="hljs-string">            $&#123;&#123; runner.os &#125;&#125;-node-</span><br><span class="hljs-string"></span>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Dependencies</span><br>        <span class="hljs-attr">if:</span> <span class="hljs-string">steps.cache.outputs.cache-hit</span> <span class="hljs-type">!=</span> <span class="hljs-string">&#x27;true&#x27;</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">ci</span><br><br>      <span class="hljs-comment"># Deploy hexo blog website.</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span><br>        <span class="hljs-attr">id:</span> <span class="hljs-string">deploy</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">sma11black/hexo-action@v1.0.3</span><br>        <span class="hljs-attr">with:</span><br>          <span class="hljs-attr">deploy_key:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.DEPLOY_KEY</span> <span class="hljs-string">&#125;&#125;</span><br>          <span class="hljs-attr">user_name:</span> <span class="hljs-string">&lt;你的github用户名&gt;</span> <span class="hljs-comment"># (or delete this input setting to use bot account)</span><br>          <span class="hljs-attr">user_email:</span> <span class="hljs-string">&lt;你的github邮箱&gt;</span> <span class="hljs-comment"># (or delete this input setting to use bot account)</span><br>          <span class="hljs-attr">commit_msg:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">github.event.head_commit.message</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-comment"># (or delete this input setting to use hexo default settings)</span><br>      <span class="hljs-comment"># Use the output from the `deploy` step(use for test action)</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Get</span> <span class="hljs-string">the</span> <span class="hljs-string">output</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br>          <span class="hljs-string">echo</span> <span class="hljs-string">&quot;$<span class="hljs-template-variable">&#123;&#123; steps.deploy.outputs.notify &#125;&#125;</span>&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="7">
+<li>使用<code>git</code>提交代码，在仓库<code>Actions</code>里可以看到 yml 配置文件的自动执行日志，执行结束后，不出意外的话，浏览器里访问<code>https://&lt;你的github用户名&gt;.github.io</code>，可以看到你的博客了！</li>
+</ol>
+<h3 id="6-2-docker-容器部署在个人云服务器"><a href="#6-2-docker-容器部署在个人云服务器" class="headerlink" title="6.2 docker 容器部署在个人云服务器"></a>6.2 docker 容器部署在个人云服务器</h3><ol>
+<li><p>在 github 仓库<code>Settings &gt; Secrets</code>中添加你的阿里云镜像容器服务账号，key 为<code>ALIYUN_DOCKER_USERNAME</code>，dockerhub 等也可以，这里以阿里云镜像容器服务为例</p>
+</li>
+<li><p>在 github 仓库<code>Settings &gt; Secrets</code>中添加你的阿里云镜像容器服务密码，key 为<code>ALIYUN_DOCKER_PASSWORD</code></p>
+</li>
+<li><p>Dockerfile</p>
+</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs Dockerfile"><span class="hljs-comment"># 1. 基础镜像安装</span><br><span class="hljs-keyword">FROM</span> alpine:<span class="hljs-number">3.15</span> AS base<br><br><span class="hljs-keyword">ENV</span> NODE_ENV=production \<br>  APP_PATH=/usr/share/nginx/hexo<br><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> <span class="hljs-variable">$APP_PATH</span></span><br><br><span class="hljs-comment"># 使用国内镜像，加速下面 apk add安装</span><br><span class="hljs-comment"># 如果是在github上打包镜像，无需使用内内镜像，注释掉即可</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> sed -i <span class="hljs-string">&#x27;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&#x27;</span> /etc/apk/repositories</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apk add --no-cache --update nodejs=16.14.0-r0 yarn=1.22.17-r0</span><br><br><span class="hljs-comment"># 2. 基于基础镜像安装项目依赖和打包</span><br><span class="hljs-keyword">FROM</span> base AS install<br><br><span class="hljs-keyword">COPY</span><span class="language-bash"> . ./</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> yarn install</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> yarn run build</span><br><br><span class="hljs-keyword">FROM</span> base AS result<br><br><span class="hljs-comment"># 将public目录下的文件全部复制到/usr/share/nginx/hexo下面</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=install <span class="hljs-variable">$APP_PATH</span>/public .</span><br><br><span class="hljs-comment"># 3. 最终基于nginx进行构建</span><br><span class="hljs-keyword">FROM</span> nginx:alpine<br><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /usr/share/nginx/hexo</span><br><br><span class="hljs-comment"># 添加自己的配置 default.conf 在下面</span><br><span class="hljs-keyword">ADD</span><span class="language-bash"> nginx.conf /etc/nginx/conf.d/default.conf</span><br><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=result /usr/share/nginx/hexo .</span><br><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">80</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li><code>.github/workflows/deploy.yml</code></li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">deploy</span> <span class="hljs-string">ci</span><br><br><span class="hljs-attr">on:</span><br>  <span class="hljs-attr">push:</span> <span class="hljs-comment"># push 时触发ci</span><br>    <span class="hljs-attr">branches:</span> [<span class="hljs-string">main</span>] <span class="hljs-comment"># 作用于main分支</span><br>  <span class="hljs-comment"># pull_request:</span><br>  <span class="hljs-comment">#   branches: [main]</span><br><br><span class="hljs-attr">jobs:</span><br>  <span class="hljs-attr">build:</span><br>    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span><br><br>    <span class="hljs-comment"># strategy:</span><br>    <span class="hljs-comment">#   matrix:</span><br>    <span class="hljs-comment">#     node-version: [14.x]</span><br>    <span class="hljs-comment">#     # See supported Node.js release schedule at https://nodejs.org/en/about/releases/</span><br><br>    <span class="hljs-attr">steps:</span><br>      <span class="hljs-comment"># 拉取main分支代码</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span><br>        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v2</span><br><br>      <span class="hljs-comment"># # 指定nodejs版本</span><br>      <span class="hljs-comment"># - name: Use Node.js $&#123;&#123; matrix.node-version &#125;&#125;</span><br>      <span class="hljs-comment">#   uses: actions/setup-node@v2</span><br>      <span class="hljs-comment">#   with:</span><br>      <span class="hljs-comment">#     node-version: $&#123;&#123; matrix.node-version &#125;&#125;</span><br>      <span class="hljs-comment">#     cache: &quot;yarn&quot;</span><br><br>      <span class="hljs-comment"># # 安装依赖</span><br>      <span class="hljs-comment"># - name: install</span><br>      <span class="hljs-comment">#   run: sudo yarn install</span><br><br>      <span class="hljs-comment"># # 打包</span><br>      <span class="hljs-comment"># - name: build</span><br>      <span class="hljs-comment">#   run: sudo yarn run build</span><br><br>      <span class="hljs-comment"># 制作docker镜像并推送到阿里云容器镜像服务</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">build</span> <span class="hljs-string">and</span> <span class="hljs-string">push</span> <span class="hljs-string">docker</span> <span class="hljs-string">image</span><br>        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br><span class="hljs-string">          echo $&#123;&#123; secrets.ALIYUN_DOCKER_PASSWORD &#125;&#125; | docker login registry.cn-hangzhou.aliyuncs.com --username $&#123;&#123; secrets.ALIYUN_DOCKER_USERNAME &#125;&#125; --password-stdin</span><br><span class="hljs-string">          docker image build -t hexo-blog .</span><br><span class="hljs-string">          docker tag hexo-blog registry.cn-hangzhou.aliyuncs.com/&lt;命名空间&gt;/&lt;镜像仓库名&gt;:latest</span><br><span class="hljs-string">          docker push registry.cn-hangzhou.aliyuncs.com/&lt;命名空间&gt;/&lt;镜像仓库名&gt;:latest</span><br><span class="hljs-string">          docker logout</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li>使用 docker 容器可视化管理，比如<code>portainer</code>等，拉取刚才制作的镜像，然后运行容器。或者登录云服务器，手动拉取镜像再运行容器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 拉取镜像</span><br>docker pull registry.cn-hangzhou.aliyuncs.com/&lt;命名空间&gt;/&lt;镜像仓库名&gt;:latest<br><br><span class="hljs-comment"># 运行容器</span><br>docker container run -d -p &lt;你的服务器宿主机向外暴露的端口&gt;:80 --name hexo-blog registry.cn-hangzhou.aliyuncs.com/&lt;命名空间&gt;/&lt;镜像仓库名&gt;:latest<br></code></pre></div></td></tr></table></figure>
+
+<ol start="6">
+<li>不出意外，浏览器里访问<code>http:&lt;你的ip或者配好的域名&gt;:&lt;端口&gt;</code>，可以看到你的博客了！</li>
+</ol>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs">Hexo 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/docs/guide">Hexo Fluid 主题用户手册</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/hexo-action?version=v1.0.4">Hexo Github Action</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/hexo/">hexo</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/github-actions/">github actions</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CI/">CI</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CD/">CD</a>
+                    
+                      <a class="hover-with-bg" href="/tags/hexo/">hexo</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/24/hello-world/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/11/mermaid/">
+                        <span class="hidden-mobile">mermaid使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
