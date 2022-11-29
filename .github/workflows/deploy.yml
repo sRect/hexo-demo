@@ -45,3 +45,13 @@ jobs:
       - name: Get the output
         run: |
           echo "${{ steps.deploy.outputs.notify }}"
+
+      # 制作docker镜像并推送到阿里云容器镜像服务
+      - name: build and push docker image
+        run: |
+          echo ${{ secrets.ALIYUN_DOCKER_PASSWORD }} | docker login registry.cn-hangzhou.aliyuncs.com --username ${{ secrets.ALIYUN_DOCKER_USERNAME }} --password-stdin
+
+          docker image build -t hexo-blog .
+          docker tag hexo-blog registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
+          docker push registry.cn-hangzhou.aliyuncs.com/test-blog/hexo-blog:latest
+          docker logout
