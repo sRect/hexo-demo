@@ -1,24 +1,10 @@
-FROM ubuntu as ubuntu
-RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:oibaf/graphics-drivers
-RUN apt update && apt install -y webp-dev
-
 # 1. 基础镜像安装
 FROM alpine:3.15 AS base
-
-COPY --from=ubuntu /usr/lib/ /usr/lib/ 
 
 ENV NODE_ENV=production \
   APP_PATH=/usr/share/nginx/hexo
 
 WORKDIR $APP_PATH
-
-# 添加第三方软件源
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories 
-# 安装webp依赖
-RUN apk update 
-# webp图片支持
-RUN apk add webp-dev libwebp
 
 # 使用国内镜像，加速下面 apk add下载安装alpine不稳定情况
 #RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
@@ -40,11 +26,7 @@ FROM base AS result
 COPY --from=install $APP_PATH/public .
 
 # 3. 最终基于nginx进行构建
-FROM alpine:3.15 as base 
 FROM nginx:alpine
-
-COPY --from=base /etc/apk/keys /etc/apk/keys
-COPY --from=base /etc/apk/repositories /etc/apk/repositories 
 
 WORKDIR /usr/share/nginx/hexo
 
