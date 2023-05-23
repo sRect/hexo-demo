@@ -7,7 +7,7 @@ ENV NODE_ENV=production \
 WORKDIR $APP_PATH
 
 # 使用国内镜像，加速下面 apk add下载安装alpine不稳定情况
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 RUN apk add --no-cache --update nodejs=16.20.0-r0 yarn=1.22.17-r0
 
@@ -34,8 +34,10 @@ WORKDIR /usr/share/nginx/hexo
 # RUN rm /etc/nginx/conf.d/default.conf
 
 # 添加自己的配置 default.conf 在下面
-ADD nginx.conf /etc/nginx/conf.d/default.conf
+ADD nginx.conf /etc/nginx/conf.d/nginx.conf
 
 COPY --from=result /usr/share/nginx/hexo .
 
 EXPOSE 80
+
+# CMD ["nginx", "-g", "daemon off;"]
