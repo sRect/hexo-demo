@@ -27,6 +27,10 @@ COPY --from=install $APP_PATH/public .
 
 # 3. 最终基于nginx进行构建
 FROM nginx:alpine
+# 添加第三方软件源
+RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories 
+# 安装webp依赖
+RUN apk update 
 # webp图片支持
 RUN apk add webp-dev libwebp
 
