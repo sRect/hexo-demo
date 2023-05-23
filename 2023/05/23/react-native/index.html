@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="react native v0.71.2版本构建一个博客app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 练习时长 2 月半，踩坑总结">
+<meta property="og:url" content="https://srect.github.io/2023/05/23/react-native/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="react native v0.71.2版本构建一个博客app">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/react-native/1.webbp">
+<meta property="article:published_time" content="2023-05-23T05:18:29.000Z">
+<meta property="article:modified_time" content="2023-05-23T05:34:35.689Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="react native">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/react-native/1.webbp">
+  
+  
+  <title>React Native 练习时长 2 月半，踩坑总结 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/assets/img/react-native/banner.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="React Native 练习时长 2 月半，踩坑总结">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-05-23 13:18" pubdate>
+        2023年5月23日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      36k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      298 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">React Native 练习时长 2 月半，踩坑总结</h1>
+            
+            <div class="markdown-body">
+              <ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sRect/reactNativeBlogApp">本文 github 仓库链接</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7234407587118530597">本文掘金链接</a></li>
+</ul>
+<blockquote>
+<p>2023 年了，RN 也凉的差不多了。本文用 react native 做的 app 很简单，首页 + 列表页 + 详情页 + 关于页。总的感觉，涉及到原生方面，对于不会 android 和 ios 的 js 菜鸡，比较棘手，要折腾。</p>
+</blockquote>
+<p><img src="/assets/img/react-native/1.gif" srcset="/img/loading.gif" lazyload></p>
+<h2 id="1-前置基础"><a href="#1-前置基础" class="headerlink" title="1. 前置基础"></a>1. 前置基础</h2><ol>
+<li>React 基础</li>
+<li><a target="_blank" rel="noopener" href="https://www.reactnative.cn/">React Native 文档</a></li>
+</ol>
+<h2 id="2-本文主要-package-version"><a href="#2-本文主要-package-version" class="headerlink" title="2. 本文主要 package version"></a>2. 本文主要 package version</h2><blockquote>
+<ol>
+<li>这里页面路由应该使用 <a target="_blank" rel="noopener" href="https://reactnavigation.org/docs/getting-started"><code>react-navigation</code></a> 更方便些，react-router-native6.x 版本感觉对 react native 支持不是很好</li>
+<li>对于 UI 库，没找到合适的，找了一个老掉牙的<a target="_blank" rel="noopener" href="https://rn.mobile.ant.design/docs/react/introduce-cn"><code>ant-design-react-native</code></a></li>
+</ol>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>package</th>
+<th align="center">version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>react</td>
+<td align="center">18.2.0</td>
+</tr>
+<tr>
+<td>react-native</td>
+<td align="center">0.71.2</td>
+</tr>
+<tr>
+<td>react-router-native</td>
+<td align="center">^6.8.0</td>
+</tr>
+<tr>
+<td>react-native-webview</td>
+<td align="center">^11.26.1</td>
+</tr>
+<tr>
+<td>@ant-design&#x2F;react-native</td>
+<td align="center">^5.0.3</td>
+</tr>
+</tbody></table>
+<h2 id="3-关于-React-Native-的一些疑问"><a href="#3-关于-React-Native-的一些疑问" class="headerlink" title="3. 关于 React Native 的一些疑问"></a>3. 关于 React Native 的一些疑问</h2><h3 id="3-1-React-Native-和-Flutter-优缺点对比"><a href="#3-1-React-Native-和-Flutter-优缺点对比" class="headerlink" title="3.1 React Native 和 Flutter 优缺点对比"></a>3.1 React Native 和 Flutter 优缺点对比</h3><blockquote>
+<p>来自 chat gpt 的回答，感觉有些落后啊</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>React Native</td>
+<td align="center">1. 拥有大量第三方库和社区支持；<br>2. 可以复用 React 的开发经验,语法上非常接近 React；<br> 3. 支持热重载,开发效率高</td>
+<td>1. 部署和打包过程较复杂；<br>2. 动画和性能体验略逊色于原生；<br>3. 升级过程可能会比较痛苦</td>
+</tr>
+<tr>
+<td>Flutter</td>
+<td align="center">1. 组件丰富,UI 体验接近原；<br>2. 性能很高,特别是动画方面；<br> 3. 打包简单,可以编译成原生代码；<br>4. 升级过程比较顺畅</td>
+<td>1. 第三方库和社区还在发展,不如 React Native 成熟 ；<br>2. 对 Dart 语言的依赖,有一定学习成本；<br> 3. 热重载不能像 React Native 一样方便</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-如何看待-react-native-到目前为止，还没出-1-0-版本？"><a href="#3-2-如何看待-react-native-到目前为止，还没出-1-0-版本？" class="headerlink" title="3.2 如何看待 react native 到目前为止，还没出 1.0 版本？"></a>3.2 如何看待 react native 到目前为止，还没出 1.0 版本？</h3><blockquote>
+<p>同样来自 chat gpt 的回答</p>
+</blockquote>
+<p>React Native 虽然至今还没发布 1.0 版本,但这不意味着它不成熟或不可用。</p>
+<ol>
+<li>Facebook 的版本发布策略是非常慢慢的,要达到 1.0 需要非常稳定和完善,这需要长期的迭代和磨合。</li>
+<li>React Native 生态庞大,涉及的平台和版本组合非常多,要保证在所有环境下 100% 稳定并不容易。</li>
+<li>React Native 的升级过程中,会涉及到原生代码的迁移,这也增加了版本发布的难度。</li>
+<li>社区提供的第三方库也需要跟上版本迭代,这需要协调和校准,也是版本发布的阻碍。</li>
+</ol>
+<h3 id="3-3-react-native-使用的是原生-view-还是-webview"><a href="#3-3-react-native-使用的是原生-view-还是-webview" class="headerlink" title="3.3 react native 使用的是原生 view 还是 webview?"></a>3.3 react native 使用的是原生 view 还是 webview?</h3><blockquote>
+<p>同样来自 chat gpt 的回答</p>
+</blockquote>
+<ul>
+<li>React Native 使用的是原生 View 而不是 WebView</li>
+<li>React Native 的核心思想是使用 JavaScript 来开发移动应用,而不是 Web 应用。它允许你使用 React 来开发原生移动应用,最终编译成真实的原生 UI 元素</li>
+<li>具体来说,React Native 将 React 组件映射到原生 View 和 Text 组件上,而不是 WebView。所以当你在 JavaScript 中构建一个 Button 时,在本质上它会变成 Android 的 Button 或 iOS 的 UIButton。</li>
+</ul>
+<h2 id="4-开发环境准备"><a href="#4-开发环境准备" class="headerlink" title="4. 开发环境准备"></a>4. 开发环境准备</h2><blockquote>
+<p>本文选择了本地搭建环境，没有选择依赖线上的 expo 沙盒环境</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/environment-setup">本地环境搭建文档</a>，对着文档一步步来即可</p>
+<ol>
+<li>创建项目</li>
+</ol>
+<figure class="highlight actionscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs actionscript">npx react-<span class="hljs-keyword">native</span> init AwesomeProject<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>使用安卓手机调试</li>
+</ol>
+<blockquote>
+<p>也可以使用模拟器，由于我手机是安卓的，就用了安卓手机。还有就是安卓模拟器上的显示和真机有些差距，问题没及时暴露。</p>
+</blockquote>
+<p>手机打开开发者模式，并打开 usb 调试，数据线连接电脑即可，运行项目的时候，会自动在你的手机上安卓 debug 安装包</p>
+<h2 id="5-开发时遇到的一些问题总结"><a href="#5-开发时遇到的一些问题总结" class="headerlink" title="5. 开发时遇到的一些问题总结"></a>5. 开发时遇到的一些问题总结</h2><h3 id="5-1-安装第三方-ui-库，link-字体时报错"><a href="#5-1-安装第三方-ui-库，link-字体时报错" class="headerlink" title="5.1 安装第三方 ui 库，link 字体时报错"></a>5.1 安装第三方 ui 库，link 字体时报错</h3><blockquote>
+<p>根据 Ant Design Mobile RN of React 文档<a target="_blank" rel="noopener" href="https://rn.mobile.ant.design/docs/react/introduce-cn">链接字体图标</a>，安装完<code>@ant-design/icons-react-native</code>库后，需要执行<code>npx react-native link @ant-design/icons-react-native</code>，然后出现如下报错</p>
+</blockquote>
+<p><img src="/assets/img/react-native/2.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>解决：</strong></p>
+<ol>
+<li>安装 <code>react-native-asset</code></li>
+</ol>
+<figure class="highlight processing"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs processing">yarn <span class="hljs-built_in">add</span> react-<span class="hljs-keyword">native</span>-asset --<span class="hljs-built_in">save</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>根目录 react-native.config.js，assets 添加字体图标文件的路径</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">module</span>.<span class="hljs-keyword">exports</span> = &#123;<br>  assets: [<span class="hljs-string">&#x27;node_modules/@ant-design/icons-react-native/fonts&#x27;</span>]<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>执行 yarn react-native-asset</li>
+</ol>
+<figure class="highlight actionscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs actionscript">yarn react-<span class="hljs-keyword">native</span>-asset<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>检查是否链接成功，android\app\src\main\assets 下是否有 fonts 文件夹</li>
+</ol>
+<p><img src="/assets/img/react-native/3.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-2-如何像-web-项目一样使用-env-环境变量？"><a href="#5-2-如何像-web-项目一样使用-env-环境变量？" class="headerlink" title="5.2 如何像 web 项目一样使用 env 环境变量？"></a>5.2 如何像 web 项目一样使用 env 环境变量？</h3><blockquote>
+<p>如何像 web 项目一样，本地开发使用<code>.env.development</code>文件，生产打包的时候使用<code>.env.production</code>文件，<code>.env.local</code>文件只在本地生效？</p>
+</blockquote>
+<ol>
+<li>安装<a target="_blank" rel="noopener" href="https://github.com/luggit/react-native-config"><code>react-native-config</code></a>及配置步骤</li>
+</ol>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mipsasm">yarn <span class="hljs-keyword">add </span>react-native-<span class="hljs-built_in">config</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>android&#x2F;settings.gradle</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"><span class="hljs-addition">+ include &#x27;:react-native-config&#x27;</span><br><span class="hljs-addition">+ project(&#x27;:react-native-config&#x27;).projectDir = new File(rootProject.projectDir, &#x27;../node_modules/react-native-config/android&#x27;)</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>android&#x2F;app&#x2F;build.gradle</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">android &#123;<br>    // project.ext.defaultEnvFile = &quot;path/to/.env.file&quot;<br>    // 写在 apply from: project(&#x27;:react-native-config&#x27;).projectDir.getPath() + &quot;/dotenv.gradle&quot; 这行之前<br><span class="hljs-addition">+    project.ext.envConfigFiles = [</span><br><span class="hljs-addition">+      debug: &quot;.env.development&quot;,</span><br><span class="hljs-addition">+      release: &quot;.env.production&quot;</span><br><span class="hljs-addition">+    ]</span><br><br>    defaultConfig &#123;<br>        applicationId &quot;com.xxx.xxx&quot;<br>        minSdkVersion rootProject.ext.minSdkVersion<br>        targetSdkVersion rootProject.ext.targetSdkVersion<br>        versionCode 2<br>        versionName &quot;0.0.2&quot;<br>        // for react-native-config<br><span class="hljs-addition">+        resValue &quot;string&quot;, &quot;build_config_package&quot;, &quot;com.xxx.xxx&quot;</span><br>    &#125;<br>&#125;<br><br>dependencies &#123;<br>    implementation &quot;com.facebook.react:react-native:+&quot;  // From node_modules<br><span class="hljs-addition">+    implementation project(&#x27;:react-native-config&#x27;)</span><br>&#125;<br><br>// 最后一行添加<br><span class="hljs-addition">+ apply from: project(&#x27;:react-native-config&#x27;).projectDir.getPath() + &quot;/dotenv.gradle&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>android&#x2F;app&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;your-app-name&#x2F;MainApplication.java</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"><span class="hljs-addition">+ import com.lugg.RNCConfig.RNCConfigPackage;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>package.json 中 添加 scripts 脚本命令</li>
+</ol>
+<p><code>.env.local</code>加入到<code>.gitignore</code>文件中忽略，文件中可以放入一些私有敏感变量，不会被提交到仓库里；</p>
+<p>本地开发和生产打包时将<code>.env.local</code>文件里的变量复制到<code>.env.development</code>或<code>.env.production</code>文件里，启动项目完成或者打包完后，再将新复制进来的变量删除；</p>
+<p>这样就解决了 debug 和 release 变量区分，而本地私有变量也不会直接暴露出去。</p>
+<ul>
+<li>新建.env.local 文件</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-comment"># 高德地图key</span><br><span class="hljs-comment"># android</span><br><span class="hljs-attr">AMP_ANDROID_API_KEY</span>=xxx<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>新建.env.development 文件</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">NODE_ENV</span>=development<br><span class="hljs-attr">BASE_URL</span>=https://xxx.dev.api.com<br><span class="hljs-attr">MY_VARIABLE_ENV</span>=<span class="hljs-number">123</span>dev<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>新建.env.production 文件</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">NODE_ENV</span>=production<br><span class="hljs-attr">BASE_URL</span>=https://xxx.prod.api.com<br><span class="hljs-attr">MY_VARIABLE_ENV</span>=<span class="hljs-number">123</span>prod<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>package.json</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;preandroid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/checkEnvAmapKey .env.local &amp;&amp; cat .env.local &gt;&gt; .env.development&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;android&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ENVFILE=.env.development react-native run-android&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postandroid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/revertEnvFile .env.development .env.local&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;prebuild:android&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/checkEnvAmapKey .env.local &amp;&amp; cat .env.local &gt;&gt; .env.production&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build:android&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cd android &amp;&amp; ENVFILE=.env.production ./gradlew assembleRelease&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postbuild:android&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/revertEnvFile .env.production .env.local&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;prebuild:android:aab&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/checkEnvAmapKey .env.local &amp;&amp; cat .env.local &gt;&gt; .env.production&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build:android:aab&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cd android &amp;&amp; ENVFILE=.env.production ./gradlew bundleRelease&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postbuild:android:aab&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node ./scripts/revertEnvFile .env.production .env.local&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>scripts&#x2F;checkEnvAmapKey.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">Buffer</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;buffer&quot;</span>);<br><span class="hljs-keyword">const</span> argv = process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>);<br><span class="hljs-keyword">const</span> rootDir = process.<span class="hljs-title function_">cwd</span>();<br><span class="hljs-keyword">const</span> fsPromise = fs.<span class="hljs-property">promises</span>;<br><span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;chalk&quot;</span>);<br><span class="hljs-comment">// const shell = require(&#x27;shelljs&#x27;);</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;argv:&quot;</span>, argv); <span class="hljs-comment">// [ &#x27;.env.development&#x27;, &#x27;.env.local&#x27; ]</span><br><br><span class="hljs-keyword">const</span> envLocalFilePath = path.<span class="hljs-title function_">resolve</span>(rootDir, <span class="hljs-string">`./<span class="hljs-subst">$&#123;argv[<span class="hljs-number">0</span>]&#125;</span>`</span>);<br><span class="hljs-keyword">const</span> envLocalFileTemplate = <span class="hljs-string">`</span><br><span class="hljs-string"># 高德地图key</span><br><span class="hljs-string"># android</span><br><span class="hljs-string">AMP_ANDROID_API_KEY=请输入您的android api key</span><br><span class="hljs-string">`</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleWrite</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// https://nodejs.org/docs/latest-v16.x/api/fs.html#fspromiseswritefilefile-data-options</span><br>    <span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();<br>    <span class="hljs-keyword">const</span> &#123; signal &#125; = controller;<br>    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(envLocalFileTemplate));<br><br>    <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">await</span> fsPromise.<span class="hljs-title function_">writeFile</span>(envLocalFilePath, data, &#123;<br>      signal,<br>      <span class="hljs-attr">encoding</span>: <span class="hljs-string">&quot;utf8&quot;</span>,<br>      <span class="hljs-attr">flags</span>: <span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-comment">// 以写入模式打开文件，如果文件不存在则创建</span><br>    &#125;);<br><br>    <span class="hljs-comment">// Abort the request before the promise settles.</span><br>    controller.<span class="hljs-title function_">abort</span>();<br><br>    <span class="hljs-keyword">await</span> promise;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(chalk.<span class="hljs-title function_">red</span>(<span class="hljs-string">&quot;写入文件失败&quot;</span>), error);<br>  &#125; <span class="hljs-keyword">finally</span> &#123;<br>    process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>  &#125;<br>&#125;;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">writeEnvAmapKeyFile</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// https://nodejs.org/docs/latest-v16.x/api/fs.html#fsexistspath-callback</span><br>  fs.<span class="hljs-title function_">open</span>(envLocalFilePath, <span class="hljs-string">&quot;wx&quot;</span>, <span class="hljs-keyword">async</span> (err, fd) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>      <span class="hljs-keyword">if</span> (err.<span class="hljs-property">code</span> === <span class="hljs-string">&quot;EEXIST&quot;</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;envLocalFilePath&#125;</span>文件已存在`</span>);<br>      &#125;<br>      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleWrite</span>();<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>      fs.<span class="hljs-title function_">close</span>(fd, <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (error) &#123;<br>          <span class="hljs-keyword">throw</span> error;<br>        &#125;<br>      &#125;);<br>      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">// 检查本地根目录是否存在`.env.local`文件</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">checkEnvAmapKeyFile</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">await</span> fsPromise.<span class="hljs-title function_">stat</span>(envLocalFilePath);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;chalk.green(<span class="hljs-string">&quot;项目根目录已存在 `.env.local` 文件&quot;</span>)&#125;</span>;`</span>);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`</span><br><span class="hljs-string">      <span class="hljs-subst">$&#123;chalk.red.bgYellow(<span class="hljs-string">&quot;项目根目录不存在 `.env.local` 文件，将进行创建&quot;</span>)&#125;</span>;</span><br><span class="hljs-string">      <span class="hljs-subst">$&#123;chalk.yellow(</span></span><br><span class="hljs-subst"><span class="hljs-string">        <span class="hljs-string">&quot;请在生成的`.env.local`文件中填入高德地图API KEY，未申请的请前往高德地图 https://console.amap.com/dev/key/app 中申请创建，申请成功后，请复制key到 `.env.local`文件相应位置，然后重新启动项目&quot;</span></span></span><br><span class="hljs-subst"><span class="hljs-string">      )&#125;</span></span><br><span class="hljs-string">    `</span>);<br><br>    <span class="hljs-comment">// shell.exec(&#x27;touch \\.env.local&#x27;);</span><br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">writeEnvAmapKeyFile</span>();<br>  &#125;<br>&#125;<br><br><span class="hljs-title function_">checkEnvAmapKeyFile</span>();<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>scripts&#x2F;revertEnvFile.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">Buffer</span> &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;buffer&quot;</span>);<br><span class="hljs-keyword">const</span> argv = process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>);<br><span class="hljs-keyword">const</span> rootDir = process.<span class="hljs-title function_">cwd</span>();<br><span class="hljs-keyword">const</span> fsPromise = fs.<span class="hljs-property">promises</span>;<br><span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;chalk&quot;</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;argv:&quot;</span>, argv); <span class="hljs-comment">// [ &#x27;.env.development&#x27;, &#x27;.env.local&#x27; ]</span><br><br><span class="hljs-keyword">const</span> envLocalFilePath = path.<span class="hljs-title function_">resolve</span>(rootDir, <span class="hljs-string">`./<span class="hljs-subst">$&#123;argv[<span class="hljs-number">1</span>]&#125;</span>`</span>);<br><span class="hljs-keyword">const</span> envFilePath = path.<span class="hljs-title function_">resolve</span>(rootDir, <span class="hljs-string">`./<span class="hljs-subst">$&#123;argv[<span class="hljs-number">0</span>]&#125;</span>`</span>);<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleWrite</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">filePath, data</span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// https://nodejs.org/docs/latest-v16.x/api/fs.html#fspromiseswritefilefile-data-options</span><br>    <span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();<br>    <span class="hljs-keyword">const</span> &#123; signal &#125; = controller;<br>    <span class="hljs-keyword">const</span> str = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Uint8Array</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(data));<br>    <span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">await</span> fsPromise.<span class="hljs-title function_">writeFile</span>(filePath, str, &#123;<br>      signal,<br>      <span class="hljs-attr">encoding</span>: <span class="hljs-string">&quot;utf8&quot;</span>,<br>      <span class="hljs-attr">flags</span>: <span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-comment">// 以写入模式打开文件，如果文件不存在则创建</span><br>    &#125;);<br><br>    <span class="hljs-comment">// Abort the request before the promise settles.</span><br>    controller.<span class="hljs-title function_">abort</span>();<br><br>    <span class="hljs-keyword">await</span> promise;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(chalk.<span class="hljs-title function_">red</span>(<span class="hljs-string">&quot;写入文件失败&quot;</span>), error);<br>  &#125; <span class="hljs-keyword">finally</span> &#123;<br>    process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>  &#125;<br>&#125;;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">writeEnvAmapKeyFile</span>(<span class="hljs-params">filePath, data</span>) &#123;<br>  <span class="hljs-comment">// https://nodejs.org/docs/latest-v16.x/api/fs.html#fsexistspath-callback</span><br>  fs.<span class="hljs-title function_">open</span>(filePath, <span class="hljs-string">&quot;wx&quot;</span>, <span class="hljs-keyword">async</span> (err, fd) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>      <span class="hljs-keyword">if</span> (err.<span class="hljs-property">code</span> === <span class="hljs-string">&quot;EEXIST&quot;</span>) &#123;<br>        <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleWrite</span>(filePath, data);<br>      &#125;<br>      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleWrite</span>(filePath, data);<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>      fs.<span class="hljs-title function_">close</span>(fd, <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (error) &#123;<br>          <span class="hljs-keyword">throw</span> error;<br>        &#125;<br>      &#125;);<br>      process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">// 读取文件内容</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleReadFile</span>(<span class="hljs-params">fileName</span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> promise = fsPromise.<span class="hljs-title function_">readFile</span>(fileName, &#123; <span class="hljs-attr">encoding</span>: <span class="hljs-string">&quot;utf8&quot;</span> &#125;);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> promise;<br>  &#125; <span class="hljs-keyword">catch</span> (err) &#123;<br>    <span class="hljs-comment">// When a request is aborted - err is an AbortError</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(err);<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 检查本地根目录是否存在`.env.local`文件</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleRevertEnvFile</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">await</span> fsPromise.<span class="hljs-title function_">stat</span>(envLocalFilePath);<br><br>    <span class="hljs-keyword">const</span> envAmapFileContent = <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleReadFile</span>(envLocalFilePath);<br>    <span class="hljs-keyword">const</span> envFileContent = <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleReadFile</span>(envFilePath);<br><br>    <span class="hljs-keyword">if</span> (envAmapFileContent === <span class="hljs-string">&quot;&quot;</span>) &#123;<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">const</span> replaceStr = envFileContent.<span class="hljs-title function_">replace</span>(envAmapFileContent, <span class="hljs-string">&quot;&quot;</span>);<br><br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">writeEnvAmapKeyFile</span>(envFilePath, replaceStr);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>      <span class="hljs-string">`<span class="hljs-subst">$&#123;chalk.red.bgYellow(</span></span><br><span class="hljs-subst"><span class="hljs-string">        <span class="hljs-string">&quot;请检查 `.env.[development|production]` 文件，若有新增加的高德地图 API KEY，请撤回更改，勿提交到远程仓库&quot;</span></span></span><br><span class="hljs-subst"><span class="hljs-string">      )&#125;</span>`</span><br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-title function_">handleRevertEnvFile</span>();<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>关于打 release 生产包时获取不到自定义 env 变量</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/luggit/react-native-config/issues/640">https://github.com/luggit/react-native-config/issues/640</a></p>
+</blockquote>
+<p><img src="/assets/img/react-native/1.png" srcset="/img/loading.gif" lazyload></p>
+<p>android&#x2F;app&#x2F;proguard-rules.pro 添加下面这行：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs axapta">-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.mypackage.BuildConfig &#123; *; &#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>遗留的小问题</li>
+</ol>
+<p>本地开发时，执行<code>npm run android</code>，npm scripts 钩子执行不了<code>postandroid</code>，导致复制到<code>.env.development</code>文件里的变量删除不了。<code>npm run build:android</code>打包的时候不存在这个问题。</p>
+<h3 id="5-3-优雅的修改包的版本号"><a href="#5-3-优雅的修改包的版本号" class="headerlink" title="5.3 优雅的修改包的版本号"></a>5.3 优雅的修改包的版本号</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/stovmascript/react-native-version">https://github.com/stovmascript/react-native-version</a></p>
+</blockquote>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livecodeserver">yarn <span class="hljs-built_in">add</span> react-native-<span class="hljs-built_in">version</span> <span class="hljs-comment">--dev</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>package.json 中添加 scripts 脚本</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">&#123;<br>  &quot;name&quot;: &quot;AwesomeProject&quot;,<br>  &quot;version&quot;: &quot;0.0.1&quot;,<br>  &quot;scripts&quot;: &#123;<br>    &quot;start&quot;: &quot;node node_modules/react-native/local-cli/cli.js start&quot;,<br><span class="hljs-addition">+   &quot;postversion&quot;: &quot;react-native-version&quot;</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>使用</li>
+</ul>
+<p>每次打包发布前，先执行<code>npm version x.x.x</code>它会自动把新的版本号更新到 android 和 ios 中，然后再执行打包命令即可</p>
+<h3 id="5-4-修改包的名称"><a href="#5-4-修改包的名称" class="headerlink" title="5.4 修改包的名称"></a>5.4 修改包的名称</h3><p>修改 android&#x2F;app&#x2F;src&#x2F;main&#x2F;res&#x2F;values&#x2F;strings.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">string</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;app_name&quot;</span>&gt;</span>修改成你想要的包名<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-5-打包图片报错-mergeReleaseResources-FAILED"><a href="#5-5-打包图片报错-mergeReleaseResources-FAILED" class="headerlink" title="5.5 打包图片报错 mergeReleaseResources FAILED"></a>5.5 打包图片报错 mergeReleaseResources FAILED</h3><ul>
+<li>代码中使用图片的地方</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ImageBackground</span>, useWindowDimensions &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ImageBackground</span></span></span><br><span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">source</span>=<span class="hljs-string">&#123;require(</span>&quot;<span class="hljs-attr">..</span>/<span class="hljs-attr">..</span>/<span class="hljs-attr">assets</span>/<span class="hljs-attr">img</span>/<span class="hljs-attr">mybg.png</span>&quot;)&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">resizeMode</span>=<span class="hljs-string">&quot;cover&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">  <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;&#123;</span></span></span><br><span class="hljs-tag"><span class="language-xml">    <span class="hljs-attr">...styles.backgroundImg</span>,</span></span><br><span class="hljs-tag"><span class="language-xml">    <span class="hljs-attr">height:</span> <span class="hljs-attr">useWindowDimensions</span>()<span class="hljs-attr">.height</span>,</span></span><br><span class="hljs-tag"><span class="language-xml">  &#125;&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">/&gt;</span></span>;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>报错如下</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs gradle">* What went wrong:<br>Execution failed <span class="hljs-keyword">for</span> <span class="hljs-keyword">task</span> <span class="hljs-string">&#x27;:app:mergeReleaseResources&#x27;</span>.<br>&gt; A failure occurred <span class="hljs-keyword">while</span> executing com.android.build.gradle.internal.res.Aapt2CompileRunnable<br>   &gt; Android resource compilation failed<br>     ERROR:<span class="hljs-regexp">/android/</span>app<span class="hljs-regexp">/build/g</span>enerated<span class="hljs-regexp">/res/</span>react<span class="hljs-regexp">/release/</span>drawable-mdpi/src_assets_img_bg.png: AAPT: error: <span class="hljs-keyword">file</span> failed to <span class="hljs-keyword">compile</span>.<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>解决：</li>
+</ul>
+<p>android\app 下的 build.gradle 文件中添加如下代码</p>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">android &#123;<br>    ...<br><span class="hljs-addition">+    // 解决打包png图片报错</span><br><span class="hljs-addition">+    aaptOptions.cruncherEnabled = false</span><br><span class="hljs-addition">+    aaptOptions.useNewCruncher = false</span><br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-6-本地开发-http-请求失败"><a href="#5-6-本地开发-http-请求失败" class="headerlink" title="5.6 本地开发 http 请求失败"></a>5.6 本地开发 http 请求失败</h3><p>两种方式，推荐第一种</p>
+<ol>
+<li><p>使用 https 请求</p>
+</li>
+<li><p>修改配置</p>
+</li>
+</ol>
+<ul>
+<li>在 res 下新增加一个 xml 目录，然后创建一个名为 network_security_config.xml 文件，文件内容</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">network-security-config</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">base-config</span> <span class="hljs-attr">cleartextTrafficPermitted</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">network-security-config</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>在 android&#x2F;app&#x2F;src&#x2F;main&#x2F;AndroidManifest.xml 文件中添加：</li>
+</ul>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">&lt;application&gt;<br><span class="hljs-addition">+ android:networkSecurityConfig=&quot;@xml/network_security_config&quot;</span><br>&lt;/application&gt;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-7-安卓-Text-组件文字显示不全"><a href="#5-7-安卓-Text-组件文字显示不全" class="headerlink" title="5.7 安卓 Text 组件文字显示不全"></a>5.7 安卓 Text 组件文字显示不全</h3><p>设置 fontFamily 为 lucida grande，或者为空</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css">fontfamily: <span class="hljs-string">&quot;lucida grande&quot;</span>;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-8-android-绝对定位时点击事件失效"><a href="#5-8-android-绝对定位时点击事件失效" class="headerlink" title="5.8 android 绝对定位时点击事件失效"></a>5.8 android 绝对定位时点击事件失效</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000022868789">https://segmentfault.com/q/1010000022868789</a></p>
+</blockquote>
+<p><strong>解决：</strong> 在最外面在加一个 View，固定高度，点击就可以触发</p>
+<h3 id="5-9-android-侧滑退出应用问题"><a href="#5-9-android-侧滑退出应用问题" class="headerlink" title="5.9 android 侧滑退出应用问题"></a>5.9 android 侧滑退出应用问题</h3><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; useEffect, useCallback, memo, <span class="hljs-title class_">Fragment</span>, useRef &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123;<br>  <span class="hljs-title class_">Platform</span>,<br>  <span class="hljs-title class_">BackHandler</span>,<br>  <span class="hljs-title class_">Text</span>,<br>  <span class="hljs-title class_">StyleSheet</span>,<br>  <span class="hljs-title class_">AppState</span>,<br>  <span class="hljs-title class_">ToastAndroid</span>,<br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; useNavigate, useLocation &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-native&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Toast</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@ant-design/react-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">ResetBack</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> navigate = <span class="hljs-title function_">useNavigate</span>();<br>  <span class="hljs-keyword">const</span> location = <span class="hljs-title function_">useLocation</span>();<br><br>  <span class="hljs-keyword">const</span> numRef = <span class="hljs-title function_">useRef</span>(<span class="hljs-number">1</span>);<br><br>  <span class="hljs-keyword">const</span> _handleAppStateChange = <span class="hljs-keyword">function</span> (<span class="hljs-params">nextAppState</span>) &#123;<br>    <span class="hljs-comment">// console.log(appState);</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;nextAppState==&gt;&quot;</span>, nextAppState);<br><br>    <span class="hljs-keyword">if</span> (nextAppState &amp;&amp; nextAppState === <span class="hljs-string">&quot;background&quot;</span> &amp;&amp; numRef.<span class="hljs-property">current</span> &gt; <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;numRef.current==&gt;&quot;</span>, numRef.<span class="hljs-property">current</span>);<br>      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Platform</span>.<span class="hljs-property">OS</span> === <span class="hljs-string">&quot;android&quot;</span>) &#123;<br>        <span class="hljs-title class_">ToastAndroid</span>.<span class="hljs-title function_">showWithGravity</span>(<br>          <span class="hljs-string">&quot;已切到后台&quot;</span>,<br>          <span class="hljs-title class_">ToastAndroid</span>.<span class="hljs-property">SHORT</span>,<br>          <span class="hljs-title class_">ToastAndroid</span>.<span class="hljs-property">BOTTOM</span><br>        );<br>      &#125;<br>    &#125;<br>  &#125;;<br><br>  <span class="hljs-keyword">const</span> handleHardwareBackPress = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (location.<span class="hljs-property">pathname</span> === <span class="hljs-string">&quot;/&quot;</span>) &#123;<br>      numRef.<span class="hljs-property">current</span>--;<br><br>      <span class="hljs-keyword">if</span> (numRef.<span class="hljs-property">current</span> === <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">info</span>(&#123;<br>          <span class="hljs-attr">content</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;styles.txt&#125;</span>&gt;</span>在滑一次退出<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span>,<br>        &#125;);<br><br>        <span class="hljs-title class_">BackHandler</span>.<span class="hljs-title function_">removeEventListener</span>(<br>          <span class="hljs-string">&quot;hardwareBackPress&quot;</span>,<br>          handleHardwareBackPress<br>        );<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>      &#125;<br>    &#125;<br><br>    <span class="hljs-title function_">navigate</span>(-<span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;, [navigate, location]);<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// AppState.addEventListener(&#x27;change&#x27;, _handleAppStateChange);</span><br>    <span class="hljs-comment">// https://github.com/facebook/react-native/issues/34644#issuecomment-1245026317</span><br>    <span class="hljs-keyword">const</span> listener = <span class="hljs-title class_">AppState</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;change&quot;</span>, _handleAppStateChange);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// AppState.removeEventListener(&#x27;change&#x27;, _handleAppStateChange);</span><br>      listener.<span class="hljs-title function_">remove</span>();<br>    &#125;;<br>  &#125;, []);<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 禁用 Android 上的返回按钮(侧滑返回)</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Platform</span>.<span class="hljs-property">OS</span> === <span class="hljs-string">&quot;android&quot;</span>) &#123;<br>      <span class="hljs-title class_">BackHandler</span>.<span class="hljs-title function_">addEventListener</span>(<br>        <span class="hljs-string">&quot;hardwareBackPress&quot;</span>,<br>        handleHardwareBackPress<br>      );<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Platform</span>.<span class="hljs-property">OS</span> === <span class="hljs-string">&quot;android&quot;</span>) &#123;<br>        <span class="hljs-title class_">BackHandler</span>.<span class="hljs-title function_">removeEventListener</span>(<br>          <span class="hljs-string">&quot;hardwareBackPress&quot;</span>,<br>          handleHardwareBackPress<br>        );<br><br>        numRef.<span class="hljs-property">current</span> = <span class="hljs-number">1</span>;<br>      &#125;<br>    &#125;;<br>  &#125;, [handleHardwareBackPress]);<br><br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fragment</span> /&gt;</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">const</span> styles = <span class="hljs-title class_">StyleSheet</span>.<span class="hljs-title function_">create</span>(&#123;<br>  <span class="hljs-attr">txt</span>: &#123;<br>    <span class="hljs-attr">fontFamily</span>: <span class="hljs-string">&quot;&quot;</span>,<br>    <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#ffffff&quot;</span>,<br>  &#125;,<br>&#125;);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">memo</span>(<span class="hljs-title class_">ResetBack</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-10-自定义双击事件-Button-组件"><a href="#5-10-自定义双击事件-Button-组件" class="headerlink" title="5.10 自定义双击事件 Button 组件"></a>5.10 自定义双击事件 Button 组件</h3><blockquote>
+<p>chatgpt 给我的答案</p>
+</blockquote>
+<p>在 rn 0.71 及更高版本中，可以使用 TouchableWithoutFeedback 组件来捕获双击事件。</p>
+<p>TouchableWithoutFeedback 提供了 onPress 和 onLongPress 回调函数以及 delayPressIn 和 delayPressOut 属性，这些属性可以用于检测双击事件</p>
+<p>您可以根据需要调整 delayPressIn 和 delayPressOut 属性的值。例如，如果您希望用户必须在 500 毫秒内双击按钮，则可以将 DOUBLE_PRESS_DELAY 常量设置为 500。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; useRef &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">TouchableWithoutFeedback</span>, <span class="hljs-title class_">Text</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">MyDoubleClickButton</span> = (<span class="hljs-params">props</span>) =&gt; &#123;<br>  <span class="hljs-comment">// doubleClickTime为双击完成的时间</span><br>  <span class="hljs-keyword">const</span> &#123; onPress, title, doubleClickTime, textStyle &#125; = props;<br>  <span class="hljs-keyword">const</span> lastPress = <span class="hljs-title function_">useRef</span>(<span class="hljs-number">0</span>);<br><br>  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handlePress</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> now = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>();<br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DOUBLE_PRESS_DELAY</span> = doubleClickTime;<br>    <span class="hljs-keyword">if</span> (now - lastPress.<span class="hljs-property">current</span> &lt; <span class="hljs-variable constant_">DOUBLE_PRESS_DELAY</span>) &#123;<br>      <span class="hljs-title function_">onPress</span>();<br>    &#125;<br>    lastPress.<span class="hljs-property">current</span> = now;<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TouchableWithoutFeedback</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onPress</span>=<span class="hljs-string">&#123;handlePress&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">delayPressIn</span>=<span class="hljs-string">&#123;doubleClickTime</span> / <span class="hljs-attr">2</span>&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">delayPressOut</span>=<span class="hljs-string">&#123;doubleClickTime</span> / <span class="hljs-attr">2</span>&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">    &gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;textStyle&#125;</span>&gt;</span>&#123;title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">TouchableWithoutFeedback</span>&gt;</span></span><br>  );<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">MyDoubleClickButton</span>;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-11-设置剪切板"><a href="#5-11-设置剪切板" class="headerlink" title="5.11 设置剪切板"></a>5.11 设置剪切板</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/react-native-clipboard/clipboard">https://github.com/react-native-clipboard/clipboard</a></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Clipboard</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@react-native-clipboard/clipboard&quot;</span>;<br><br><span class="hljs-comment">// 设置值：</span><br><span class="hljs-title class_">Clipboard</span>.<span class="hljs-title function_">setString</span>(<span class="hljs-string">&quot;hello world&quot;</span>);<br><span class="hljs-comment">// 取值：</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchCopiedText</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> text = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Clipboard</span>.<span class="hljs-title function_">getString</span>();<br>  <span class="hljs-title function_">setCopiedText</span>(text);<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-12-关于使用react-native-webview"><a href="#5-12-关于使用react-native-webview" class="headerlink" title="5.12 关于使用react-native-webview"></a>5.12 关于使用<code>react-native-webview</code></h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Reference.md">https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Reference.md</a></p>
+</blockquote>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight processing"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs processing">yarn <span class="hljs-built_in">add</span>  react-<span class="hljs-keyword">native</span>-webview<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>注意：</strong> 一定要在安装完 react-native-webview 之后，然后重新启动，才会生效，不然会报错<br>（重启后，会重新下载依赖，这个过程，视网络情况而定，可能有点慢）</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs crmsh">TypeError: Cannot <span class="hljs-keyword">read</span> <span class="hljs-keyword">property</span><span class="hljs-title"> </span>&#x27;isFileUploadSupported&#x27; of null, js engine: hermes<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>网页 js 和原生进行通信</li>
+</ol>
+<p>如下示例，给网页插入一段脚本，获取网页上的图片点击事件，并且拿到图片的 src 链接</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; <span class="hljs-title class_">Component</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">View</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">WebView</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native-webview&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">INJECTED_JAVASCRIPT</span> = <span class="hljs-string">`</span><br><span class="hljs-string">  var imgList = document.querySelectorAll(&quot;img&quot;);</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Array.from(imgList).forEach(el =&gt; &#123;</span><br><span class="hljs-string">    el.addEventListener(&quot;click&quot;, function () &#123;</span><br><span class="hljs-string">      window.ReactNativeWebView.postMessage(JSON.stringify(&#123;type: &#x27;previewimg&#x27;, data: this.src&#125;));</span><br><span class="hljs-string">    &#125;);</span><br><span class="hljs-string">  &#125;);</span><br><span class="hljs-string">  </span><br><span class="hljs-string">  // 注意：这行是必须添加的，否则添加失败</span><br><span class="hljs-string">  true; // note: this is required, or you&#x27;ll sometimes get silent failures</span><br><span class="hljs-string">`</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">MyWebView</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">WebView</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">source</span>=<span class="hljs-string">&#123;&#123;</span> <span class="hljs-attr">uri:</span> `<span class="hljs-attr">http:</span>//<span class="hljs-attr">xxx</span>/<span class="hljs-attr">posts</span>/<span class="hljs-attr">detail</span>/<span class="hljs-attr">123</span>` &#125;&#125;</span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">injectedJavaScript</span>=<span class="hljs-string">&#123;INJECTED_JAVASCRIPT&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onMessage</span>=<span class="hljs-string">&#123;(event)</span> =&gt;</span> &#123;</span><br><span class="language-xml">        alert(event.nativeEvent.data);</span><br><span class="language-xml">      &#125;&#125;</span><br><span class="language-xml">    /&gt;</span><br>  );<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>IOS 报错 RNCWebView 未找到 UIManager</li>
+</ol>
+<p>报错如下：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livecodeserver">Invariant Violation: requireNativeComponent: <span class="hljs-string">&quot;RNCWebView&quot;</span> was <span class="hljs-keyword">not</span> found <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> UIManager<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>解决：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ios<br><br>pod install<br></code></pre></div></td></tr></table></figure>
+
+<p>然后重启项目即可</p>
+<ol start="4">
+<li>WebView 页面不显示</li>
+</ol>
+<p>关键原因是，WebView 的父组件没有设置高度，导致 WebView 页面不显示</p>
+<p><strong>解决：</strong> 给 WebView 父组件设置一个高度即可</p>
+<h3 id="5-13-关于使用高德地图"><a href="#5-13-关于使用高德地图" class="headerlink" title="5.13 关于使用高德地图"></a>5.13 关于使用高德地图</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/qiuxiang/react-native-amap3d">https://github.com/qiuxiang/react-native-amap3d</a></p>
+</blockquote>
+<p><strong>定位模块</strong>：<code>@react-native-community/geolocation</code>获取的坐标是 gps 坐标，高德地图使用时要转换， <code>react-native-amap-geolocation</code>可以直接获取到位置信息，无需再进行转换</p>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight processing"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs processing">yarn <span class="hljs-built_in">add</span> react-<span class="hljs-keyword">native</span>-amap3d<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li><code>android/app/src/main/AndroidManifest.xml</code>添加权限</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 精确定位 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.ACCESS_FINE_LOCATION&quot;</span>/&gt;</span><br><span class="hljs-comment">&lt;!-- 模糊定位 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.ACCESS_COARSE_LOCATION&quot;</span> /&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>使用</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">AMapSdk</span>, <span class="hljs-title class_">MapView</span>, <span class="hljs-title class_">MapType</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native-amap3d&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Platform</span>, <span class="hljs-title class_">PermissionsAndroid</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-comment">// 申请定位权限</span><br><span class="hljs-keyword">const</span> handleAndroidPermissin = <span class="hljs-title function_">useCallback</span>(<span class="hljs-keyword">async</span> () =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> granted = <span class="hljs-keyword">await</span> <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-title function_">requestMultiple</span>(<br>      [<br>        <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">ACCESS_FINE_LOCATION</span>,<br>        <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">ACCESS_COARSE_LOCATION</span>,<br>      ],<br>      &#123;<br>        <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;位置信息授权&quot;</span>,<br>        <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;获取当前位置信息测试&quot;</span>,<br>        <span class="hljs-attr">buttonNeutral</span>: <span class="hljs-string">&quot;跳过&quot;</span>,<br>        <span class="hljs-attr">buttonNegative</span>: <span class="hljs-string">&quot;取消&quot;</span>,<br>        <span class="hljs-attr">buttonPositive</span>: <span class="hljs-string">&quot;同意&quot;</span>,<br>      &#125;<br>    );<br><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;granted==&gt;&quot;</span>, granted);<br><br>    <span class="hljs-keyword">if</span> (<br>      granted[<span class="hljs-string">&quot;android.permission.ACCESS_FINE_LOCATION&quot;</span>] ===<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">GRANTED</span><br>    ) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;可以定位了&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<br>      granted[<span class="hljs-string">&quot;android.permission.ACCESS_FINE_LOCATION&quot;</span>] ===<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">DENIED</span><br>    ) &#123;<br>      <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">fail</span>(&#123;<br>        <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;已拒绝获取位置信息&quot;</span>,<br>      &#125;);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">fail</span>(&#123;<br>        <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;用户已拒绝，且不愿被再次询问&quot;</span>,<br>      &#125;);<br>    &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(error);<br>  &#125;<br>&#125;, []);<br><br><span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-title class_">AMapSdk</span>.<span class="hljs-title function_">init</span>(<br>    <span class="hljs-title class_">Platform</span>.<span class="hljs-title function_">select</span>(&#123;<br>      <span class="hljs-attr">android</span>: <span class="hljs-title class_">Config</span>.<span class="hljs-property">AMP_ANDROID_API_KEY</span>,<br>    &#125;)<br>  );<br>&#125;, []);<br><br><span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MapView</span> <span class="hljs-attr">mapType</span>=<span class="hljs-string">&#123;MapType.Satellite&#125;</span> /&gt;</span></span>;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>关于 GPS 坐标转高德坐标</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dd0c017250e4">https://www.jianshu.com/p/dd0c017250e4</a></p>
+</blockquote>
+<p>推荐使用<a target="_blank" rel="noopener" href="https://lbs.amap.com/api/webservice/guide/api/convert">高德坐标转换</a></p>
+<ol start="5">
+<li>高德地图逆地理编码服务</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://lbs.amap.com/api/javascript-api-v2/guide/services/geocoder#t2">https://lbs.amap.com/api/javascript-api-v2/guide/services/geocoder#t2</a></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">AMap</span>.<span class="hljs-title function_">plugin</span>(<span class="hljs-string">&quot;AMap.Geocoder&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">var</span> geocoder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AMap</span>.<span class="hljs-title class_">Geocoder</span>(&#123;<br>    <span class="hljs-attr">city</span>: <span class="hljs-string">&quot;010&quot;</span>, <span class="hljs-comment">// city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode</span><br>  &#125;);<br><br>  <span class="hljs-keyword">var</span> lnglat = [<span class="hljs-number">111</span>, <span class="hljs-number">30</span>];<br><br>  geocoder.<span class="hljs-title function_">getAddress</span>(lnglat, <span class="hljs-keyword">function</span> (<span class="hljs-params">status, result</span>) &#123;<br>    <span class="hljs-keyword">if</span> (status === <span class="hljs-string">&quot;complete&quot;</span> &amp;&amp; result.<span class="hljs-property">info</span> === <span class="hljs-string">&quot;OK&quot;</span>) &#123;<br>      <span class="hljs-comment">// result为对应的地理位置详细信息</span><br>    &#125;<br>  &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<ol start="6">
+<li>安卓从地图页返回上一页 app 闪退</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/qiuxiang/react-native-amap3d/issues/742">https://github.com/qiuxiang/react-native-amap3d/issues/742</a></p>
+</blockquote>
+<p><strong>解决</strong>：<code>android/app/src/main/AndroidManifest.xml文件application</code>添加<code>android:allowNativeHeapPointerTagging=&quot;false&quot;</code></p>
+<ol start="7">
+<li>打正式 release 包闪退</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/qiuxiang/react-native-amap3d/issues/762">https://github.com/qiuxiang/react-native-amap3d/issues/762</a></p>
+</blockquote>
+<p><strong>解决</strong>：在 <code>android/appproguard-rules.pro</code> 文件添加下面代码，重新打包</p>
+<figure class="highlight axapta"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs axapta"><span class="hljs-meta"># 高德地图release包闪退问题</span><br><span class="hljs-meta"># 3D 地图 V5.0.0之前：</span><br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.maps.**&#123;*;&#125;<br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.autonavi.amap.mapcore.*&#123;*;&#125;<br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.trace.**&#123;*;&#125;<br><br><span class="hljs-meta"># 3D 地图 V5.0.0之后：</span><br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.maps.**&#123;*;&#125;<br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.autonavi.**&#123;*;&#125;<br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.trace.**&#123;*;&#125;<br><br><span class="hljs-meta"># 定位</span><br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.location.**&#123;*;&#125;<br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.fence.**&#123;*;&#125;<br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.autonavi.aps.amapapi.model.**&#123;*;&#125;<br><br><span class="hljs-meta"># 搜索</span><br>-keep   <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.services.**&#123;*;&#125;<br><br><span class="hljs-meta"># 2D地图</span><br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.maps2d.**&#123;*;&#125;<br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.mapcore2d.**&#123;*;&#125;<br><br><span class="hljs-meta"># 导航</span><br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.amap.api.navi.**&#123;*;&#125;<br>-keep <span class="hljs-keyword">class</span> <span class="hljs-title class_">com</span>.autonavi.**&#123;*;&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="6-自定义安卓原生模块供-js-端使用"><a href="#6-自定义安卓原生模块供-js-端使用" class="headerlink" title="6. 自定义安卓原生模块供 js 端使用"></a>6. 自定义安卓原生模块供 js 端使用</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/native-modules-android">https://www.reactnative.cn/docs/native-modules-android</a></p>
+</blockquote>
+<p>基本步骤是：</p>
+<ol>
+<li><p>创建模块：在<code>android/app/src/main/java/com/your-app-name</code>下新建一个 java 文件，如<code>ToastModule.java</code></p>
+</li>
+<li><p>注册模块：在<code>android/app/src/main/java/com/your-app-name</code>下新建一个 java 文件，如<code>CustomToastPackage.java</code></p>
+</li>
+<li><p>在<code>android/app/src/main/java/com/your-app-name/MainApplication.java</code>中引入自己的包</p>
+</li>
+<li><p>js 端通过暴露出来的模块名调用原生方法</p>
+</li>
+</ol>
+<h3 id="6-1-调用自定义原生安卓模块-手电筒"><a href="#6-1-调用自定义原生安卓模块-手电筒" class="headerlink" title="6.1 调用自定义原生安卓模块-手电筒"></a>6.1 调用自定义原生安卓模块-手电筒</h3><blockquote>
+<p>自定义封装一个手电筒模块，供 js 端调用，可以打开&#x2F;关闭手机的手电筒</p>
+</blockquote>
+<ol>
+<li><code>android/app/src/main/AndroidManifest.xml</code>加入如下权限</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 摄像头,手电筒 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.CAMERA&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.FLASHLIGHT&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">uses-feature</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.hardware.camera&quot;</span> /&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li><code>android/app/src/main/java/com/your-app-name</code> 下新建 <code>FlashlightManModule.java</code> 文件</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> android.hardware.Camera;<br><span class="hljs-keyword">import</span> android.hardware.camera2.CameraAccessException;<br><span class="hljs-keyword">import</span> android.hardware.camera2.CameraManager;<br><span class="hljs-keyword">import</span> android.hardware.camera2.CameraCharacteristics;<br><span class="hljs-keyword">import</span> android.os.Build;<br><span class="hljs-keyword">import</span> android.content.pm.PackageManager;<br><br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactMethod;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Promise;<br><br><span class="hljs-keyword">import</span> java.util.Map;<br><span class="hljs-keyword">import</span> java.util.HashMap;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FlashlightManModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactContextBaseJavaModule</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ReactApplicationContext reactContext;<br>  <span class="hljs-keyword">private</span> Camera camera;<br>  <span class="hljs-keyword">private</span> Camera.Parameters mParameters;<br><br>  <span class="hljs-keyword">private</span> CameraManager mCameraManager;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">hasClosed</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 定义开关状态，状态为false，打开状态，状态为true，关闭状态;</span><br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">FLASH_LIGHT_ON</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// 打开手电筒</span><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">FLASH_LIGHT_OFF</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 关闭手电筒</span><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">E_LAYOUT_ERROR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;E_LAYOUT_ERROR&quot;</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">HAS_FLASH</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;HAS_FLASH&quot;</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">NOT_HAS_FLASH</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;NOT_HAS_FLASH&quot;</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">FlashlightManModule</span><span class="hljs-params">(ReactApplicationContext context)</span> &#123;<br>    <span class="hljs-built_in">super</span>(context);<br>    reactContext = context;<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;FlashlightManager&quot;</span>;<br>  &#125;<br><br>  <span class="hljs-comment">// 是否支持闪光灯</span><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">isSuportFlashlight</span><span class="hljs-params">(Promise promise)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-type">PackageManager</span> <span class="hljs-variable">packageManager</span> <span class="hljs-operator">=</span> reactContext.getPackageManager();<br>      <span class="hljs-comment">//检查设备是否支持闪光灯</span><br>      <span class="hljs-type">boolean</span> <span class="hljs-variable">hasFlash</span> <span class="hljs-operator">=</span> packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);<br><br>      <span class="hljs-type">String</span> <span class="hljs-variable">hasFlashStr</span> <span class="hljs-operator">=</span> hasFlash ? HAS_FLASH : NOT_HAS_FLASH;<br><br>      <span class="hljs-keyword">if</span>(!hasFlash) &#123;<br>        promise.reject(E_LAYOUT_ERROR, hasFlashStr);<br>        <span class="hljs-keyword">return</span>;<br>      &#125;<br><br>      <span class="hljs-type">CameraManager</span> <span class="hljs-variable">mCameraManager</span> <span class="hljs-operator">=</span> (CameraManager) reactContext.getSystemService(ReactContext.CAMERA_SERVICE);<br>      String[] cameraIds = mCameraManager.getCameraIdList();<br>      <span class="hljs-type">String</span> <span class="hljs-variable">cameraId</span> <span class="hljs-operator">=</span> cameraIds[<span class="hljs-number">0</span>];<br>      <span class="hljs-type">boolean</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> mCameraManager.getCameraCharacteristics(cameraId).get(CameraCharacteristics.FLASH_INFO_AVAILABLE);<br>      promise.resolve(r);<br>    &#125; <span class="hljs-keyword">catch</span>(CameraAccessException e) &#123;<br>      e.printStackTrace();<br>      promise.reject(E_LAYOUT_ERROR, e);<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-comment">// 闪光灯开、关</span><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">toggleLight</span><span class="hljs-params">(<span class="hljs-type">int</span> lightType, Promise promise)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;<br>        <span class="hljs-comment">// Android7.x之后：</span><br>        <span class="hljs-comment">//获取CameraManager</span><br>        <span class="hljs-type">CameraManager</span> <span class="hljs-variable">mCameraManager</span> <span class="hljs-operator">=</span> (CameraManager) reactContext.getSystemService(ReactContext.CAMERA_SERVICE);<br>        String[] cameraIds = mCameraManager.getCameraIdList();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">cameraId</span> <span class="hljs-operator">=</span> cameraIds[<span class="hljs-number">0</span>];<br>        hasClosed = lightType == FLASH_LIGHT_ON;<br>        mCameraManager.setTorchMode(cameraId, lightType == FLASH_LIGHT_ON);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// Android7.x之前代码</span><br>        <span class="hljs-keyword">if</span>(lightType == FLASH_LIGHT_ON) &#123;<br>          camera = Camera.open();<br>          mParameters = camera.getParameters();<br>          mParameters.setFlashMode(mParameters.FLASH_MODE_TORCH);<span class="hljs-comment">// 开启</span><br>          camera.setParameters(mParameters);<br>          hasClosed = <span class="hljs-literal">false</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          mParameters.setFlashMode(mParameters.FLASH_MODE_OFF);<span class="hljs-comment">// 关闭</span><br>          camera.setParameters(mParameters);<br>          camera.release();<br>          hasClosed = <span class="hljs-literal">true</span>;<br>        &#125;<br>      &#125;<br><br><br>      promise.resolve(lightType);<br>    &#125; <span class="hljs-keyword">catch</span> (CameraAccessException e) &#123;<br>      promise.reject(E_LAYOUT_ERROR, e);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li><code>android/app/src/main/java/com/your-app-name</code> 下新建 <code>FlashlightManModulePackage.java</code> 文件</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> com.facebook.react.ReactPackage;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.uimanager.ViewManager;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.Collections;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FlashlightManModulePackage</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ReactPackage</span> &#123;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;ViewManager&gt; <span class="hljs-title function_">createViewManagers</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    <span class="hljs-keyword">return</span> Collections.emptyList();<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;NativeModule&gt; <span class="hljs-title function_">createNativeModules</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    List&lt;NativeModule&gt; modules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br>    modules.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FlashlightManModule</span>(reactContext));<br><br>    <span class="hljs-keyword">return</span> modules;<br>  &#125;<br><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li><code>android/app/src/main/java/com/your-app-name/MainApplication.java</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">...<br><span class="hljs-keyword">import</span> com.your-app-name.FlashlightManModulePackage; <span class="hljs-comment">// &lt;-- 引入你自己的包</span><br>...<br><span class="hljs-keyword">protected</span> List&lt;ReactPackage&gt; <span class="hljs-title function_">getPackages</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-meta">@SuppressWarnings(&quot;UnnecessaryLocalVariable&quot;)</span><br>  List&lt;ReactPackage&gt; packages = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PackageList</span>(<span class="hljs-built_in">this</span>).getPackages();<br>  <span class="hljs-comment">// Packages that cannot be autolinked yet can be added manually here, for example:</span><br>  <span class="hljs-comment">// packages.add(new MyReactNativePackage());</span><br>  packages.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FlashlightManModulePackage</span>()); <span class="hljs-comment">// &lt;-- 添加这一行，类名替换成你的Package类的名字 name.</span><br>  <span class="hljs-keyword">return</span> packages;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li>js 端调用上面写的原生模块方法</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">NativeModules</span>, <span class="hljs-title class_">PermissionsAndroid</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-native&#x27;</span>;<br><br><span class="hljs-comment">// public String getName()中返回的字符串</span><br><span class="hljs-keyword">let</span> <span class="hljs-title class_">FlashlightManager</span> = <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">FlashlightManager</span>;<br><span class="hljs-keyword">const</span> lightTypeRef = <span class="hljs-title function_">useRef</span>(<span class="hljs-literal">false</span>);<br><br><span class="hljs-comment">// 申请摄像机权限</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAndroidPermissin</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> granted = <span class="hljs-keyword">await</span> <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-title function_">request</span>(<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">CAMERA</span>,<br>      &#123;<br>        <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;闪光灯授权&#x27;</span>,<br>        <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;获取闪光灯权限&#x27;</span>,<br>        <span class="hljs-attr">buttonNeutral</span>: <span class="hljs-string">&#x27;跳过&#x27;</span>,<br>        <span class="hljs-attr">buttonNegative</span>: <span class="hljs-string">&#x27;取消&#x27;</span>,<br>        <span class="hljs-attr">buttonPositive</span>: <span class="hljs-string">&#x27;同意&#x27;</span>,<br>      &#125;,<br>    );<br><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;授权结果granted==&gt;&#x27;</span>, granted);<br>    <span class="hljs-keyword">if</span> (granted === <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">GRANTED</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;可以打开闪光灯了&#x27;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>();<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (granted === <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">DENIED</span>) &#123;<br>      <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">fail</span>(&#123;<br>        <span class="hljs-attr">content</span>: <span class="hljs-string">&#x27;已拒绝打开闪光灯&#x27;</span>,<br>      &#125;);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">fail</span>(&#123;<br>        <span class="hljs-attr">content</span>: <span class="hljs-string">&#x27;用户已拒绝，且不愿被再次询问&#x27;</span>,<br>      &#125;);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>();<br>    &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);<br>  &#125;<br>&#125;;<br><br><span class="hljs-comment">// 打开、关闭手电筒</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">toggleLight</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleAndroidPermissin</span>();<br>    <span class="hljs-keyword">const</span>   = <span class="hljs-keyword">await</span> <span class="hljs-title class_">FlashlightManager</span>.<span class="hljs-title function_">isSuportFlashlight</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;当前手机是否支持闪光灯:&#x27;</span>, suportRes);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;准备打开/关闭手电筒:&#x27;</span>, lightTypeRef.<span class="hljs-property">current</span> ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title class_">FlashlightManager</span>.<span class="hljs-title function_">toggleLight</span>(<br>      lightTypeRef.<span class="hljs-property">current</span> ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>,<br>    );<br><br>    lightTypeRef.<span class="hljs-property">current</span> = res;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;手电筒打开/关闭结果:&#x27;</span>, res);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;打开/关闭手电筒异常&#x27;</span>, error);<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="6-2-调用自定义原生安卓模块-Notification-通知"><a href="#6-2-调用自定义原生安卓模块-Notification-通知" class="headerlink" title="6.2 调用自定义原生安卓模块-Notification 通知"></a>6.2 调用自定义原生安卓模块-Notification 通知</h3><blockquote>
+<p>点击某按钮(线上应该是收到服务端消息)，手机上出现 app 的通知(自定义通知标题和通知内容，并且携带路径参数)，用户点击通知打开 app，接收路径参数，跳转指定页面</p>
+</blockquote>
+<ol>
+<li><code>android/app/src/main/java/com/your-app-name</code> 新建 <code>MyNotificationModule.java</code>文件</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> android.os.Build;<br><span class="hljs-keyword">import</span> android.app.Notification;<br><span class="hljs-keyword">import</span> android.app.NotificationChannel;<br><span class="hljs-keyword">import</span> android.app.NotificationManager;<br><span class="hljs-keyword">import</span> android.content.Intent;<br><span class="hljs-keyword">import</span> android.app.PendingIntent;<br><br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactMethod;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyNotificationModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactContextBaseJavaModule</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ReactApplicationContext reactContext;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">CHANNEL_ID</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;notification_channel&quot;</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">CHANNEL_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;notification_channel_name&quot;</span>;<br><br>  <span class="hljs-keyword">private</span> Class <span class="hljs-title function_">getActivityClass</span><span class="hljs-params">(String activityName)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">if</span> (activityName.equals(<span class="hljs-string">&quot;PageToJumpTo&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span> Class.forName(<span class="hljs-string">&quot;com.your-app-name.MainActivity&quot;</span>);<br>      &#125;<br>    &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException e) &#123;<br>      e.printStackTrace();<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyNotificationModule</span><span class="hljs-params">(ReactApplicationContext context)</span> &#123;<br>    <span class="hljs-built_in">super</span>(context);<br>    reactContext = context;<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;MyNotificationManager&quot;</span>;<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">show</span><span class="hljs-params">(<span class="hljs-type">int</span> contextId, String title, String content, String activityName, String routePath)</span> &#123;<br>    <span class="hljs-comment">// https://juejin.cn/post/7195496297151381565</span><br>    <span class="hljs-comment">// https://blog.csdn.net/canghieever/article/details/125430116</span><br><br>    <span class="hljs-comment">// 创建一个NotificationManager对通知进行管理</span><br>    <span class="hljs-type">NotificationManager</span> <span class="hljs-variable">mNotificationManager</span> <span class="hljs-operator">=</span> (NotificationManager) reactContext.getSystemService(ReactContext.NOTIFICATION_SERVICE);<br>    <span class="hljs-type">Notification</span> <span class="hljs-variable">notification</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br><br>    <span class="hljs-type">Intent</span> <span class="hljs-variable">intent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(reactContext, getActivityClass(activityName));<br>    <span class="hljs-comment">// Intent intent = new Intent(reactContext, PageToJumpToActivity.class);</span><br>    <span class="hljs-comment">// intent可以携带参数到指定页面</span><br>    intent.putExtra(<span class="hljs-string">&quot;pageToJumpKey&quot;</span>, routePath);<br><br>    <span class="hljs-comment">// https://blog.csdn.net/yubo_725/article/details/124413000</span><br>    <span class="hljs-comment">// Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified</span><br>    PendingIntent pendingIntent;<br>    <span class="hljs-keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.S) &#123;<br>      <span class="hljs-comment">// https://blog.csdn.net/zhangxiweicaochen/article/details/14002469</span><br>      <span class="hljs-comment">// PendingIntent.getActivity(context,id, intent,PendingIntent.FLAG_UPDATE_CURRENT);</span><br>      <span class="hljs-comment">// 上面id，一定要唯一，不然Intent就是接受到的重复！</span><br>      pendingIntent = PendingIntent.getActivity(reactContext, contextId, intent, PendingIntent.FLAG_IMMUTABLE);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      pendingIntent = PendingIntent.getActivity(reactContext, contextId, intent, PendingIntent.FLAG_UPDATE_CURRENT);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>(Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;<br>      <span class="hljs-comment">// 安卓8.0之后</span><br>      <span class="hljs-comment">// 创建channel</span><br>      <span class="hljs-comment">// 参数：channel ID(ID可以随便定义，但保证全局唯一性)，channel 名称，重要等级</span><br>      <span class="hljs-type">NotificationChannel</span> <span class="hljs-variable">channel</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationChannel</span>(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);<br>      mNotificationManager.createNotificationChannel(channel);<br><br>      notification = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Notification</span>.Builder(reactContext, CHANNEL_ID)<br>                .setContentTitle(title)<br>                .setContentText(content)<br>                .setSmallIcon(R.mipmap.ic_launcher)<br>                .setAutoCancel(<span class="hljs-literal">true</span>) <span class="hljs-comment">// 当点击通知后显示栏的通知不再显示</span><br>                .setContentIntent(pendingIntent) <span class="hljs-comment">// 点击跳到通知详情</span><br>                .build();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      notification = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Notification</span>.Builder(reactContext)<br>                .setContentTitle(title)<br>                .setContentText(content)<br>                .setSmallIcon(R.mipmap.ic_launcher)<br>                .setAutoCancel(<span class="hljs-literal">true</span>)<br>                .setContentIntent(pendingIntent)<br>                .build();<br>    &#125;<br><br>    <span class="hljs-comment">// notify(int id,Notification notification)</span><br>    <span class="hljs-comment">// 第一个参数id可以随便填，第二个参数就是我们要发送的通知</span><br>    mNotificationManager.notify(<span class="hljs-number">100</span>, notification);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li><code>android/app/src/main/java/com/your-app-name</code> 新建 <code>MyNotificationModulePackage.java</code>文件</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> com.facebook.react.ReactPackage;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.uimanager.ViewManager;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.Collections;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyNotificationModulePackage</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ReactPackage</span> &#123;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;ViewManager&gt; <span class="hljs-title function_">createViewManagers</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    <span class="hljs-keyword">return</span> Collections.emptyList();<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;NativeModule&gt; <span class="hljs-title function_">createNativeModules</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    List&lt;NativeModule&gt; modules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br>    modules.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyNotificationModule</span>(reactContext));<br><br>    <span class="hljs-keyword">return</span> modules;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li><code>android/app/src/main/java/com/your-app-name/MainApplication.java</code>文件中引入自己的模块</li>
+</ol>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"><span class="hljs-addition">+ import com.your-app-name.MyNotificationModulePackage;</span><br><br>public class MainApplication extends Application implements ReactApplication &#123;<br>    ...<br>    @Override<br>    protected List&lt;ReactPackage&gt; getPackages() &#123;<br>      @SuppressWarnings(&quot;UnnecessaryLocalVariable&quot;)<br>      List&lt;ReactPackage&gt; packages = new PackageList(this).getPackages();<br><br><span class="hljs-addition">+     packages.add(new MyNotificationModulePackage());// &lt;-- 添加这一行，类名替换成你的Package类的名字 name.</span><br>      return packages;<br>    &#125;<br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li><code>android/app/src/main/java/com/your-app-name/MainActivity.java</code> 添加代码监听 onNewIntent 事件，获取 <code>MyNotificationModulePackage</code>文件<code>intent.putExtra</code>的参数</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">+ <span class="hljs-keyword">import</span> android.content.Intent;<br>+ <span class="hljs-keyword">import</span> com.facebook.react.bridge.WritableMap;<br>+ <span class="hljs-keyword">import</span> com.facebook.react.bridge.Arguments;<br>+ <span class="hljs-keyword">import</span> com.facebook.react.modules.core.DeviceEventManagerModule;<br>+ <span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-comment">// import com.facebook.react.bridge.ReactContext;</span><br>+ <span class="hljs-keyword">import</span> com.facebook.react.ReactInstanceManager;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactActivity</span> &#123;<br>    ...<br>+    <span class="hljs-meta">@Override</span><br>+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onNewIntent</span><span class="hljs-params">(Intent intent)</span> &#123;<br>+       <span class="hljs-comment">// 监听onNewIntent事件</span><br>+       <span class="hljs-built_in">super</span>.onNewIntent(intent);<br>+       <span class="hljs-type">String</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> intent.getStringExtra(<span class="hljs-string">&quot;pageToJumpKey&quot;</span>);<br><br>+        <span class="hljs-keyword">if</span>(data != <span class="hljs-literal">null</span>) &#123;<br>+          <span class="hljs-type">WritableMap</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> Arguments.createMap();<br>+          params.putString(<span class="hljs-string">&quot;pageToJumpKey&quot;</span>, data);<br><br>+          <span class="hljs-type">ReactInstanceManager</span> <span class="hljs-variable">mReactInstanceManager</span> <span class="hljs-operator">=</span> getReactNativeHost().getReactInstanceManager();<br>+          ReactApplicationContext context= (ReactApplicationContext) mReactInstanceManager.getCurrentReactContext();<br><br>+          context<br>+                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)<br>+                  .emit(<span class="hljs-string">&quot;pageToJumpKey&quot;</span>, params);<br>+        &#125;<br>+    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li>js 端调用 MyNotificationModule 模块</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">NativeModules</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><br><span class="hljs-keyword">let</span> <span class="hljs-title class_">MyNotificationManager</span> = <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">MyNotificationManager</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleNotification</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleNotificationPermission</span>();<br><br>    <span class="hljs-keyword">const</span> ctxId = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">ceil</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">10000000</span>);<br>    <span class="hljs-title class_">MyNotificationManager</span>.<span class="hljs-title function_">show</span>(<br>      ctxId, <span class="hljs-comment">// android中PendingIntent.getActivity的id,每次调用必须唯一，否则可能拿到旧数据</span><br>      <span class="hljs-string">&quot;文章更新啦！&quot;</span>, <span class="hljs-comment">// 通知标题</span><br>      <span class="hljs-string">&quot;查看新文章&quot;</span>, <span class="hljs-comment">// 通知内容</span><br>      <span class="hljs-string">&quot;PageToJumpTo&quot;</span>, <span class="hljs-comment">// 需要调用android中哪个activity名称</span><br>      <span class="hljs-string">&quot;/list&quot;</span> <span class="hljs-comment">// 点击通知时需要跳转的路径</span><br>    );<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error);<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="6">
+<li>js 端监听点击通知传递进来的参数</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123; memo, useEffect, <span class="hljs-title class_">Fragment</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">NativeEventEmitter</span>, <span class="hljs-title class_">NativeModules</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-native&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; useNavigate &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-router-native&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">PageJumpTo</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> navigate = <span class="hljs-title function_">useNavigate</span>();<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> eventEmitter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">NativeEventEmitter</span>(<br>      <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">MyNotificationModule</span><br>    );<br><br>    <span class="hljs-keyword">const</span> eventListener = eventEmitter.<span class="hljs-title function_">addListener</span>(<span class="hljs-string">&quot;pageToJumpKey&quot;</span>, <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;<br>      <span class="hljs-comment">// data就是MainActivity传过来的params参数</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;pageToJumpKey==&gt;&quot;</span>, data);<br>      <span class="hljs-title function_">navigate</span>(data.<span class="hljs-property">pageToJumpKey</span>);<br>    &#125;);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>      eventListener &amp;&amp; eventListener.<span class="hljs-title function_">remove</span>(); <span class="hljs-comment">// 组件卸载时记得移除监听事件</span><br>    &#125;;<br>  &#125;, [navigate]);<br><br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fragment</span> /&gt;</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">memo</span>(<span class="hljs-title class_">PageJumpTo</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="7-调试"><a href="#7-调试" class="headerlink" title="7. 调试"></a>7. 调试</h2><ol>
+<li>Chrome 浏览器 的 DevTools 来调试 Hermes 上的 JS</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/hermes#%E4%BD%BF%E7%94%A8-google-chrome-%E7%9A%84-devtools-%E6%9D%A5%E8%B0%83%E8%AF%95-hermes-%E4%B8%8A%E7%9A%84-js">文档</a></p>
+<ol start="2">
+<li>react-devtools 调试</li>
+</ol>
+<figure class="highlight armasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs armasm"><span class="hljs-symbol">yarn</span> <span class="hljs-meta">global</span> <span class="hljs-keyword">add</span> react-devtools<br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight ebnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx react-devtools</span><br></code></pre></div></td></tr></table></figure>
+
+<p>如果用的是本地手机，还需要执行</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">adb</span> reverse tcp:<span class="hljs-number">8097</span> tcp:<span class="hljs-number">8097</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="8-打包发布"><a href="#8-打包发布" class="headerlink" title="8. 打包发布"></a>8. 打包发布</h2><p>跟着<a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/signed-apk-android">文档</a>来即可</p>
+<h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9. 总结"></a>9. 总结</h2><p>练习时长 2 月半，远远不够，app 很粗糙，距离上架还有一段距离，况且代码里现在只兼顾到了 android，忽略了 ios。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/react-native/">react native</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/react/">react</a>
+                    
+                      <a class="hover-with-bg" href="/tags/react-native/">react native</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/23/hello-world/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/29/face/">
+                        <span class="hidden-mobile">仿抖音左右歪头图片选择</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
