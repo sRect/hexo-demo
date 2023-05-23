@@ -34,7 +34,7 @@ WORKDIR /usr/share/nginx/hexo
 # RUN rm /etc/nginx/conf.d/default.conf
 
 # 添加自己的配置 default.conf 在下面
-ADD nginx.conf /etc/nginx/conf.d/nginx.conf
+ADD nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=result /usr/share/nginx/hexo .
 
