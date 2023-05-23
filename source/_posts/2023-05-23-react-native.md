@@ -8,7 +8,7 @@ categories:
   - develop
   - react native
 banner_img: /assets/img/react-native/banner.png # 文章页顶部大图
-index_img: /assets/img/react-native/1.webbp # 文章在首页的封面图
+index_img: /assets/img/react-native/1.webp # 文章在首页的封面图
 excerpt: react native v0.71.2版本构建一个博客app
 # sticky: 100 # https://hexo.fluid-dev.com/docs/guide/#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F
 author: sRect
