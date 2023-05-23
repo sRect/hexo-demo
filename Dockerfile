@@ -27,6 +27,8 @@ COPY --from=install $APP_PATH/public .
 
 # 3. 最终基于nginx进行构建
 FROM nginx:alpine
+# webp图片支持
+RUN apk add webp-dev libwebp
 
 WORKDIR /usr/share/nginx/hexo
 
