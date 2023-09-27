@@ -10,16 +10,18 @@ categories:
 banner_img: /assets/img/react-native/banner.png # 文章页顶部大图
 index_img: /assets/img/react-native/1.webp # 文章在首页的封面图
 excerpt: react native v0.71.2版本构建一个博客app
-# sticky: 100 # https://hexo.fluid-dev.com/docs/guide/#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F
+sticky: 101 # https://hexo.fluid-dev.com/docs/guide/#%E6%96%87%E7%AB%A0%E6%8E%92%E5%BA%8F
 author: sRect
 ---
 
 - [本文 github 仓库链接](https://github.com/sRect/reactNativeBlogApp)
 - [本文掘金链接](https://juejin.cn/post/7234407587118530597)
 
-> 2023 年了，RN 也凉的差不多了。本文用 react native 做的 app 很简单，首页 + 列表页 + 详情页 + 关于页。总的感觉，涉及到原生方面，对于不会 android 和 ios 的 js 菜鸡，比较棘手，要折腾。
+> 本文用 react native 做的 app 很简单，首页 + 列表页 + 详情页 + 关于页。总的感觉，涉及到原生方面，对于不会 android 和 ios 的 js 菜鸡，比较棘手，要折腾。
 
 ![](/assets/img/react-native/1.gif)
+
+> 关于Headless JS后台任务，可以参考《React Native Android 端Headless JS后台 GPS 持续定位》这篇文章
 
 ## 1. 前置基础
 
@@ -120,6 +122,47 @@ yarn react-native-asset
 4. 检查是否链接成功，android\app\src\main\assets 下是否有 fonts 文件夹
 
 ![](/assets/img/react-native/3.png)
+
+5. 关于项目中使用了[@dr.pogodin/react-native-static-server
+](https://github.com/birdofpreyru/react-native-static-server#bundling-in-server-assets-into-an-app-statically)
+
+感谢 @小白菜 大佬的提供，`react-native-static-server`是一款可以在react native中，本地启动静态服务的库，文档中有提到`android/app/build.gradle`配置：
+
+```
+android {
+  sourceSets {
+    main {
+      assets.srcDirs = [
+        '../../assets'
+        // This array may contain additional asset folders to bundle-in.
+        // Paths in this array are relative to "build.gradle" file, and
+        // should be comma-separated.
+      ]
+    }
+  }
+  // ... Other stuff.
+}
+```
+
+这样配置过后，会导致`@ant-design/icons-react-native`字体无法正确加载。如果app内有其它静态资源，在配置assets.srcDirs的时候需要把 `=` 换成 `+=`，这样就可以加载字体图标了：
+
+```diff
+android {
+  sourceSets {
+    main {
+-      assets.srcDirs = [
++      assets.srcDirs += [
+        '../../assets'
+        // This array may contain additional asset folders to bundle-in.
+        // Paths in this array are relative to "build.gradle" file, and
+        // should be comma-separated.
+      ]
+    }
+  }
+  // ... Other stuff.
+}
+
+```
 
 ### 5.2 如何像 web 项目一样使用 env 环境变量？
 
