@@ -1,0 +1,691 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="本文掘金链接   如题，是基于HbuilderX创建的小程序项目，非cli方式创建的项目  1.啰嗦两句 tailwindcss已经出来很长时间了，在前端娱乐圈里也是炒的火热。这个工具还没使用过，windicss这个新的轮子又都扎我脸上了。 之前被uniapp HbuilderX方式创建的h5项目折腾过，这篇文章《uniapp 打包 h5 问题总结》有记录。那这次为什么还要用HbuilderX这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次uniapp HbuilderX创建的小程序项目中使用tailwindcss折腾记录">
+<meta property="og:url" content="https://srect.github.io/2023/07/17/hbuilderx-tailwindcss/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="本文掘金链接   如题，是基于HbuilderX创建的小程序项目，非cli方式创建的项目  1.啰嗦两句 tailwindcss已经出来很长时间了，在前端娱乐圈里也是炒的火热。这个工具还没使用过，windicss这个新的轮子又都扎我脸上了。 之前被uniapp HbuilderX方式创建的h5项目折腾过，这篇文章《uniapp 打包 h5 问题总结》有记录。那这次为什么还要用HbuilderX这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/hbuilderx-tailwindcss/index.webp">
+<meta property="article:published_time" content="2023-07-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-27T08:42:31.803Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="uniapp">
+<meta property="article:tag" content="微信小程序">
+<meta property="article:tag" content="HBuilderX">
+<meta property="article:tag" content="tailwindcss">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/hbuilderx-tailwindcss/index.webp">
+  
+  
+  <title>一次uniapp HbuilderX创建的小程序项目中使用tailwindcss折腾记录 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="一次uniapp HbuilderX创建的小程序项目中使用tailwindcss折腾记录">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-07-18 00:00" pubdate>
+        2023年7月18日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      17k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      142 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一次uniapp HbuilderX创建的小程序项目中使用tailwindcss折腾记录</h1>
+            
+            <div class="markdown-body">
+              <ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7257022428193636409">本文掘金链接</a></li>
+</ul>
+<blockquote>
+<p>如题，是基于HbuilderX创建的小程序项目，非cli方式创建的项目</p>
+</blockquote>
+<h2 id="1-啰嗦两句"><a href="#1-啰嗦两句" class="headerlink" title="1.啰嗦两句"></a>1.啰嗦两句</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.tailwindcss.cn/">tailwindcss</a>已经出来很长时间了，在前端娱乐圈里也是炒的火热。这个工具还没使用过，<a target="_blank" rel="noopener" href="https://windicss.org/guide/">windicss</a>这个新的轮子又都扎我脸上了。</li>
+<li>之前被uniapp HbuilderX方式创建的h5项目折腾过，这篇文章<a target="_blank" rel="noopener" href="https://juejin.cn/post/7129492032241795080">《uniapp 打包 h5 问题总结》</a>有记录。那这次为什么还要用HbuilderX这种方式，没办法，一开始项目不是我创建的。</li>
+</ul>
+<p>省流（得出结论）：</p>
+<ul>
+<li>uniapp HbuilderX方式被高度封装，都被封装到他的应用里去了，虽暴露出来的几个文件和方法，后续配置起来还是费劲。</li>
+<li>而用vue-cli方式创建的，配置文件全部暴露，方便后续修改</li>
+</ul>
+<h2 id="2-开始配置"><a href="#2-开始配置" class="headerlink" title="2.开始配置"></a>2.开始配置</h2><blockquote>
+<ul>
+<li>根据这位兄弟的分享，<a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/article/40098">Hbuilder创建的uniapp工程，使用tailwindcss最优雅的方式</a> 提示，HbuilderX创建的uniapp工程也是内置了postcss，但都是高度封装的。</li>
+<li>想基于它内部的postcss中添加<code>tailwindcss plugins</code>，很难，路会走偏(亲测，路确实很偏，一堆报错，还会和uview-ui冲突)</li>
+<li>所以这里直接使用<code>Tailwind CLI</code>方式</li>
+</ul>
+</blockquote>
+<p>根据<a target="_blank" rel="noopener" href="https://www.tailwindcss.cn/docs/installation">文档</a></p>
+<ol>
+<li><p><code>npm install -D tailwindcss</code>安装</p>
+</li>
+<li><p><code>npx tailwindcss init</code>，生成<code>tailwind.config.js</code> 配置文件</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">/** <span class="hljs-doctag">@type</span> &#123;<span class="hljs-type">import(&#x27;tailwindcss&#x27;).Config</span>&#125; */</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>	<span class="hljs-comment">// https://ask.dcloud.net.cn/article/40098</span><br>  	<span class="hljs-attr">separator</span>: <span class="hljs-string">&#x27;__&#x27;</span>, <span class="hljs-comment">// 如果是小程序项目需要设置这一项，将 : 选择器替换成 __，之后 hover:bg-red-500 将改为 hover__bg-red-500  </span><br>  	<span class="hljs-attr">corePlugins</span>: &#123;  <br>  		<span class="hljs-comment">// 预设样式  </span><br>  		<span class="hljs-attr">preflight</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// 一般uniapp都有预设样式，所以不需要tailwindcss的预设  </span><br>  		<span class="hljs-comment">// 以下功能小程序不支持  </span><br>  		<span class="hljs-attr">space</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// &gt; 子节点选择器  </span><br>  		<span class="hljs-attr">divideWidth</span>: <span class="hljs-literal">false</span>,  <br>  		<span class="hljs-attr">divideColor</span>: <span class="hljs-literal">false</span>,  <br>  		<span class="hljs-attr">divideStyle</span>: <span class="hljs-literal">false</span>,  <br>  		<span class="hljs-attr">divideOpacity</span>: <span class="hljs-literal">false</span>,  <br>  	&#125;,<br>	  <span class="hljs-attr">content</span>: [<br>		  <span class="hljs-string">&#x27;./pages/**/*.&#123;vue,js&#125;&#x27;</span>,<br>		  <span class="hljs-comment">// &#x27;./main.js&#x27;,  </span><br>		  <span class="hljs-string">&#x27;./App.vue&#x27;</span>,  <br>		  <span class="hljs-comment">// &#x27;./index.html&#x27; </span><br>	  ],<br>	  <span class="hljs-attr">theme</span>: &#123;<br>		<span class="hljs-attr">extend</span>: &#123;&#125;,<br>	  &#125;,<br>	  <span class="hljs-attr">plugins</span>: [],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<ol start="3">
+<li>根目录新建<code>tailwind-input.css</code></li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-comment">/* @tailwind base; */</span><br><span class="hljs-keyword">@tailwind</span> components;<br><span class="hljs-keyword">@tailwind</span> utilities;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>开启 Tailwind CLI 构建流程</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch<br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li><code>App.vue</code>中引入编译过的<code>tailwind.css</code></li>
+</ol>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">&lt;style lang=&quot;scss&quot;&gt;<br>	@import &quot;@/uni_modules/uview-ui/index.scss&quot;;<br><span class="hljs-addition">+	@import url(&quot;./static/css/tailwind.css&quot;);</span><br>&lt;/style&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>其实到这里已经ok了，缺点就是每次运行项目都要自己手动去执行<code>npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch</code>,不方便<br>所以必须改成自动化</p>
+<h2 id="3-启动项目自动化tailwindcss编译"><a href="#3-启动项目自动化tailwindcss编译" class="headerlink" title="3.启动项目自动化tailwindcss编译"></a>3.启动项目自动化tailwindcss编译</h2><blockquote>
+<p>庆幸的是，uniapp官方暴露出来了<code>vue.config.js</code>，我们可以在这里面配置</p>
+</blockquote>
+<h3 id="3-1-package-json中添加自定义脚本运行"><a href="#3-1-package-json中添加自定义脚本运行" class="headerlink" title="3.1 package.json中添加自定义脚本运行"></a>3.1 <code>package.json</code>中添加自定义脚本运行</h3><figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>		<span class="hljs-attr">&quot;tailwind:dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;tailwind:prod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css&quot;</span><br>	<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;uni-app&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>		<span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;dev:mp-weixin:dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;本地开发-测试环境接口&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;browser&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;UNI_PLATFORM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mp-weixin&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;NODE_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;development&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;BASE_URL_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;development&quot;</span><br>				<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;define&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;CUSTOM-CONST&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><br>				<span class="hljs-punctuation">&#125;</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;dev:mp-weixin:prod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;本地开发-正式环境接口&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;browser&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;UNI_PLATFORM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mp-weixin&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;NODE_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;development&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;BASE_URL_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;production&quot;</span><br>				<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;define&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;CUSTOM-CONST&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><br>				<span class="hljs-punctuation">&#125;</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;build:mp-weixin:dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;打包-测试环境接口&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;browser&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;UNI_PLATFORM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mp-weixin&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;NODE_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;production&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;BASE_URL_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;development&quot;</span><br>				<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;define&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;CUSTOM-CONST&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><br>				<span class="hljs-punctuation">&#125;</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;build:mp-weixin:prod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;打包-正式环境接口&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;browser&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;UNI_PLATFORM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mp-weixin&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;NODE_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;production&quot;</span><span class="hljs-punctuation">,</span><br>					<span class="hljs-attr">&quot;BASE_URL_ENV&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;production&quot;</span><br>				<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;define&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>					<span class="hljs-attr">&quot;CUSTOM-CONST&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><br>				<span class="hljs-punctuation">&#125;</span><br>			<span class="hljs-punctuation">&#125;</span><br>		<span class="hljs-punctuation">&#125;</span><br>	<span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<h3 id="3-2-根目录新建vue-config-js"><a href="#3-2-根目录新建vue-config-js" class="headerlink" title="3.2 根目录新建vue.config.js"></a>3.2 根目录新建<code>vue.config.js</code></h3><blockquote>
+<ul>
+<li>利用<code>child_process.exec</code>执行子进程，运行<code>npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch</code>,</li>
+<li>问题也就出现在这，child_process.exec默认用的是<code>/bin/sh</code>执行，虽然可以配置修改成<code>&#123;shell: &#39;/bin/bash&#39;&#125;</code>或者<code>&#123;shell: &#39;/bin/zsh&#39;&#125;</code>,</li>
+<li>但是tailwindcss每次都报错，因为HbuilderX执行vue.config.js里采用的nodejs版本是<code>v12</code>，通过<code>console.log(process.version)</code>可以看到nodejs当前版本</li>
+<li>为什么它这里采用的是nodejs v12版本，暂不清楚，但本地zsh，执行<code>node -v</code>，是v16版本</li>
+<li>nodejs v12版本执行tailwindcss编译，<a target="_blank" rel="noopener" href="https://github.com/tailwindlabs/tailwindcss/discussions/8807">Npx tailwindcss results in “Unexpected Token .”</a></li>
+<li>根据提示，解决办法就是切换当前nodejs版本为v16</li>
+</ul>
+</blockquote>
+<p><img src="/assets/img/hbuilderx-tailwindcss/640.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123;exec&#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;child_process&#x27;</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;process.env.UNI_SCRIPT:&quot;</span>, process.<span class="hljs-property">env</span>.<span class="hljs-property">UNI_SCRIPT</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;process.env.NODE_ENV:&quot;</span>, process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;当前nodejs版本&quot;</span>, process.<span class="hljs-property">version</span>);<br><br><span class="hljs-keyword">const</span> isDev = process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>;<br><br><span class="hljs-title function_">exec</span>(<br>	isDev ? <span class="hljs-string">&#x27;npm run tailwind:dev&#x27;</span> : <span class="hljs-string">&#x27;&quot;npm run tailwind:prod&#x27;</span>,<br>	&#123; <span class="hljs-attr">cwd</span>: __dirname, <span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>, &#125;,<br>	<span class="hljs-function">(<span class="hljs-params">error, stdout, stderr</span>) =&gt;</span> &#123;  <br>		<span class="hljs-keyword">if</span> (error) &#123;  <br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;[tailwindcss error]&#x27;</span>, error);<br>			<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;error.stderr:&quot;</span>, stderr);<br>		&#125; <br>		<br>		isDev ? <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[tailwindcss stdout]: <span class="hljs-subst">$&#123;stdout&#125;</span>`</span>)<br>			: <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;[tailwindcss] 生产环境打包完成&#x27;</span>);<br>	&#125;<br>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>报错信息如下：</p>
+<figure class="highlight dns"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dns">[tailwindcss error] Error: Command failed: npm run tailwind:dev<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.610</span> Unexpected token &#x27;.&#x27;<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.622</span> npm ERR! code ELIFECYCLE<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.623</span> npm ERR! errno <span class="hljs-number">1</span><br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.638</span> npm ERR! @ tailwind:dev: `npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch`<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.639</span> npm ERR! Exit status <span class="hljs-number">1</span><br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.652</span> npm ERR! <br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.668</span> npm ERR! Failed at the @ tailwind:dev script.<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.669</span> npm ERR! This is probably not a problem with npm. There is likely additional logging output above.<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.686</span> npm ERR! <span class="hljs-keyword">A</span> complete log of this run can be found in:<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.702</span> npm ERR!     /Users/xxx/.npm/_logs/<span class="hljs-number">2023</span>-<span class="hljs-number">07</span>-<span class="hljs-number">18</span>T06_38_23_626Z-debug.log<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.719</span>     at ChildProcess.exithandler (child_process.js:<span class="hljs-number">308</span>:<span class="hljs-number">12</span>)<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.740</span>     at ChildProcess.emit (events.js:<span class="hljs-number">314</span>:<span class="hljs-number">20</span>)<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.757</span>     at maybeClose (internal/child_process.js:<span class="hljs-number">1022</span>:<span class="hljs-number">16</span>)<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.774</span>     at Socket.&lt;anonymous&gt; (internal/child_process.js:<span class="hljs-number">444</span>:<span class="hljs-number">11</span>)<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.790</span>     at Socket.emit (events.js:<span class="hljs-number">314</span>:<span class="hljs-number">20</span>)<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.791</span>     at Pipe.&lt;anonymous&gt; (net.js:<span class="hljs-number">675</span>:<span class="hljs-number">12</span>) &#123;<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.807</span>   killed: false,<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.810</span>   code: <span class="hljs-number">1</span>,<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.825</span>   signal: null,<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.840</span>   cmd: &#x27;npm run tailwind:dev&#x27;<br><span class="hljs-number">14</span>:<span class="hljs-number">38:24.841</span> &#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="3-3-在vue-config-js中切换nodejs版本"><a href="#3-3-在vue-config-js中切换nodejs版本" class="headerlink" title="3.3 在vue.config.js中切换nodejs版本"></a>3.3 在<code>vue.config.js</code>中切换nodejs版本</h3><h4 id="3-3-1-原本想直接nvm-use-v16-14-2，但是nvm命令找不到"><a href="#3-3-1-原本想直接nvm-use-v16-14-2，但是nvm命令找不到" class="headerlink" title="3.3.1 原本想直接nvm use v16.14.2，但是nvm命令找不到"></a>3.3.1 原本想直接<code>nvm use v16.14.2</code>，但是nvm命令找不到</h4><figure class="highlight stata"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stata">console.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;当前nodejs版本&quot;</span>, process.<span class="hljs-keyword">version</span>);<br><br>exec(<span class="hljs-string">&quot;nvm use 16.14.2&quot;</span>, &#123; cwd: __dirname, <span class="hljs-keyword">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>, &#125;, <span class="hljs-keyword">error</span> =&gt; &#123;<br>	console.<span class="hljs-keyword">error</span>(<span class="hljs-keyword">error</span>);<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>报错信息如下：</p>
+<figure class="highlight ldif"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ldif">当前nodejs版本 v12.22.1<br><span class="hljs-attribute">Error</span>: Command failed: nvm use 16.14.2<br><span class="hljs-attribute">14</span>:49:05.163 /bin/bash: nvm: command not found<br><span class="hljs-attribute">14</span>:49:05.172     at ChildProcess.exithandler (child_process.js:308:12)<br><span class="hljs-attribute">14</span>:49:05.172     at ChildProcess.emit (events.js:314:20)<br><span class="hljs-attribute">14</span>:49:05.184     at maybeClose (internal/child_process.js:1022:16)<br><span class="hljs-attribute">14</span>:49:05.185     at Socket.&lt;anonymous&gt; (internal/child_process.js:444:11)<br><span class="hljs-attribute">14</span>:49:05.197     at Socket.emit (events.js:314:20)<br><span class="hljs-attribute">14</span>:49:05.197     at Pipe.&lt;anonymous&gt; (net.js:675:12) &#123;<br><span class="hljs-attribute">14</span>:49:05.209   killed: false,<br><span class="hljs-attribute">14</span>:49:05.212   code: 127,<br><span class="hljs-attribute">14</span>:49:05.226   signal: null,<br><span class="hljs-attribute">14</span>:49:05.244   cmd: &#x27;nvm use 16.14.2&#x27;<br><span class="hljs-attribute">14</span>:49:05.260 &#125;<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-3-2-shelljs登场"><a href="#3-3-2-shelljs登场" class="headerlink" title="3.3.2 shelljs登场"></a>3.3.2 <code>shelljs</code>登场</h4><blockquote>
+<p>这破烂<code>child_process.exec</code>，不折腾了，用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/shelljs">shelljs</a></p>
+</blockquote>
+<ul>
+<li><p>vue.config.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> shell = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;shelljs&#x27;</span>);<br><span class="hljs-keyword">const</span> isDev = process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>;<br><br>shell.<span class="hljs-title function_">cd</span>(__dirname);<br>		<br>	isDev <br>		? shell.<span class="hljs-title function_">exec</span>(<span class="hljs-string">&#x27;bash ./tailwindcss.sh development&#x27;</span>, &#123;<span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-attr">async</span>:<span class="hljs-literal">true</span>&#125;)<br>		: shell.<span class="hljs-title function_">exec</span>(<span class="hljs-string">&#x27;bash ./tailwindcss.sh production&#x27;</span>, &#123;<span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-attr">async</span>:<span class="hljs-literal">true</span>&#125;);<br>		<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;&#125;;<br></code></pre></div></td></tr></table></figure>
+</li>
+<li><p>根目录新建<code>tailwindcss.sh</code></p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br>CURRENT_NODE_ENV=<span class="hljs-variable">$1</span><br>DEVELOPMENT=<span class="hljs-string">&quot;development&quot;</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;当前NODE_ENV:&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$CURRENT_NODE_ENV</span><br><br><span class="hljs-comment"># 切换到当前目录</span><br><span class="hljs-built_in">cd</span> $(<span class="hljs-built_in">dirname</span> <span class="hljs-variable">$0</span>);<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;当前目录:&quot;</span><br><span class="hljs-built_in">pwd</span><br><br>&#123; <span class="hljs-comment"># try</span><br> <br>    <span class="hljs-built_in">source</span> ~/.nvm/nvm.sh;<br>    <br>    <span class="hljs-comment">#切换nodejs版本</span><br>    nvm use 16.14.2<br>	<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;切换后nodejs版本：&quot;</span><br>	node -v<br>    <br>    <span class="hljs-keyword">if</span> [ <span class="hljs-variable">$CURRENT_NODE_ENV</span> == <span class="hljs-variable">$DEVELOPMENT</span> ]<br>    <span class="hljs-keyword">then</span><br>    	npm run tailwind:dev<br>    <span class="hljs-keyword">else</span><br>    	npm run tailwind:prod<br>    <span class="hljs-keyword">fi</span><br>&#125; || &#123; <span class="hljs-comment"># catch</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;tailwindcss 执行错误，请检查&quot;</span>;<br>&#125;<br><br><span class="hljs-built_in">sleep</span> 3<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>当执行Hbuilderx顶部菜单<code>运行 - 本地开发-测试环境接口</code></li>
+</ul>
+<p>此时nodejs版本倒是正确切换了，tailwindcss也正确执行了，但是shell命令执行阻塞了，停留在那不继续往下执行了（HbuilderX不继续编译vue为小程序了）</p>
+<figure class="highlight dns"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dns">正在编译中...<br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.696</span> process.env.UNI_SCRIPT: dev:mp-weixin:dev<br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.705</span> process.env.NODE_ENV: development<br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.706</span> isDev: true<br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.716</span> 当前nodejs版本 v12.<span class="hljs-number">22</span>.<span class="hljs-number">1</span><br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.766</span> 当前NODE_ENV:<br><span class="hljs-number">15</span>:<span class="hljs-number">19:40.766</span> development<br><span class="hljs-number">15</span>:<span class="hljs-number">19:43.041</span> Now using node v16.<span class="hljs-number">14</span>.<span class="hljs-number">2</span> (npm v8.<span class="hljs-number">5</span>.<span class="hljs-number">0</span>)<br><span class="hljs-number">15</span>:<span class="hljs-number">19:43.051</span> 切换后nodejs版本：<br><span class="hljs-number">15</span>:<span class="hljs-number">19:43.068</span> v16.<span class="hljs-number">14</span>.<span class="hljs-number">2</span><br><span class="hljs-number">15</span>:<span class="hljs-number">19:43.450</span> &gt; tailwind:dev<br><span class="hljs-number">15</span>:<span class="hljs-number">19:43.461</span> &gt; npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch<br><span class="hljs-number">15</span>:<span class="hljs-number">19:44.696</span> Rebuilding...<br><span class="hljs-number">15</span>:<span class="hljs-number">19:45.038</span> Done in <span class="hljs-number">388m</span>s.<br></code></pre></div></td></tr></table></figure>
+
+<h4 id="3-3-3-shell执行阻塞解决"><a href="#3-3-3-shell执行阻塞解决" class="headerlink" title="3.3.3 shell执行阻塞解决"></a>3.3.3 shell执行阻塞解决</h4><blockquote>
+<p>两种方法：</p>
+</blockquote>
+<ul>
+<li><p>1 <code>shell.exec(&#39;bash ./tailwindcss.sh development&#39;, &#123;shell: &quot;/bin/bash&quot;, async:true&#125;)</code></p>
+</li>
+<li><p>2 <code>shell.exec(&#39;bash ./tailwindcss.sh development &amp;&#39;, &#123;shell: &quot;/bin/bash&quot;&#125;)</code></p>
+</li>
+</ul>
+<h4 id="3-3-4-又遇坎坷，uview-ui报错"><a href="#3-3-4-又遇坎坷，uview-ui报错" class="headerlink" title="3.3.4 又遇坎坷，uview-ui报错"></a>3.3.4 又遇坎坷，<code>uview-ui</code>报错</h4><blockquote>
+<p>好不容易让tailwindcss正常编译，但是项目中的uview ui又报错了，心累</p>
+</blockquote>
+<p>报错信息如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">Module</span> parse failed: Unexpected token (<span class="hljs-number">224</span>:<span class="hljs-number">64</span>)<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">218</span> File was processed with these loaders:<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">234</span>  * ./node_modules/babel-loader/lib/index.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">287</span>  * ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader/index.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">319</span>  * ./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">321</span>  * ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/index.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">405</span>  * ./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">430</span> You may need an additional loader to handle the result of these loaders.<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">475</span> |         const grandChild = child.$children; // 判断如果在需要重新初始化的组件数组中名中，并且存在init方法的话，则执行<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">476</span> | <br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">503</span> &gt;         if (names.includes(child.$options.name) &amp;&amp; typeof child?.init === &#x27;function&#x27;) &#123;<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">504</span> |           // 需要进行一定的延时，因为初始化页面需要时间<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">530</span> |           uni.$u.sleep(<span class="hljs-number">50</span>).then(() =&gt; &#123;<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">531</span> Module parse failed: Unexpected token (<span class="hljs-number">3</span>:<span class="hljs-number">49</span>)<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">551</span> File was processed with these loaders:<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">551</span>  * ./node_modules/babel-loader/lib/index.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">663</span>  * ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader/index.js<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">694</span> You may need an additional loader to handle the result of these loaders.<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">695</span> | // 看到此报错，是因为没有配置vue.config.js的【transpileDependencies】，详见：https://www.uviewui.com/components/npmSetting.html#_5-cli模式额外配置<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">714</span> | const pleaseSetTranspileDependencies = &#123;&#125;,<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">715</span> &gt;       babelTest = pleaseSetTranspileDependencies?.test; // 引入全局mixin<br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">740</span> | <br><span class="hljs-attribute">15</span>:<span class="hljs-number">28</span>:<span class="hljs-number">17</span>.<span class="hljs-number">891</span> | import mixin from &#x27;./libs/mixin/mixin.js&#x27;; // 小程序特有的mixin<br></code></pre></div></td></tr></table></figure>
+
+<p>根据提示，是要在vue.config.js中添加<code>transpileDependencies</code>配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>	<span class="hljs-attr">transpileDependencies</span>: [<span class="hljs-string">&#x27;uview-ui&#x27;</span>]<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>修改后，继续执行，还是同样的报错，根据<a target="_blank" rel="noopener" href="https://www.uviewui.com/components/install.html">uview ui</a>文档，Hbuilderx方式安装无需再vue.config.js中添加transpileDependencies配置</li>
+<li>删掉刚才的<code>transpileDependencies: [&#39;uview-ui&#39;]</code>配置</li>
+<li>难道要用uview ui提供的<a target="_blank" rel="noopener" href="https://www.uviewui.com/components/npmSetting.html">npm方式</a>安装吗？试了一遍，还是同样的报错，默默的撤回了修改</li>
+</ul>
+<h4 id="3-3-5-uview-ui报错的分析解决"><a href="#3-3-5-uview-ui报错的分析解决" class="headerlink" title="3.3.5 uview-ui报错的分析解决"></a>3.3.5 <code>uview-ui</code>报错的分析解决</h4><blockquote>
+<p>其实就是，tailwindcss的编译不能和HbuilderX编译小程序在同一时间执行，要错开</p>
+<ol>
+<li>可以新开一个shell窗口执行tailwindcss编译</li>
+<li>或者在子进程中执行tailwindcss编译</li>
+<li>或者拿到HbuilderX编译小程序完毕后打开微信开发者工具的回调，然后再另执行tailwindcss编译</li>
+<li>setTimeout大法</li>
+</ol>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> shell = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;shelljs&#x27;</span>);<br><span class="hljs-keyword">const</span> isDev = process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>;<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>	shell.<span class="hljs-title function_">cd</span>(__dirname);<br>			<br>		isDev <br>			? shell.<span class="hljs-title function_">exec</span>(<span class="hljs-string">&#x27;bash ./tailwindcss.sh development &amp;&#x27;</span>, &#123;<span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>&#125;)<br>			: shell.<span class="hljs-title function_">exec</span>(<span class="hljs-string">&#x27;bash ./tailwindcss.sh production&#x27;</span>, &#123;<span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-attr">async</span>:<span class="hljs-literal">true</span>&#125;);<br>&#125;, <span class="hljs-number">30000</span>); <span class="hljs-comment">// 30s后执行</span><br>		<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>可以看到，HbuilderX先进行了vue编译成小程序，然后tailwindcss进行监听编译，先后顺序错开，执行ok</p>
+<p>修改文件也可以生效</p>
+<figure class="highlight dns"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dns">process.env.UNI_SCRIPT: dev:mp-weixin:dev<br><span class="hljs-number">15</span>:<span class="hljs-number">43:08.945</span> process.env.NODE_ENV: development<br><span class="hljs-number">15</span>:<span class="hljs-number">43:08.958</span> isDev: true<br><span class="hljs-number">15</span>:<span class="hljs-number">43:08.973</span> 当前nodejs版本 v12.<span class="hljs-number">22</span>.<span class="hljs-number">1</span><br><span class="hljs-number">15</span>:<span class="hljs-number">43:10.582</span> ​Browserslist: caniuse-lite is outdated. Please run:<br><span class="hljs-number">15</span>:<span class="hljs-number">43:10.593</span> npx browserslist@latest --update-db​<br><span class="hljs-number">15</span>:<span class="hljs-number">43:27.934</span> 项目 &#x27;xxx&#x27; 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。<br><span class="hljs-number">15</span>:<span class="hljs-number">43:27.951</span> 正在启动微信开发者工具...<br><span class="hljs-number">15</span>:<span class="hljs-number">43:28.941</span> [微信小程序开发者工具] - initialize<br><span class="hljs-number">15</span>:<span class="hljs-number">43:28.952</span> [微信小程序开发者工具]<br><span class="hljs-number">15</span>:<span class="hljs-number">43:28.953</span> [微信小程序开发者工具]<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.029</span> [微信小程序开发者工具] ✔ IDE server has started, listening on http://<span class="hljs-number">127.0.0.1</span>:<span class="hljs-number">59243</span><br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.075</span> [微信小程序开发者工具]<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.092</span> [微信小程序开发者工具] - open IDE<br><span class="hljs-number">15:43:29.169</span> [微信小程序开发者工具]<br><span class="hljs-number">15:43:29.169</span> [微信小程序开发者工具]<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.895</span> [微信小程序开发者工具] ✔ open IDE<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.910</span> [微信小程序开发者工具]<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.911</span> 微信开发者工具已启动，在HBuilderX中修改文件并保存，会自动刷新微信模拟器<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.932</span> 注：<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.961</span> <span class="hljs-number">1</span>. 可以通过微信开发者工具切换pages.json中condition配置的页面，或者关闭微信开发者工具，然后再从HBuilderX中启动指定页面<br><span class="hljs-number">15</span>:<span class="hljs-number">43:29.992</span> <span class="hljs-number">2</span>. 如果出现微信开发者工具启动后白屏的问题，检查是否启动多个微信开发者工具，如果是则关闭所有打开的微信开发者工具，然后再重新运行<br><span class="hljs-number">15</span>:<span class="hljs-number">43:30.024</span> <span class="hljs-number">3</span>. 运行模式下不压缩代码且含有sourcemap，体积较大；若要正式发布，请点击发行菜单进行发布<br><span class="hljs-number">15</span>:<span class="hljs-number">43:39.028</span> 当前NODE_ENV:<br><span class="hljs-number">15</span>:<span class="hljs-number">43:39.028</span> development<br><span class="hljs-number">15</span>:<span class="hljs-number">43:42.386</span> Now using node v16.<span class="hljs-number">14</span>.<span class="hljs-number">2</span> (npm v8.<span class="hljs-number">5</span>.<span class="hljs-number">0</span>)<br><span class="hljs-number">15</span>:<span class="hljs-number">43:42.401</span> 切换后nodejs版本：<br><span class="hljs-number">15</span>:<span class="hljs-number">43:42.425</span> v16.<span class="hljs-number">14</span>.<span class="hljs-number">2</span><br><span class="hljs-number">15:43:43.144</span> &gt; tailwind:dev<br><span class="hljs-number">15:43:43.162</span> &gt; npx tailwindcss -i ./tailwind-input.css -o ./static/css/tailwind.css --watch<br>正在差量编译...<br><span class="hljs-number">15</span>:<span class="hljs-number">45:29.429</span> 项目 &#x27;xxx&#x27; 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。<br></code></pre></div></td></tr></table></figure>
+
+<p>setTimeout大法虽好，但是不优雅，30s不保证HbuilderX编译vue能结束</p>
+<h4 id="3-3-6-最终版本-优雅解决uview-ui的报错"><a href="#3-3-6-最终版本-优雅解决uview-ui的报错" class="headerlink" title="3.3.6 最终版本-优雅解决uview-ui的报错"></a>3.3.6 最终版本-优雅解决<code>uview-ui</code>的报错</h4><blockquote>
+<ul>
+<li>这里还是用到了<code>child_process.exec</code>子进程执行，境泽真香定律！</li>
+<li>child_process.exec执行shell可能会遇上<code>Permission denied</code>无权限执行, <code>chmod(u+x, /xx.sh)</code>解决</li>
+</ul>
+</blockquote>
+<p><img src="/assets/img/hbuilderx-tailwindcss/641.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> shell = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;shelljs&#x27;</span>);<br><span class="hljs-keyword">const</span> &#123;exec&#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;child_process&#x27;</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;process.env.UNI_SCRIPT:&quot;</span>, process.<span class="hljs-property">env</span>.<span class="hljs-property">UNI_SCRIPT</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;process.env.NODE_ENV:&quot;</span>, process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span>);<br><br><span class="hljs-keyword">const</span> isDev = process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;development&#x27;</span>;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;isDev:&quot;</span>, isDev);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;当前nodejs版本&quot;</span>, process.<span class="hljs-property">version</span>);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">executeTailWindCssSh</span>(<span class="hljs-params"></span>) &#123;<br>	<span class="hljs-comment">// https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback</span><br>	<span class="hljs-title function_">exec</span>(<br>		isDev ? <span class="hljs-string">&#x27;&quot;./tailwindcss.sh&quot; development&#x27;</span> : <span class="hljs-string">&#x27;&quot;./tailwindcss.sh&quot; production&#x27;</span>,<br>		&#123; <span class="hljs-attr">cwd</span>: __dirname, <span class="hljs-attr">shell</span>: <span class="hljs-string">&quot;/bin/bash&quot;</span>, &#125;,<br>		<span class="hljs-function">(<span class="hljs-params">error, stdout, stderr</span>) =&gt;</span> &#123;<br>			<span class="hljs-keyword">if</span> (error) &#123;  <br>				<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;[tailwindcss error]&#x27;</span>, error);<br>				<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;error.stderr:&quot;</span>, stderr);<br>				<br>				<span class="hljs-keyword">if</span>(stderr &amp;&amp; stderr.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&quot;Permission denied&quot;</span>)) &#123;<br>					<span class="hljs-comment">// 给当前user增加运行文件权限</span><br>					shell.<span class="hljs-title function_">chmod</span>(<span class="hljs-string">&quot;u+x&quot;</span>, path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;./tailwindcss.sh&#x27;</span>));<br>					<br>					<span class="hljs-title function_">executeTailWindCssSh</span>();<br>				&#125;<br>			&#125; <br>			<br>			isDev ? <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[tailwindcss stdout]: <span class="hljs-subst">$&#123;stdout&#125;</span>`</span>)<br>				: <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;[tailwindcss] 生产环境打包完成&#x27;</span>);<br>		&#125;<br>	);<br>&#125;<br><br><span class="hljs-title function_">executeTailWindCssSh</span>();<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="4-关于小程序中部分class名称转义字符报错"><a href="#4-关于小程序中部分class名称转义字符报错" class="headerlink" title="4. 关于小程序中部分class名称转义字符报错"></a>4. 关于小程序中部分class名称转义字符报错</h2><p>报错如下图：</p>
+<p><img src="/assets/img/hbuilderx-tailwindcss/642.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决：使用<a target="_blank" rel="noopener" href="https://www.craft.me/s/Wx2f9cjGwyZYOx/b/8FAEAC64-E760-4915-9582-C0560E2972D9/%E2%9A%99%EF%B8%8F-%E5%B8%B8%E8%A7%84-Webpack-%E7%B1%BB%E5%B0%8F%E7%A8%8B%E5%BA%8F%EF%BC%88%E4%BB%A5-MPX-%E4%B8%BA%E4%BE%8B%EF%BC%89">@dcasia&#x2F;mini-program-tailwind-webpack-plugin</a> webpack 插件解决</p>
+<ol>
+<li><p>安装</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> i @dcasia/mini-program-tailwind-webpack-plugin -D<br></code></pre></div></td></tr></table></figure>
+</li>
+<li><p>配置</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// vue.config.js</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">MiniProgramTailwindWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@dcasia/mini-program-tailwind-webpack-plugin&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>	<span class="hljs-attr">configureWebpack</span>: &#123;<br>		<span class="hljs-attr">plugins</span>: [<br>			<span class="hljs-keyword">new</span> <span class="hljs-title class_">MiniProgramTailwindWebpackPlugin</span>(&#123;&#125;)<br>		]<br>	&#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>这样就ok了，如果需要深入自定义些，可以引入<a target="_blank" rel="noopener" href="https://github.com/dcasia/mini-program-tailwind/blob/development/src/index.ts">mini-program-tailwind</a>的<code>handleTemplate</code>和<code>handleStyle</code>方法，自定义一个webpacka plugin</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123; handleTemplate, handleStyle &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@dcasia/mini-program-tailwind-webpack-plugin/universal-handler&#x27;</span>);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isStyleFile</span> (filename) &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-regexp">/.+\.(?:wx|ac|jx|tt|q|c)ss$/</span>.<span class="hljs-title function_">test</span>(filename);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isTemplateFile</span>(<span class="hljs-params">filename</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-regexp">/.+\.(wx|ax|jx|ks|tt|q)ml$/</span>.<span class="hljs-title function_">test</span>(filename);<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TailwindCssClassRenamePlugin</span> &#123;<br>	<span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>		<span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span> = &#123; <br>			<span class="hljs-attr">enableRpx</span>: <span class="hljs-literal">false</span>,<br>			<span class="hljs-attr">designWidth</span>: <span class="hljs-number">375</span>,<br>		&#125;<br>	&#125;<br>		<br>  <span class="hljs-title function_">apply</span>(<span class="hljs-params">compiler</span>) &#123;<br>	  <span class="hljs-comment">// const isWebpackV5 = compiler.webpack &amp;&amp; compiler.webpack.version &gt;= 5;</span><br>	  <br>    <span class="hljs-comment">// 指定一个挂载到 compilation 的钩子，回调函数的参数为 compilation 。</span><br>    compiler.<span class="hljs-property">hooks</span>.<span class="hljs-property">thisCompilation</span>.<span class="hljs-title function_">tap</span>(<span class="hljs-string">&#x27;tailwind-css-class-rename-plugin&#x27;</span>,<span class="hljs-function"><span class="hljs-params">compilation</span> =&gt;</span> &#123;<br>            compilation.<span class="hljs-property">hooks</span>.<span class="hljs-property">afterOptimizeAssets</span>.<span class="hljs-title function_">tap</span>(<span class="hljs-string">&#x27;tailwind-css-class-rename-plugin&#x27;</span>, <span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> &#123;<br>                        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> pathname <span class="hljs-keyword">in</span> assets) &#123;<br>							<span class="hljs-keyword">const</span> originalSource = assets[ pathname ]<br>							<span class="hljs-keyword">const</span> rawSource = originalSource.<span class="hljs-title function_">source</span>().<span class="hljs-title function_">toString</span>()<br><br>							<span class="hljs-keyword">let</span> handledSource = <span class="hljs-string">&#x27;&#x27;</span><br>		<br>							<span class="hljs-keyword">if</span> (<span class="hljs-title function_">isStyleFile</span>(pathname)) &#123;<br>								<span class="hljs-comment">// 处理样式文件</span><br>                <span class="hljs-comment">// ...添加自己额外的处理</span><br>								handledSource = <span class="hljs-title function_">handleStyle</span>(rawSource, <span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>);<br>							&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isTemplateFile</span>(pathname)) &#123;<br>								<span class="hljs-comment">// 处理模板文件</span><br>								<span class="hljs-comment">// ...添加自己额外的处理</span><br>								<br>								handledSource = <span class="hljs-title function_">handleTemplate</span>(rawSource, <span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span>);<br>							&#125;<br>		<br>							<span class="hljs-keyword">if</span> (handledSource) &#123;<br>		<br>								<span class="hljs-keyword">const</span> source = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcatSource</span>(handledSource)<br>		<br>								compilation.<span class="hljs-title function_">updateAsset</span>(pathname, source)<br>		<br>							&#125;<br>    <br>                    &#125;<br>    <br>                &#125;<br>    <br>            )<br>    <br>        &#125;<br>    )<br>  &#125;<br>&#125;<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>	<span class="hljs-attr">configureWebpack</span>: &#123;<br>		<span class="hljs-attr">plugins</span>: [<br>			<span class="hljs-keyword">new</span> <span class="hljs-title class_">TailwindCssClassRenamePlugin</span>()<br>		]<br>	&#125;<br>&#125;;<br><br></code></pre></div></td></tr></table></figure>
+<h2 id="5-关于rem转rpx"><a href="#5-关于rem转rpx" class="headerlink" title="5. 关于rem转rpx"></a>5. 关于rem转rpx</h2><ol>
+<li><p>其实上面的<code>@dcasia/mini-program-tailwind-webpack-plugin/universal-handler</code>插件中的<code>handleStyle</code>方法已经自动帮我们处理了rem转rpx</p>
+</li>
+<li><p>也可以使用<a target="_blank" rel="noopener" href="https://weapp-tw.icebreaker.top/docs/quick-start/rem2rpx#2-tailwindcss-rem2px-preset">tailwindcss-rem2px-preset</a>插件，或者<a target="_blank" rel="noopener" href="https://weapp-tw.icebreaker.top/docs/quick-start/rem2rpx#1-postcss-rem-to-responsive-pixel-%E6%8E%A8%E8%8D%90">postcss-rem-to-responsive-pixel</a>插件，<br>它们的区别就是<code>tailwindcss-rem2px-preset</code>只是把tailwindcss那些样式class从rem转为rpx，而<code>postcss-rem-to-responsive-pixel</code>是把项目中所有的rem都转为rpx，根据自己的项目进行选择</p>
+</li>
+<li><p>因为这里是使用的<code>HbuilderX</code>方式创建的项目，所以选择了<code>tailwindcss-rem2px-preset</code>，而<code>postcss-rem-to-responsive-pixel</code>是在<code>postcss.config.js</code>配置文件里配置的</p>
+</li>
+</ol>
+<p>4 <code>tailwindcss-rem2px-preset</code>的安装和使用</p>
+<ul>
+<li><p>安装</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css">npm <span class="hljs-selector-tag">i</span> -D postcss-rem-<span class="hljs-selector-tag">to</span>-responsive-pixel<br></code></pre></div></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// tailwind.config.js</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">presets</span>: [<br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;tailwindcss-rem2px-preset&#x27;</span>).<span class="hljs-title function_">createPreset</span>(&#123;<br>      <span class="hljs-comment">// 32 意味着 1rem = 32rpx</span><br>      <span class="hljs-attr">fontSize</span>: <span class="hljs-number">32</span>,<br>      <span class="hljs-comment">// 转化的单位,可以变成 px / rpx</span><br>      <span class="hljs-attr">unit</span>: <span class="hljs-string">&#x27;rpx&#x27;</span><br>    &#125;)<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure></li>
+</ul>
+<h2 id="6-关于部分tailwindcss未生效"><a href="#6-关于部分tailwindcss未生效" class="headerlink" title="6. 关于部分tailwindcss未生效"></a>6. 关于部分tailwindcss未生效</h2><p>如果没有在<code>tailwind.config.js</code>中配置<code>tailwindcss-rem2px-preset</code>这个预设，会发现页面中所有的tailwindcss都未生效，报错是没有了，但是有一部分class样式都没有被引入到项目中，只是在wxml上写了一个空样式</p>
+<p><img src="/assets/img/hbuilderx-tailwindcss/643.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决：这个时候只要在<code>tailwind.config.js</code>中配置<code>tailwindcss-rem2px-preset</code>这个预设，就ok了</p>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7.参考资料"></a>7.参考资料</h2><ol>
+<li><p><a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/article/40098">Hbuilder创建的uniapp工程，使用tailwindcss最优雅的方式</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/shelljs">shelljs</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback">child_process.exec</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.tailwindcss.cn/docs/installation">Tailwind CLI</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://weapp-tw.icebreaker.top/">weapp-tailwindcss</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.craft.me/s/Wx2f9cjGwyZYOx">Tailwind &amp; Windi CSS Webpack plugin</a></p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/uniapp/">uniapp</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/uniapp/">uniapp</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a>
+                    
+                      <a class="hover-with-bg" href="/tags/HBuilderX/">HBuilderX</a>
+                    
+                      <a class="hover-with-bg" href="/tags/tailwindcss/">tailwindcss</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/07/31/refresh-token/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一次页面请求loading转圈圈没停止bug的追踪</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/11/react-native-headless-js/">
+                        <span class="hidden-mobile">React Native Android 端Headless JS后台 GPS 持续定位</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

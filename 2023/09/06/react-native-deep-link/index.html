@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="本文 github 仓库链接 本文测试主要版本信息    package version    react 18.2.0   react-native 0.71.2   android 13   手机 小米10   1. Deep Link的日常使用场景 从并夕夕app分享到微信，邀请好友砍一刀，其中有的链接打开后是h5页面，h5页面打开后，弹出提示，“立即打开xx应用”，或者打开后，要求右上角在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native Android端 Deep Link">
+<meta property="og:url" content="https://srect.github.io/2023/09/06/react-native-deep-link/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="本文 github 仓库链接 本文测试主要版本信息    package version    react 18.2.0   react-native 0.71.2   android 13   手机 小米10   1. Deep Link的日常使用场景 从并夕夕app分享到微信，邀请好友砍一刀，其中有的链接打开后是h5页面，h5页面打开后，弹出提示，“立即打开xx应用”，或者打开后，要求右上角在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/react-native-deep-link/index.jpeg">
+<meta property="article:published_time" content="2023-09-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-27T08:42:31.803Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="react native">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="deep link">
+<meta property="article:tag" content="app link">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/react-native-deep-link/index.jpeg">
+  
+  
+  <title>React Native Android端 Deep Link - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="React Native Android端 Deep Link">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-09-07 00:00" pubdate>
+        2023年9月7日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      15k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      126 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">React Native Android端 Deep Link</h1>
+            
+            <div class="markdown-body">
+              <p><a target="_blank" rel="noopener" href="https://github.com/sRect/reactNativeBlogApp">本文 github 仓库链接</a></p>
+<p>本文测试主要版本信息</p>
+<table>
+<thead>
+<tr>
+<th>package</th>
+<th align="center">version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>react</td>
+<td align="center">18.2.0</td>
+</tr>
+<tr>
+<td>react-native</td>
+<td align="center">0.71.2</td>
+</tr>
+<tr>
+<td>android</td>
+<td align="center">13</td>
+</tr>
+<tr>
+<td>手机</td>
+<td align="center">小米10</td>
+</tr>
+</tbody></table>
+<h2 id="1-Deep-Link的日常使用场景"><a href="#1-Deep-Link的日常使用场景" class="headerlink" title="1. Deep Link的日常使用场景"></a>1. <code>Deep Link</code>的日常使用场景</h2><ol>
+<li><p>从并夕夕app分享到微信，邀请好友砍一刀，其中有的链接打开后是h5页面，h5页面打开后，弹出提示，“立即打开xx应用”，或者打开后，要求右上角在本机浏览器中打开，然后浏览器里弹出提示，“当前网站请求打开xx应用”。</p>
+</li>
+<li><p>从app中，或者短信中打开微信小程序，链接如<code>weixin://dl/business/?t= *TICKET*</code>。</p>
+</li>
+</ol>
+<h2 id="2-什么是Deep-Link"><a href="#2-什么是Deep-Link" class="headerlink" title="2. 什么是Deep Link?"></a>2. 什么是<code>Deep Link</code>?</h2><p><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/security#authentication-and-deep-linking">文档</a>中提到：</p>
+<blockquote>
+<p>Mobile apps have a unique vulnerability that is non-existent in the web: deep linking. Deep linking is a way of sending data directly to a native application from an outside source. A deep link looks like app:&#x2F;&#x2F; where app is your app scheme and anything following the &#x2F;&#x2F; could be used internally to handle the request.</p>
+</blockquote>
+<blockquote>
+<p>Deep links are not secure and you should never send any sensitive information in them.</p>
+</blockquote>
+<p>总结：</p>
+<ol>
+<li><p><code>Deep Link</code>是手机端app中独有的；</p>
+</li>
+<li><p><code>Deep Link</code>是一种通过外面链接把数据发送到app里的方法；</p>
+</li>
+<li><p><code>Deep Link</code>长得像<code>app://</code>，其中“<em>app</em>”是你自定义的scheme，“*&#x2F;&#x2F;*”后面跟的内容，用来给app处理的；</p>
+</li>
+<li><p><code>Deep Link</code>是不安全的，不要通过这种方式发送敏感数据。</p>
+</li>
+</ol>
+<h2 id="3-开启Deep-Link"><a href="#3-开启Deep-Link" class="headerlink" title="3. 开启Deep Link"></a>3. 开启Deep Link</h2><blockquote>
+<p>下面xml中有注释掉的配置，是因为准备配置app link，验证app link，通过后才允许拉起app，配置好后，但验证失败了，下面会讲</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- android/app/src/main/AndroidManifest.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">manifest</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">queries</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- &lt;intent&gt;</span><br><span class="hljs-comment">        &lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt;</span><br><span class="hljs-comment">        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;</span><br><span class="hljs-comment">        &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;</span><br><span class="hljs-comment">        &lt;data android:scheme=&quot;https&quot; </span><br><span class="hljs-comment">          android:host=&quot;my.applink.com&quot;</span><br><span class="hljs-comment">          android:pathPrefix=&quot;/detail&quot; /&gt;</span><br><span class="hljs-comment">    &lt;/intent&gt; --&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">intent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">data</span> <span class="hljs-attr">android:scheme</span>=<span class="hljs-string">&quot;yourScheme&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">intent</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">queries</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">manifest</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- android/app/src/main/AndroidManifest.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">manifest</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">activity</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;.MainActivity&quot;</span> <span class="hljs-attr">android:launchMode</span>=<span class="hljs-string">&quot;singleTask&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">intent-filter</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">data</span> <span class="hljs-attr">android:scheme</span>=<span class="hljs-string">&quot;yourScheme&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">intent-filter</span>&gt;</span><br><br>     <span class="hljs-comment">&lt;!-- 注意：“/”在pathPrefix中是必须的 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- &lt;intent-filter android:autoVerify=&quot;true&quot;&gt;</span><br><span class="hljs-comment">      &lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt;</span><br><span class="hljs-comment">      &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;</span><br><span class="hljs-comment">      &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;</span><br><span class="hljs-comment">      &lt;data android:scheme=&quot;https&quot; </span><br><span class="hljs-comment">        android:host=&quot;my.applink.com&quot;</span><br><span class="hljs-comment">        android:pathPrefix=&quot;/detail&quot; /&gt;</span><br><span class="hljs-comment">    &lt;/intent-filter&gt; --&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">activity</span>&gt;</span>  <br><span class="hljs-tag">&lt;/<span class="hljs-name">manifest</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="4-处理Deep-Link"><a href="#4-处理Deep-Link" class="headerlink" title="4. 处理Deep Link"></a>4. 处理Deep Link</h2><h3 id="4-1-监听其它app通过deep-Link拉起本app"><a href="#4-1-监听其它app通过deep-Link拉起本app" class="headerlink" title="4.1 监听其它app通过deep Link拉起本app"></a>4.1 监听其它app通过deep Link拉起本app</h3><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, &#123;<span class="hljs-title class_">Fragment</span>, useEffect, memo&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Linking</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-native&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;useNavigate&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-router-native&#x27;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">DeepLinksListener</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> navigate = <span class="hljs-title function_">useNavigate</span>();<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">cb</span> = data =&gt; &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Linking data==&gt;&#x27;</span>, data);<br><br>      <span class="hljs-keyword">const</span> url = data.<span class="hljs-property">url</span>;<br>      <span class="hljs-keyword">const</span> schemas = [<br>        <span class="hljs-string">&#x27;yourScheme://&#x27;</span>,<br>        <span class="hljs-string">&#x27;https://my.applink.com/&#x27;</span>,<br>      ];<br><br>      <span class="hljs-keyword">if</span> (schemas.<span class="hljs-title function_">some</span>(<span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> url.<span class="hljs-title function_">startsWith</span>(s))) &#123;<br>        <span class="hljs-keyword">let</span> newUrl = url<br>          .<span class="hljs-title function_">replace</span>(schemas[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;&#x27;</span>)<br>          .<span class="hljs-title function_">replace</span>(schemas[<span class="hljs-number">2</span>], <span class="hljs-string">&#x27;&#x27;</span>);<br>        navigate &amp;&amp; <span class="hljs-title function_">navigate</span>(<span class="hljs-string">`/<span class="hljs-subst">$&#123;newUrl&#125;</span>`</span>);<br>      &#125;<br>    &#125;;<br>    <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;url&#x27;</span>, cb);<br><br>    <span class="hljs-comment">// return () =&gt; &#123;</span><br>    <span class="hljs-comment">//   Linking.removeEventListener(&#x27;url&#x27;, cb);</span><br>    <span class="hljs-comment">// &#125;;</span><br>  &#125;, [navigate]);<br><br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fragment</span> /&gt;</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">memo</span>(<span class="hljs-title class_">DeepLinksListener</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="4-2-通过Deep-link打开其它app"><a href="#4-2-通过Deep-link打开其它app" class="headerlink" title="4.2 通过Deep link打开其它app"></a>4.2 通过Deep link打开其它app</h3><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Linking</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-native&#x27;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleOpenUrl</span> = <span class="hljs-keyword">async</span> linkUrl =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> supported = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">canOpenURL</span>(linkUrl);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;supported&#x27;</span>, supported);<br>    <span class="hljs-keyword">if</span> (supported) &#123;<br>      <span class="hljs-comment">// Opening the link with some app, if the URL scheme is &quot;http&quot; the web link should be opened</span><br>      <span class="hljs-comment">// by some browser in the mobile</span><br>      <span class="hljs-keyword">await</span> <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">openURL</span>(linkUrl);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title class_">Alert</span>.<span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;提示&#x27;</span>, <span class="hljs-string">`无法打开<span class="hljs-subst">$&#123;linkUrl&#125;</span>`</span>, [&#123;<span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;确定&#x27;</span>&#125;]);<br>    &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);<br>    <span class="hljs-title class_">Alert</span>.<span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;提示&#x27;</span>, <span class="hljs-string">`无法打开<span class="hljs-subst">$&#123;linkUrl&#125;</span>,<span class="hljs-subst">$&#123;error.message&#125;</span>`</span>, [<br>      &#123;<span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;确定&#x27;</span>&#125;,<br>    ]);<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<ol>
+<li>测试打开微信App</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">handleOpenUrl</span>(<span class="hljs-string">&quot;weixin://&quot;</span>); <span class="hljs-comment">// 可以正常拉起打开微信</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li>测试打开另一个RN App</li>
+</ol>
+<blockquote>
+<p>前提是另一个app中AndroidManifest.xml中已经配置好deep link</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">handleOpenUrl</span>(<span class="hljs-string">&quot;mydeeplink://&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li><code>await Linking.canOpenURL(&quot;mydeeplink://&quot;)</code>直接返回false</li>
+<li>直接通过<code>await Linking.openURL(&quot;mydeeplink://&quot;)</code>可以拉起另一个RN App</li>
+<li>感觉 <code>Linking.canOpenURL</code>有问题，知道原因的告诉我一声，测试机型是小米13，android13版本</li>
+</ul>
+<ol start="3">
+<li>测试scheme为https和http的链接</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">handleOpenUrl</span>(<span class="hljs-string">&quot;https://cn.bing.com&quot;</span>); <span class="hljs-comment">// 正常拉起手机浏览器，并打打开网站</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>测试打开app设置页</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">openSettings</span>(); <span class="hljs-comment">// 正常打开app设置页</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li>通过adb指令测试</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">adb shell am start -W -a android.intent.action.VIEW -d <span class="hljs-string">&quot;yourScheme://detail/xxx&quot;</span> com.your-app-name <span class="hljs-comment"># 成功拉起目标app</span><br></code></pre></div></td></tr></table></figure>
+
+<h3 id="4-3-被其他App拉起后获取Deep-Link"><a href="#4-3-被其他App拉起后获取Deep-Link" class="headerlink" title="4.3 被其他App拉起后获取Deep Link"></a>4.3 被其他App拉起后获取Deep Link</h3><figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> initialUrl = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">getInitialURL</span>();<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;initialUrl:&#x27;</span>, initialUrl);<br></code></pre></div></td></tr></table></figure>
+
+<ol>
+<li>在开发debugger模式下，Linking.getInitialURL始终返回null</li>
+<li>如果app是被其它app拉起的，会获取到deep link值，反之始终为null</li>
+</ol>
+<h2 id="5-App-Link"><a href="#5-App-Link" class="headerlink" title="5. App Link"></a>5. App Link</h2><h2 id="5-1-App-Link-与-Deep-Link比较"><a href="#5-1-App-Link-与-Deep-Link比较" class="headerlink" title="5.1 App Link 与 Deep Link比较"></a>5.1 App Link 与 Deep Link比较</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links/verify-android-applinks?hl=zh-cn">文档</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Deep Link</th>
+<th align="center">App Link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">intent 网址架构</td>
+<td align="center">http、https 或自定义架构</td>
+<td align="center">需要 http 或 https</td>
+</tr>
+<tr>
+<td align="center">intent 操作</td>
+<td align="center">intent 操作    任何操作</td>
+<td align="center">需要 android.intent.action.VIEW</td>
+</tr>
+<tr>
+<td align="center">intent 类别</td>
+<td align="center">任何类别</td>
+<td align="center">需要 android.intent.category.BROWSABLE 和 android.intent.category.DEFAULT</td>
+</tr>
+<tr>
+<td align="center">链接验证</td>
+<td align="center">无</td>
+<td align="center">需要通过 HTTPS 协议在您的网站上发布 Digital Asset Links 文件</td>
+</tr>
+<tr>
+<td align="center">用户体验</td>
+<td align="center">可能会显示一个消除歧义对话框，以供用户选择用于打开链接的应用</td>
+<td align="center">无对话框；您的应用会打开以处理您的网站链接</td>
+</tr>
+<tr>
+<td align="center">兼容性</td>
+<td align="center">所有 Android 版本</td>
+<td align="center">Android 6.0 及更高版本</td>
+</tr>
+</tbody></table>
+<h2 id="5-2-App-Link配置步骤"><a href="#5-2-App-Link配置步骤" class="headerlink" title="5.2 App Link配置步骤"></a>5.2 App Link配置步骤</h2><h3 id="5-2-1-AndroidManifest-xml配置"><a href="#5-2-1-AndroidManifest-xml配置" class="headerlink" title="5.2.1 AndroidManifest.xml配置"></a>5.2.1 AndroidManifest.xml配置</h3><figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- android/app/src/main/AndroidManifest.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">manifest</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">meta-data</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;asset_statements&quot;</span> <span class="hljs-attr">android:resource</span>=<span class="hljs-string">&quot;@string/asset_statements&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">activity</span> <span class="hljs-attr">...</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">intent-filter</span> <span class="hljs-attr">android:autoVerify</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">category</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">category</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.intent.category.BROWSABLE&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">data</span> <span class="hljs-attr">android:scheme</span>=<span class="hljs-string">&quot;https&quot;</span> </span><br><span class="hljs-tag">        <span class="hljs-attr">android:host</span>=<span class="hljs-string">&quot;my.applink.com&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:pathPrefix</span>=<span class="hljs-string">&quot;/detail&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">intent-filter</span>&gt;</span><br><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">activity</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">manifest</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- android/app/src/main/res/values/strings.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">string</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;asset_statements&quot;</span>&gt;</span><br>    [&#123;<br>      \&quot;relation\&quot;: [\&quot;delegate_permission/common.share_location\&quot;],<br>      \&quot;target\&quot;: &#123;<br>        \&quot;namespace\&quot;: \&quot;web\&quot;,<br>        \&quot;site\&quot;: \&quot;https://my.applink.com\&quot;<br>      &#125;<br>    &#125;]<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h3 id="5-2-2-本地部署一个https服务"><a href="#5-2-2-本地部署一个https服务" class="headerlink" title="5.2.2 本地部署一个https服务"></a>5.2.2 本地部署一个https服务</h3><blockquote>
+<p>可以使用nginx或者<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/live-server">live-server</a>等，我这里使用了live-server</p>
+</blockquote>
+<ol>
+<li>使用openssl创建https证书</li>
+</ol>
+<ul>
+<li>生成服务器私钥</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">openssl genrsa -out server.key 1024<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>根据私钥和输入的信息生成证书请求文件</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">openssl req -new -key server.key -out server.csr<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>第一步的私钥和第二步的请求文件生成证书(下面失效时间为365天)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">openssl x509 -req -<span class="hljs-keyword">in</span> server.csr -out server.crt -signkey server.key -days 3650<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li><a target="_blank" rel="noopener" href="https://github.com/tapio/live-server#https">live-server开启https</a></li>
+</ol>
+<blockquote>
+<p>如果有现成的https部署的网站，就不用本地这么麻烦了，直接部署在线上</p>
+</blockquote>
+<p>把上一步生成的<code>server.crt</code>和<code>server.key</code>都复制到live-server项目根目录里</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">var</span> liveServer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;live-server&quot;</span>);<br><br><span class="hljs-keyword">var</span> params = &#123;<br>  <span class="hljs-attr">port</span>: <span class="hljs-number">443</span>, <span class="hljs-comment">// Set the server port. Defaults to 8080.</span><br>  <span class="hljs-attr">host</span>: <span class="hljs-string">&quot;0.0.0.0&quot;</span>, <span class="hljs-comment">// Set the address to bind to. Defaults to 0.0.0.0 or process.env.IP.</span><br>  <span class="hljs-attr">root</span>: <span class="hljs-string">&quot;./&quot;</span>, <span class="hljs-comment">// Set root directory that&#x27;s being served. Defaults to cwd.</span><br>  <span class="hljs-attr">open</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// When false, it won&#x27;t load your browser by default.</span><br>  <span class="hljs-attr">ignore</span>: <span class="hljs-string">&quot;scss,my/templates&quot;</span>, <span class="hljs-comment">// comma-separated string for paths to ignore</span><br>  <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;index.html&quot;</span>, <span class="hljs-comment">// When set, serve this file (server root relative) for every 404 (useful for single-page applications)</span><br>  <span class="hljs-attr">wait</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// Waits for all changes, before reloading. Defaults to 0 sec.</span><br>  <span class="hljs-attr">mount</span>: [[<span class="hljs-string">&quot;/components&quot;</span>, <span class="hljs-string">&quot;./node_modules&quot;</span>]], <span class="hljs-comment">// Mount a directory to a route.</span><br>  <span class="hljs-attr">logLevel</span>: <span class="hljs-number">2</span>, <span class="hljs-comment">// 0 = errors only, 1 = some, 2 = lots</span><br>  <span class="hljs-attr">middleware</span>: [<br>    <span class="hljs-keyword">function</span> (<span class="hljs-params">req, res, next</span>) &#123;<br>      <span class="hljs-keyword">if</span> (req.<span class="hljs-property">url</span> === <span class="hljs-string">&quot;/.well-known/assetlinks.json&quot;</span>) &#123;<br>        <span class="hljs-keyword">const</span> data = fs.<span class="hljs-title function_">readFileSync</span>(<br>          path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;./.well-known/assetlinks.json&quot;</span>)<br>        );<br><br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123;<br>          <span class="hljs-string">&quot;Content-Disposition&quot;</span>: <span class="hljs-string">&quot;attachment; filename=assetlinks.json&quot;</span>,<br>          <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,<br>        &#125;);<br><br>        res.<span class="hljs-title function_">end</span>(data);<br>      &#125;<br><br>      <span class="hljs-title function_">next</span>();<br>    &#125;,<br>  ], <span class="hljs-comment">// Takes an array of Connect-compatible middleware that are injected into the server middleware stack</span><br>  <span class="hljs-attr">https</span>: &#123;<br>    <span class="hljs-attr">cert</span>: fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;./server.crt&quot;</span>)),<br>    <span class="hljs-attr">key</span>: fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;./server.key&quot;</span>)),<br>    <span class="hljs-attr">passphrase</span>: <span class="hljs-string">&quot;12345&quot;</span>,<br>  &#125;,<br>  <span class="hljs-comment">// &quot;https-module&quot;: &quot;httpsModule&quot;,</span><br>&#125;;<br>liveServer.<span class="hljs-title function_">start</span>(params);<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li>获取App debug.keystore的SHA256签名</li>
+</ol>
+<blockquote>
+<p>这是在react native项目的根目录执行，debug.keystore的密钥库口令是 <code>android</code></p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">keytool -list -v -keystore android/app/debug.keystore<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li>live-server项目根目录创建<code>.well-known/assetlinks.json</code>文件</li>
+</ol>
+<blockquote>
+<p>这里可以使用<a target="_blank" rel="noopener" href="https://developers.google.cn/digital-asset-links/tools/generator?hl=zh-cn">线上的语句列表生成器和测试器</a></p>
+</blockquote>
+<p>把上面生成的SHA256签名填入下面的<code>sha256_cert_fingerprints</code>中</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;relation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;delegate_permission/common.handle_all_urls&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;target&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;namespace&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;android_app&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;com.example&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sha256_cert_fingerprints&quot;</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;14:6D:E9:83:C5:73:06:50:D8:EE:B9:95:2F:34:FC:64:16:A0:83:42:E6:1D:BE:A8:8A:04:96:B2:3F:CF:44:E5&quot;</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><br></code></pre></div></td></tr></table></figure>
+<ol start="5">
+<li>修改本地hosts</li>
+</ol>
+<figure class="highlight accesslog"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.1.5</span> my.applink.com<br></code></pre></div></td></tr></table></figure>
+
+
+<ol start="6">
+<li>验证访问<code>assetlinks.json</code>文件</li>
+</ol>
+<ul>
+<li>启动live-server项目</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">npx live-server<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>浏览器输入<code>https://my.applink.com/.well-known/assetlinks.json</code>可以正常打开下载，说明部署正常</li>
+</ul>
+<ol start="7">
+<li>手机端验证访问<code>assetlinks.json</code>文件</li>
+</ol>
+<p>手机要和电脑处在同一局域网下(wifi下)，修改手机的wifi代理配置，填入主机名(电脑ip)和端口号，这样手机就可以访问下载<code>assetlinks.json</code>文件了，代理我这里用的是<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/anyproxy">anyproxy</a>。</p>
+<h3 id="5-2-3-测试App-Link"><a href="#5-2-3-测试App-Link" class="headerlink" title="5.2.3 测试App Link"></a>5.2.3 测试App Link</h3><ol>
+<li>测试网址 intent</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">adb shell am start -a android.intent.action.VIEW \<br>    -c android.intent.category.BROWSABLE \<br>    -d <span class="hljs-string">&quot;http://my.applink.com/detail/xxx&quot;</span> \<br>    com.your-app-name<br></code></pre></div></td></tr></table></figure>
+<p><strong>测试结果</strong>：经过实际测试可以正常拉起app，并跳转到app指定页面</p>
+<ol start="2">
+<li>在另一个RN项目中拉起测试</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">Linking</span>.<span class="hljs-title function_">openURL</span>(<span class="hljs-string">&quot;https://my.applink.com/detail/xxx&quot;</span>)<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>测试结果</strong>： 经过实际测试，只拉起了手机本地浏览器，没有拉起app。有可能是上面生成的https证书，手机不认可（浏览器弹出了警告，点击继续才打开网页）</p>
+<ol start="3">
+<li>调用android原生方法传入app link拉起测试</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><span class="hljs-keyword">import</span> android.content.Intent;<br><span class="hljs-keyword">import</span> android.net.Uri;<br><br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactMethod;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Promise;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OpenAppLinkModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactContextBaseJavaModule</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ReactApplicationContext reactContext;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">OPENLINK_OK</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;OPENLINK_OK&quot;</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">OPENLINK_ERR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;OPENLINK_ERR&quot;</span>;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;OpenAppLink&quot;</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">OpenAppLinkModule</span><span class="hljs-params">(ReactApplicationContext context)</span> &#123;<br>    <span class="hljs-built_in">super</span>(context);<br>    reactContext = context;<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleOpenAppLink</span><span class="hljs-params">(String appLinkUrl, String appPackageName, Promise promise)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-type">Intent</span> <span class="hljs-variable">intent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(Intent.ACTION_VIEW, Uri.parse(appLinkUrl));<br>      intent.setPackage(appPackageName);<br>      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);<br>      reactContext.startActivity(intent);<br><br>      promise.resolve(OPENLINK_OK);<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>      promise.reject(OPENLINK_ERR, e);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>js端调用android原生方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">NativeModules</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-native&#x27;</span>;<br><br><span class="hljs-keyword">try</span> &#123;<br>  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">OpenAppLink</span>.<span class="hljs-title function_">handleOpenAppLink</span>(<br>    <span class="hljs-string">&#x27;https://my.applink.com/detail/xxx&#x27;</span>,<br>    <span class="hljs-string">&#x27;com.your-app-name&#x27;</span>,<br>  );<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;openAppLink res:&#x27;</span>, res);<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>测试结果</strong>： 经过实际测试，可以正常拉起app，并跳转到指定页面</p>
+<ol start="4">
+<li>顺便测试下h5页面拉起app</li>
+</ol>
+<ul>
+<li>在live-server的根目录<code>index.html</code>中，添加a链接拉起app</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;deepLinkId&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;yourAppScheme://detail/xxx&quot;</span> <span class="hljs-attr">target</span>=<span class="hljs-string">&quot;_blank&quot;</span>&gt;</span>打开 app 测试<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>如果想在打开h5页面时，免去用户的点击操作，可以添加js，主动派发点击事件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;DOMContentLoaded&quot;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">var</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#deepLinkId&quot;</span>);<br>  <span class="hljs-keyword">var</span> event = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createEvent</span>(<span class="hljs-string">&quot;MouseEvent&quot;</span>);<br>  event.<span class="hljs-title function_">initMouseEvent</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">defaultView</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">null</span>);<br>  btn.<span class="hljs-title function_">dispatchEvent</span>(event);  <span class="hljs-comment">//在这一步会设置event.target,以及触发事件类型</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>测试结果</strong>：经过实际测试，点击a链接，浏览器弹出提示，<code>当前网站请求打开xx app</code>，点击<code>允许</code>，成功拉起app，并跳转到指定页</p>
+<h2 id="5-3-存在的问题和后续挣扎"><a href="#5-3-存在的问题和后续挣扎" class="headerlink" title="5.3 存在的问题和后续挣扎"></a>5.3 存在的问题和后续挣扎</h2><ol>
+<li><p>通过<code>Linking.openURL</code>这个api，传入app link只能拉起本地浏览器，没拉起app</p>
+</li>
+<li><p><code>Linking.canOpenURL</code>这个api，传入deep link链接，返回false，但通过<code>Linking.openURL</code>又能打开，有问题</p>
+</li>
+<li><p>上面费那么大劲，本地部署一个https，把本地服务暂停掉，通过android原生app link拉起目标app，发现其实也是能拉起的，这等于是压根就没有进行校验，好家伙，浪费我感情</p>
+</li>
+<li><p>经过搜索，chatGPT提示，有说是因为我本地https证书的问题，两边RN App项目都要处理</p>
+</li>
+</ol>
+<ul>
+<li><code>android/app/src/main/res/raw</code></li>
+</ul>
+<p>把本地生成的https证书<code>server.crt</code>复制到这里</p>
+<ul>
+<li><code>android/app/src/main/res/xml/network_security_config.xml</code></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">network-security-config</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">base-config</span>&gt;</span><br>      <span class="hljs-comment">&lt;!-- 这里为了测试applink，导入了本地https证书 --&gt;</span><br>      <span class="hljs-comment">&lt;!-- 本地https证书会导致搞得地图无法加载显示 --&gt;</span><br>      <span class="hljs-comment">&lt;!-- 测试完成后，可以注释掉或者删除掉，或者使用正规认证的https证书 --&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">trust-anchors</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">certificates</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;@raw/server&quot;</span>/&gt;</span> <br>      <span class="hljs-tag">&lt;/<span class="hljs-name">trust-anchors</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">base-config</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">network-security-config</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li><code>android/app/src/main/java/com/mydeeplink/TrustServerCrtModule.java</code></li>
+</ul>
+<p>创建原生方法，让app读取并信任证书</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactMethod;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Promise;<br><br><span class="hljs-keyword">import</span> java.io.InputStream;<br><span class="hljs-keyword">import</span> java.security.KeyStore;<br><span class="hljs-keyword">import</span> java.security.SecureRandom;<br><span class="hljs-keyword">import</span> java.security.cert.CertificateFactory;<br><span class="hljs-keyword">import</span> java.security.cert.X509Certificate;<br><br><span class="hljs-keyword">import</span> javax.net.ssl.HttpsURLConnection;<br><span class="hljs-keyword">import</span> javax.net.ssl.SSLContext;  <br><span class="hljs-keyword">import</span> javax.net.ssl.TrustManagerFactory;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrustServerCrtModule</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactContextBaseJavaModule</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ReactApplicationContext reactContext;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">SERVER_READ_OK</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;server.crt已设置为信任&quot;</span>;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">SERVER_READ_ERROR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SERVER_READ_ERROR&quot;</span>;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;TrustServerCrt&quot;</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">TrustServerCrtModule</span><span class="hljs-params">(ReactApplicationContext context)</span> &#123;<br>    <span class="hljs-built_in">super</span>(context);<br>    reactContext = context;<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">readServerCrt</span><span class="hljs-params">(Promise promise)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-comment">// 读取证书文件</span><br>      <span class="hljs-type">InputStream</span> <span class="hljs-variable">certStream</span> <span class="hljs-operator">=</span> reactContext.getResources().openRawResource(R.raw.server);<br>      <span class="hljs-type">CertificateFactory</span> <span class="hljs-variable">cf</span> <span class="hljs-operator">=</span> CertificateFactory.getInstance(<span class="hljs-string">&quot;X.509&quot;</span>);<br>      <span class="hljs-type">X509Certificate</span> <span class="hljs-variable">cert</span> <span class="hljs-operator">=</span> (X509Certificate) cf.generateCertificate(certStream);<br><br>      <span class="hljs-comment">// 创建一个证书集合,将自签名证书放入</span><br>      <span class="hljs-type">KeyStore</span> <span class="hljs-variable">keyStore</span> <span class="hljs-operator">=</span> KeyStore.getInstance(KeyStore.getDefaultType());<br>      keyStore.load(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);<br>      keyStore.setCertificateEntry(<span class="hljs-string">&quot;ca&quot;</span>, cert);<br><br>      <span class="hljs-comment">// 使用含有新证书的 TrustManager</span><br>      <span class="hljs-type">SSLContext</span> <span class="hljs-variable">sslContext</span> <span class="hljs-operator">=</span> SSLContext.getInstance(<span class="hljs-string">&quot;TLS&quot;</span>);<br>      <span class="hljs-type">TrustManagerFactory</span> <span class="hljs-variable">trustManagerFactory</span> <span class="hljs-operator">=</span> TrustManagerFactory<br>          .getInstance(TrustManagerFactory.getDefaultAlgorithm());<br>      trustManagerFactory.init(keyStore);<br>      sslContext.init(<span class="hljs-literal">null</span>, trustManagerFactory.getTrustManagers(), <span class="hljs-keyword">new</span> <span class="hljs-title class_">SecureRandom</span>());<br><br>      <span class="hljs-comment">// 设置全局的 SSLSocketFactory</span><br>      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());<br><br>      promise.resolve(SERVER_READ_OK);<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>      promise.reject(SERVER_READ_ERROR, e);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>js端调用</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">TrustServerCrt</span>.<span class="hljs-title function_">readServerCrt</span>();<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>结果</strong>：一顿猛虎操作，毛用都没，再次浪费我感情</p>
+<ol start="5">
+<li><code>assetlinks.json</code>部署在公网上，并且能够通过https正常访问<code>/.well-known/assetlinks.json</code>，然后再使用<code>Linking.openURL</code>调用</li>
+</ol>
+<p><strong>结果</strong>：只是拉起本地浏览器，未拉起app</p>
+<ol start="6">
+<li><p>准备用android studio来配置，当我把项目导入后，点击<code>Tools -- App Links Assistant</code>弹出面板后，在第一步<code>Open URL Mapping Editor</code>中填了<code>Host、Path和pathPrefix</code>后，死活选择不了<code>Activity</code>，无语。。。</p>
+</li>
+<li><p>一番搜索，说是国内网络原因，app link使用有问题，知道的说一声；</p>
+</li>
+</ol>
+<h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6.参考资料"></a>6.参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/linking">React Native Linking</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links?hl=zh-cn">Android 应用链接</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/write/app-link-indexing?hl=zh-cn">添加 Android App Links</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/react-native/">react native</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/react/">react</a>
+                    
+                      <a class="hover-with-bg" href="/tags/react-native/">react native</a>
+                    
+                      <a class="hover-with-bg" href="/tags/android/">android</a>
+                    
+                      <a class="hover-with-bg" href="/tags/deep-link/">deep link</a>
+                    
+                      <a class="hover-with-bg" href="/tags/app-link/">app link</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/09/27/hello-world/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/31/refresh-token/">
+                        <span class="hidden-mobile">一次页面请求loading转圈圈没停止bug的追踪</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

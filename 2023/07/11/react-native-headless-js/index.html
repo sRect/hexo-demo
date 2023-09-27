@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="sRect">
+  <meta name="keywords" content="前端, Vue, React">
+  
+    <meta name="description" content="本文github 仓库 本文掘金链接  1. 写在前面有J友在掘金私信我，react native android中，app在后台如何持续获取位置信息，还有headless js中setTimeout没有按预期执行两个问题。问我有什么解决方法，当时我就懵逼了，这不是触及到我装X盲区了吗，况且我只是js菜鸡，不会android，难受！ 2. 本文主要 package version   packa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native Android 端Headless JS后台 GPS 持续定位">
+<meta property="og:url" content="https://srect.github.io/2023/07/11/react-native-headless-js/index.html">
+<meta property="og:site_name" content="sRect的个人博客">
+<meta property="og:description" content="本文github 仓库 本文掘金链接  1. 写在前面有J友在掘金私信我，react native android中，app在后台如何持续获取位置信息，还有headless js中setTimeout没有按预期执行两个问题。问我有什么解决方法，当时我就懵逼了，这不是触及到我装X盲区了吗，况且我只是js菜鸡，不会android，难受！ 2. 本文主要 package version   packa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://srect.github.io/assets/img/react-native-headless-js/index.jpeg">
+<meta property="article:published_time" content="2023-07-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-27T08:42:31.803Z">
+<meta property="article:author" content="sRect">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="react native">
+<meta property="article:tag" content="持续定位">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://srect.github.io/assets/img/react-native-headless-js/index.jpeg">
+  
+  
+  <title>React Native Android 端Headless JS后台 GPS 持续定位 - sRect的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"srect.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>sRect的个人博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="React Native Android 端Headless JS后台 GPS 持续定位">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      sRect
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-07-12 00:00" pubdate>
+        2023年7月12日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      16k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      137 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">React Native Android 端Headless JS后台 GPS 持续定位</h1>
+            
+            <div class="markdown-body">
+              <ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sRect/reactNativeBlogApp/commit/f328f51c9686da68d04c24bdaa43ef0ffe73b332">本文github 仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7254811625055944762">本文掘金链接</a></li>
+</ul>
+<h2 id="1-写在前面"><a href="#1-写在前面" class="headerlink" title="1. 写在前面"></a>1. 写在前面</h2><p>有J友在掘金私信我，react native android中，app在后台如何持续获取位置信息，还有headless js中setTimeout没有按预期执行两个问题。问我有什么解决方法，当时我就懵逼了，这不是触及到我装X盲区了吗，况且我只是js菜鸡，不会android，难受！</p>
+<h2 id="2-本文主要-package-version"><a href="#2-本文主要-package-version" class="headerlink" title="2. 本文主要 package version"></a>2. 本文主要 package version</h2><table>
+<thead>
+<tr>
+<th>package</th>
+<th align="center">version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>react</td>
+<td align="center">18.2.0</td>
+</tr>
+<tr>
+<td>react-native</td>
+<td align="center">0.71.2</td>
+</tr>
+<tr>
+<td>@react-native-community&#x2F;geolocation</td>
+<td align="center">^3.0.5</td>
+</tr>
+</tbody></table>
+<ul>
+<li>当前react native最新版本是v0.72</li>
+</ul>
+<h2 id="3-前置基础"><a href="#3-前置基础" class="headerlink" title="3. 前置基础"></a>3. 前置基础</h2><ol>
+<li>React 基础</li>
+<li><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/native-modules-android">React Native Android 原生模块</a>，已经跟着文档，在js中调用android暴露的方法</li>
+</ol>
+<h2 id="4-初步了解Headless-JS"><a href="#4-初步了解Headless-JS" class="headerlink" title="4. 初步了解Headless JS"></a>4. 初步了解Headless JS</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/headless-js-android">Headless JS文档</a></p>
+</blockquote>
+<ol>
+<li><p>Headless JS 是一种使用 js 在后台执行任务的方法。它可以用来在后台同步数据、处理推送通知或是播放音乐等等。</p>
+</li>
+<li><p>可以在任务中处理任何事情（网络请求、定时器等），但**<code>不要涉及UI界面</code>**</p>
+</li>
+<li><p><code>The function passed to setTimeout does not always behave as expected. Instead the function is called only when the application is launched again. If you just need to wait, use the retry functionality</code>，文档这里已经说明，headless js中<code>setTimeout</code>不会按预期执行，而是会在app再次启动的时候才执行(就是app切到后台时，不会执行，切回前台的时候才执行)，那用什么代替setTimout呢？下面会讲到。</p>
+</li>
+<li><p>Headless JS中发起网络请求，经过实际测试，完全没问题的</p>
+</li>
+<li><p>还有，<strong>app进程被杀掉(人为主动杀掉和系统资源优化掉)，Headless JS后台任务也会停止</strong>，这里不讨论进程被杀掉还能继续执行后台任务</p>
+</li>
+</ol>
+<h2 id="5-使用Headless-JS的姿势"><a href="#5-使用Headless-JS的姿势" class="headerlink" title="5. 使用Headless JS的姿势"></a>5. 使用Headless JS的姿势</h2><blockquote>
+<p>在<a target="_blank" rel="noopener" href="https://juejin.cn/post/7234407587118530597#heading-25">React Native 练习时长 2 月半，踩坑总结</a>文章中有涉及到使用Headless JS后台播放raw本地音频文件，那里是使用<code>AppRegistry.startHeadlessTask(taskId, taskKey, data)</code>api开始后台任务的，在官方文档中有提到在<code>service</code>中启动，但是步骤都不是非常详细</p>
+</blockquote>
+<h3 id="5-1-使用AppRegistry-startHeadlessTask-api启动Headless-js后台任务"><a href="#5-1-使用AppRegistry-startHeadlessTask-api启动Headless-js后台任务" class="headerlink" title="5.1 使用AppRegistry.startHeadlessTask api启动Headless js后台任务"></a>5.1 使用<code>AppRegistry.startHeadlessTask</code> api启动Headless js后台任务</h3><p>具体步骤，详见<a target="_blank" rel="noopener" href="https://juejin.cn/post/7234407587118530597#heading-29">这篇文章-7.4章节app后台播放音频示例步骤</a>，每一步都很详细，对着步骤来。</p>
+<h3 id="5-2-通过android-WorkManager中调用services，启动Headless-js后台任务"><a href="#5-2-通过android-WorkManager中调用services，启动Headless-js后台任务" class="headerlink" title="5.2 通过android WorkManager中调用services，启动Headless js后台任务"></a>5.2 通过<code>android WorkManager</code>中调用<code>services</code>，启动Headless js后台任务</h3><blockquote>
+<p>怎么突然又冒出来<code>WorkManager</code>了？没办法啊，按着文档那种方式来，Headless JS中代码不执行，下面步骤1代码中会提到</p>
+</blockquote>
+<p><code>WokerManager</code>是什么？</p>
+<p><a target="_blank" rel="noopener" href="https://blog.logrocket.com/run-react-native-background-tasks-headless-js/"><code>WorkManager is the recommended way to perform background tasks in Android. WorkManager can schedule one-time or periodic tasks in a simple, reliable way.</code></a></p>
+<p>意思就是说，WorkManager是android中推荐执行后台任务的方式，可以执行一次性任务和定时任务。</p>
+<ol>
+<li><code>android/app/src/main/java/com/your-app-name/BackgroundPosition.java</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContext;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactContextBaseJavaModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactMethod;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Promise;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.WritableMap;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Arguments;<br><span class="hljs-keyword">import</span> com.facebook.react.modules.core.DeviceEventManagerModule;<br><span class="hljs-keyword">import</span> android.content.Context;<br><span class="hljs-keyword">import</span> android.app.ActivityManager;<br><br><span class="hljs-keyword">import</span> androidx.work.ExistingPeriodicWorkPolicy; <br><span class="hljs-keyword">import</span> androidx.work.PeriodicWorkRequest;<br><span class="hljs-keyword">import</span> androidx.work.WorkManager;<br><br><span class="hljs-keyword">import</span> java.util.Timer;<br><span class="hljs-keyword">import</span> java.util.TimerTask;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> javax.annotation.Nullable;<br><span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BackgroundPosition</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ReactContextBaseJavaModule</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ReactApplicationContext reactContext;<br>  <span class="hljs-keyword">private</span> <span class="hljs-type">Timer</span> <span class="hljs-variable">timer</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<span class="hljs-comment">//计时器</span><br>  <span class="hljs-keyword">private</span> <span class="hljs-type">TimerTask</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>  <span class="hljs-comment">// private LocationManager locationManager; </span><br>  <span class="hljs-comment">// private LocationListener locationListener; </span><br>  <span class="hljs-keyword">private</span> PeriodicWorkRequest workRequest;<br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">TAGERROR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;START_BACKGROUND_TASK_ERROR&quot;</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">BackgroundPosition</span><span class="hljs-params">(ReactApplicationContext context)</span> &#123;<br>    <span class="hljs-built_in">super</span>(context);<br>    reactContext = context;<br><br>    workRequest = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PeriodicWorkRequest</span>.Builder(BackgroundPositionWorker.class, <span class="hljs-number">15</span>, TimeUnit.MINUTES).build();<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BackgroundPosition&quot;</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendEvent</span><span class="hljs-params">(ReactContext reactContext, String eventName, <span class="hljs-meta">@Nullable</span> WritableMap params)</span> &#123;<br>    reactContext<br>        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)<br>        .emit(eventName, params);<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addListener</span><span class="hljs-params">(String eventName)</span> &#123;<br>    <span class="hljs-comment">// Set up any upstream listeners or background tasks as necessary</span><br>  &#125;<br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeListeners</span><span class="hljs-params">(Integer count)</span> &#123;<br>    <span class="hljs-comment">// Remove upstream listeners, stop unnecessary background tasks</span><br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAppOnForeground</span><span class="hljs-params">(Context context)</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">      我们需要先检查应用当前是否在前台运行，否则应用会崩溃。</span><br><span class="hljs-comment">      http://stackoverflow.com/questions/8489993/check-android-application-is-in-foreground-or-not</span><br><span class="hljs-comment">    **/</span><br>    <span class="hljs-type">ActivityManager</span> <span class="hljs-variable">activityManager</span> <span class="hljs-operator">=</span> (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);<br>    List&lt;ActivityManager.RunningAppProcessInfo&gt; appProcesses =<br>    activityManager.getRunningAppProcesses();<br>    <span class="hljs-keyword">if</span> (appProcesses == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">packageName</span> <span class="hljs-operator">=</span> context.getPackageName();<br>    <span class="hljs-keyword">for</span> (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) &#123;<br>        <span class="hljs-keyword">if</span> (appProcess.importance ==<br>        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND &amp;&amp;<br>          appProcess.processName.equals(packageName)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">startBackgroudTask</span><span class="hljs-params">(Promise promise)</span> &#123;<br>    <span class="hljs-keyword">if</span>(timer!=<span class="hljs-literal">null</span>) &#123;<br>      timer.cancel();<br>      timer=<span class="hljs-literal">null</span>;<br>    &#125;<br><br>    timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Timer</span>();<br>    task = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TimerTask</span>() &#123;<br>      <span class="hljs-meta">@Override</span><br>      <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>          <span class="hljs-keyword">if</span>(!isAppOnForeground(reactContext)) &#123;<br>            <span class="hljs-type">WritableMap</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> Arguments.createMap();<br>            params.putString(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;app已经在后台了，准备启动BackgroundPostionWorker&quot;</span>);<br>            sendEvent(reactContext, <span class="hljs-string">&quot;backgroundTask&quot;</span>, params);<br><br>            <span class="hljs-comment">// 上面讲到为什么要冒出来WorkManager，就是因为这里</span><br>            <span class="hljs-comment">// 直接在js中调用startBackgroudTask，执行reactContext.startService(service)</span><br>            <span class="hljs-comment">// 但是headless js中的任务不执行</span><br>            <span class="hljs-comment">// 所以这里通过WorkManager开始一个work任务，然后在work中启动startService</span><br><br>            <span class="hljs-comment">// Intent service = new Intent(reactContext, BackgroundPositionServices.class);</span><br>            <span class="hljs-comment">// // service.putExtra(&quot;backgroundTask&quot;, &quot;123&quot;);</span><br>            <span class="hljs-comment">// // reactContext.startService(service);</span><br><br>            <span class="hljs-comment">// Bundle bundle = new Bundle();</span><br>            <span class="hljs-comment">// bundle.putString(&quot;foo&quot;, &quot;bar&quot;);</span><br>            <span class="hljs-comment">// service.putExtras(bundle);</span><br><br>            <span class="hljs-comment">// // if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</span><br>            <span class="hljs-comment">// //   reactContext.startForegroundService(service);</span><br>            <span class="hljs-comment">// // &#125; else &#123;</span><br>            <span class="hljs-comment">// //   reactContext.startService(service);</span><br>            <span class="hljs-comment">// // &#125;</span><br><br>            <span class="hljs-comment">// reactContext.startService(service);</span><br>            <span class="hljs-comment">// // HeadlessJsTaskService.acquireWakeLockNow(reactContext);</span><br><br>            WorkManager.getInstance().enqueueUniquePeriodicWork(<span class="hljs-string">&quot;BackgroundPositionWorker&quot;</span>, ExistingPeriodicWorkPolicy.KEEP, workRequest);<br><br>            <span class="hljs-type">WritableMap</span> <span class="hljs-variable">params2</span> <span class="hljs-operator">=</span> Arguments.createMap();<br>            params2.putString(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;BackgroundPostionWorker started&quot;</span>);<br>            promise.resolve(params2);<br>          &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>          e.printStackTrace();<br>          promise.reject(TAGERROR, e);<br>        &#125;<br>      &#125;<br>    &#125;;<br>    <span class="hljs-comment">// 3s后执行1次</span><br>    timer.schedule(task, <span class="hljs-number">3000</span>);<br>  &#125;<br><br>  <span class="hljs-meta">@ReactMethod</span><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">stopBackgroudTask</span><span class="hljs-params">(Promise promise)</span> &#123;<br>    <span class="hljs-keyword">if</span>(timer!=<span class="hljs-literal">null</span>) &#123;<br>      timer.cancel();<br>      timer=<span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// if(locationManager != null &amp;&amp; locationListener != null) &#123;</span><br>    <span class="hljs-comment">//   locationManager.removeUpdates(locationListener);</span><br>    <span class="hljs-comment">// &#125;</span><br>    <span class="hljs-type">WritableMap</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> Arguments.createMap();<br>    params.putString(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;BackgroundPostionWorker stop successed&quot;</span>);<br><br>    WorkManager.getInstance().cancelUniqueWork(<span class="hljs-string">&quot;BackgroundPositionWorker&quot;</span>);<br>    promise.resolve(params);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="2">
+<li><code>android/app/src/main/java/com/your-app-name/BackgroundPositionPackage.java</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> com.facebook.react.ReactPackage;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.NativeModule;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;<br><span class="hljs-keyword">import</span> com.facebook.react.uimanager.ViewManager;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.Collections;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BackgroundPositionPackage</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ReactPackage</span> &#123;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;ViewManager&gt; <span class="hljs-title function_">createViewManagers</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    <span class="hljs-keyword">return</span> Collections.emptyList();<br>  &#125;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> List&lt;NativeModule&gt; <span class="hljs-title function_">createNativeModules</span><span class="hljs-params">(ReactApplicationContext reactContext)</span> &#123;<br>    List&lt;NativeModule&gt; modules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br>    modules.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BackgroundPosition</span>(reactContext));<br><br>    <span class="hljs-keyword">return</span> modules;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="3">
+<li><code>android/app/src/main/java/com/your-app-name/MainApplication.java</code></li>
+</ol>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff"><span class="hljs-addition">+ import com.your-app-name.BackgroundPositionPackage;</span><br><br>public class MainApplication extends Application implements ReactApplication &#123;<br>    ...<br>    @Override<br>    protected List&lt;ReactPackage&gt; getPackages() &#123;<br>      @SuppressWarnings(&quot;UnnecessaryLocalVariable&quot;)<br>      List&lt;ReactPackage&gt; packages = new PackageList(this).getPackages();<br><br><span class="hljs-addition">+     packages.add(new BackgroundPositionPackage());// &lt;-- 添加这一行，类名替换成你的Package类的名字 name.</span><br>      return packages;<br>    &#125;<br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="4">
+<li><code>android/app/src/main/java/com/your-app-name/BackgroundPositionServices.java</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> android.content.Intent;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> com.facebook.react.HeadlessJsTaskService;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.Arguments;<br><span class="hljs-keyword">import</span> com.facebook.react.jstasks.HeadlessJsTaskConfig;<br><span class="hljs-keyword">import</span> com.facebook.react.bridge.WritableMap;<br><span class="hljs-keyword">import</span> com.facebook.react.jstasks.HeadlessJsTaskRetryPolicy;<br><span class="hljs-keyword">import</span> com.facebook.react.jstasks.LinearCountingRetryPolicy;<br><br><span class="hljs-keyword">import</span> javax.annotation.Nullable;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BackgroundPositionServices</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HeadlessJsTaskService</span> &#123;<br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">protected</span> <span class="hljs-meta">@Nullable</span> HeadlessJsTaskConfig <span class="hljs-title function_">getTaskConfig</span><span class="hljs-params">(Intent intent)</span> &#123;<br>    <span class="hljs-type">Bundle</span> <span class="hljs-variable">extras</span> <span class="hljs-operator">=</span> intent.getExtras();<br>    <span class="hljs-type">WritableMap</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> extras != <span class="hljs-literal">null</span> ? Arguments.fromBundle(extras) : Arguments.createMap();<br>    <span class="hljs-comment">// https://github.com/eduardomota/smsgate/blob/803f775ae419db2aea63aeac5def15eb0ec28542/smsrelay2/android/app/src/main/java/com/smsrelay2/SmsEventService.java</span><br>    <span class="hljs-type">LinearCountingRetryPolicy</span> <span class="hljs-variable">retryPolicy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinearCountingRetryPolicy</span>(<br>      <span class="hljs-number">3</span>, <span class="hljs-comment">// Max number of retry attempts</span><br>      <span class="hljs-number">1000</span> <span class="hljs-comment">// Delay between each retry attempt</span><br>    );<br><br>    <span class="hljs-comment">// if (extras != null) &#123;</span><br>    <span class="hljs-comment">//   return new HeadlessJsTaskConfig(</span><br>    <span class="hljs-comment">//       &quot;BackgroundTask&quot;,</span><br>    <span class="hljs-comment">//       Arguments.fromBundle(extras),</span><br>    <span class="hljs-comment">//       5000, // 任务的超时时间</span><br>    <span class="hljs-comment">//       false // 可选参数：是否允许任务在前台运行，默认为false</span><br>    <span class="hljs-comment">//     );</span><br>    <span class="hljs-comment">// &#125;</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeadlessJsTaskConfig</span>(<br>      <span class="hljs-string">&quot;BackgroundPosition&quot;</span>,<br>      data,<br>      <span class="hljs-number">10000</span>, <span class="hljs-comment">// 任务的超时时间</span><br>      <span class="hljs-literal">false</span>, <span class="hljs-comment">// 可选参数：是否允许任务在前台运行，默认为false</span><br>      retryPolicy<br>    );<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="5">
+<li><code>android/app/src/main/java/com/your-app-name/BackgroundPositionWorker.java</code></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.your-app-name;<br><br><span class="hljs-keyword">import</span> androidx.annotation.NonNull;<br><span class="hljs-keyword">import</span> androidx.work.Worker; <br><span class="hljs-keyword">import</span> androidx.work.WorkerParameters;<br><br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.content.Intent;<br><span class="hljs-keyword">import</span> android.content.Context;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BackgroundPositionWorker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Worker</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BackgroundPositionWorker</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@NonNull</span> Context context, </span><br><span class="hljs-params">        <span class="hljs-meta">@NonNull</span> WorkerParameters workerParams)</span> &#123;<br>        <span class="hljs-built_in">super</span>(context, workerParams);<br>    &#125;<br><br>    <span class="hljs-meta">@NonNull</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Result <span class="hljs-title function_">doWork</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Intent</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(getApplicationContext(), BackgroundPositionServices.class);<br>        <span class="hljs-type">Bundle</span> <span class="hljs-variable">bundle</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Bundle</span>();<br>        bundle.putString(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;backgroundPosition start&quot;</span>);<br>        service.putExtras(bundle);<br>        getApplicationContext().startService(service);<br>        <span class="hljs-keyword">return</span> Result.success();<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="6">
+<li><code>android/app/src/main/AndroidManifest.xml</code>中添加权限</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml">...<br>+ <span class="hljs-comment">&lt;!-- 精确定位 --&gt;</span><br>+ <span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.ACCESS_FINE_LOCATION&quot;</span>/&gt;</span><br>+ <span class="hljs-comment">&lt;!-- 模糊定位 --&gt;</span><br>+ <span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.ACCESS_COARSE_LOCATION&quot;</span> /&gt;</span><br>+ <span class="hljs-comment">&lt;!-- 后台定位 --&gt;</span><br>+ <span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.ACCESS_BACKGROUND_LOCATION&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span> <br>    ... <br>    + <span class="hljs-tag">&lt;<span class="hljs-name">service</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;com.your-app-name.BackgroundPositionServices&quot;</span> /&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="7">
+<li><code>index.js</code>中注册后台任务</li>
+</ol>
+<figure class="highlight diff"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs diff">import &#123;AppRegistry&#125; from &#x27;react-native&#x27;;<br>import App from &#x27;./App&#x27;;<br>import &#123;name as appName&#125; from &#x27;./app.json&#x27;;<br><span class="hljs-addition">+ import &#123;backgroundPosition&#125; from &#x27;./src/utils&#x27;;</span><br><br>AppRegistry.registerComponent(appName, () =&gt; App);<br><span class="hljs-addition">+ AppRegistry.registerHeadlessTask(&#x27;BackgroundPosition&#x27;, () =&gt; backgroundPosition);</span><br></code></pre></div></td></tr></table></figure>
+
+<ol start="8">
+<li><code>src/utils/backgroundPosition.js</code>后台任务具体代码</li>
+</ol>
+<ul>
+<li><p>这里使用<code>@react-native-async-storage/async-storage</code>的<code>Geolocation.watchPosition</code>来监测位置变化，您也可以在android中开启一个定时任务，然后发送位置给js端</p>
+</li>
+<li><p>刚开始没注意到有<code>watchPosition</code>这个api，定时执行<code>Geolocation.getCurrentPosition</code>这个api来获取，当app切换到后台时，没看到手机顶部位置有定位图标，而<code>watchPosition</code>这个api执行的时候，app在后台的时候，手机顶部有定位图标，就和使用百度地图时一样。</p>
+</li>
+<li><p>这里将gps位置通过<a target="_blank" rel="noopener" href="https://react-native-async-storage.github.io/async-storage/docs/api/#clear"><code>@react-native-async-storage/async-storage</code></a>存储在本地</p>
+</li>
+<li><p>gps位置坐标google地图可以直接使用，而要在高德或者百度地图中使用要转换，怎么转换，可以使用<a href="https://link.juejin.cn/?target=https://lbs.amap.com/api/webservice/guide/api/convert">高德坐标转换</a>，或者<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dd0c017250e4">GPS坐标转高德地标（火星坐标&#x2F;国测坐标）脚本转换</a></p>
+</li>
+<li><p>或者这里干脆就使用其他模块，直接获取高德或者百度地图坐标，例如<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/react-native-amap-geolocation"><code>react-native-amap-geolocation</code></a>，但这个库我没测试使用过</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">InteractionManager</span>, <span class="hljs-title class_">AppState</span>, <span class="hljs-title class_">NativeModules</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-native&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Geolocation</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@react-native-community/geolocation&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">AsyncStorage</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@react-native-async-storage/async-storage&#x27;</span>;<br><span class="hljs-keyword">import</span> dayjs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dayjs&#x27;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">BackgroundPosition</span> = <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">BackgroundPosition</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">handleListenerAppState</span>(<span class="hljs-params">watchId = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-keyword">const</span> subscription = <span class="hljs-title class_">AppState</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;change&#x27;</span>, <span class="hljs-function"><span class="hljs-params">nextAppState</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;nextAppState&#x27;</span>, nextAppState);<br>    <span class="hljs-keyword">if</span> (nextAppState === <span class="hljs-string">&#x27;active&#x27;</span>) &#123;<br>      flag = <span class="hljs-literal">false</span>;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;app回到前台，后台任务停止&#x27;</span>);<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;watchId:&#x27;</span>, watchId);<br>      <span class="hljs-title class_">BackgroundPosition</span>.<span class="hljs-title function_">stopBackgroudTask</span>();<br>      <span class="hljs-title class_">Geolocation</span>.<span class="hljs-title function_">clearWatch</span>(watchId);<br>      subscription.<span class="hljs-title function_">remove</span>();<br>    &#125;<br>  &#125;);<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">backgroundPosition</span>(<span class="hljs-params">e</span>) &#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-title class_">AsyncStorage</span>.<span class="hljs-title function_">clear</span>();<br><br>  <span class="hljs-keyword">const</span> handle = <span class="hljs-title class_">InteractionManager</span>.<span class="hljs-title function_">createInteractionHandle</span>();<br>  <span class="hljs-title class_">InteractionManager</span>.<span class="hljs-title function_">runAfterInteractions</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// ...需要长时间同步执行的任务...</span><br>    <span class="hljs-comment">// getCurrentPosition();</span><br>    <span class="hljs-keyword">let</span> watchPositionId = <span class="hljs-title class_">Geolocation</span>.<span class="hljs-title function_">watchPosition</span>(<br>      <span class="hljs-keyword">async</span> info =&gt; &#123;<br>        <span class="hljs-keyword">const</span> &#123;<br>          <span class="hljs-attr">coords</span>: &#123;latitude, longitude&#125;,<br>        &#125; = info;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;当前位置：&#x27;</span>, latitude, longitude);<br><br>        <span class="hljs-keyword">let</span> locationListStr = <span class="hljs-keyword">await</span> <span class="hljs-title class_">AsyncStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;location&#x27;</span>);<br>        <span class="hljs-keyword">let</span> locationObj =<br>          locationListStr === <span class="hljs-literal">null</span> ? &#123;<span class="hljs-attr">list</span>: []&#125; : <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(locationListStr);<br>        locationObj.<span class="hljs-property">list</span>.<span class="hljs-title function_">push</span>(&#123;<br>          latitude,<br>          longitude,<br>          <span class="hljs-attr">date</span>: <span class="hljs-title function_">dayjs</span>().<span class="hljs-title function_">format</span>(<span class="hljs-string">&#x27;YYYY-MM-DD HH:mm:ss&#x27;</span>),<br>        &#125;);<br><br>        <span class="hljs-keyword">await</span> <span class="hljs-title class_">AsyncStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&#x27;location&#x27;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(locationObj));<br>      &#125;,<br>      <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">&#x27;获取定位失败==&gt;&#x27;</span>, err);<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">interval</span>: <span class="hljs-number">5000</span>, <span class="hljs-comment">// 每5s更新一次位置</span><br>        <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>, <span class="hljs-comment">// 获取一个位置，10s钟超时</span><br>        <span class="hljs-attr">maximumAge</span>: <span class="hljs-number">15000</span>, <span class="hljs-comment">// 可能缓存位置的最长时间(以毫秒为单位)</span><br>        <span class="hljs-attr">enableHighAccuracy</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 使用GPS</span><br>        <span class="hljs-attr">distanceFilter</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// 返回一个新位置之前，与前一个位置的最小距离。设置为0表示不过滤位置。默认为100m。</span><br>        <span class="hljs-comment">// useSignificantChanges?: boolean; // 只有当设备检测到一个重要的距离已经被突破时，才会返回位置。默认为FALSE。</span><br>      &#125;,<br>    );<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;watchPositionId:&#x27;</span>, watchPositionId);<br>    <span class="hljs-title function_">handleListenerAppState</span>(watchPositionId);<br>  &#125;);<br><br>  <span class="hljs-title class_">InteractionManager</span>.<span class="hljs-title function_">clearInteractionHandle</span>(handle);<br>  <span class="hljs-comment">// return await Promise.resolve();</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<ol start="9">
+<li>页面UI中点击某按钮执行后台任务</li>
+</ol>
+<ul>
+<li><p>Android 10（API 级别 29）中，新增了ACCESS_BACKGROUND_LOCATION后台权限</p>
+</li>
+<li><p>在android 11级以上版本需要先申请ACCESS_COARSE_LOCATIO和ACCESS_FINE_LOCATION后, 再申请ACCESS_BACKGROUND_LOCATION权限，才能确保前台访问位置权限和后台访问位置权限正常</p>
+</li>
+<li><p>如果同时申请这三个权限时不会弹窗，系统会忽略权限请求，不会授予其中的任一权限。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">BackgroundPosition</span> = <span class="hljs-title class_">NativeModules</span>.<span class="hljs-property">BackgroundPosition</span>;<br><span class="hljs-comment">// 申请定位权限</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAndroidPositionPermission</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// https://juejin.cn/post/7058265721540706311</span><br>    <span class="hljs-comment">// android 11及以上版本申请权限时系统对话框不存在始终允许的选项，并且只能够在系统设置页面打开后台权限。</span><br><br>    <span class="hljs-keyword">const</span> granted1 = <span class="hljs-keyword">await</span> <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-title function_">requestMultiple</span>([<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">ACCESS_FINE_LOCATION</span>,<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">ACCESS_COARSE_LOCATION</span>,<br>    ]);<br><br>    <span class="hljs-keyword">const</span> granted2 = <span class="hljs-keyword">await</span> <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-title function_">request</span>(<br>      <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">PERMISSIONS</span>.<span class="hljs-property">ACCESS_BACKGROUND_LOCATION</span>,<br>    );<br><br>    <span class="hljs-keyword">if</span> (<br>      granted1[<span class="hljs-string">&#x27;android.permission.ACCESS_FINE_LOCATION&#x27;</span>] ===<br>        <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">GRANTED</span> &amp;&amp;<br>      granted1[<span class="hljs-string">&#x27;android.permission.ACCESS_COARSE_LOCATION&#x27;</span>] ===<br>        <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">GRANTED</span> &amp;&amp;<br>      granted2 === <span class="hljs-title class_">PermissionsAndroid</span>.<span class="hljs-property">RESULTS</span>.<span class="hljs-property">GRANTED</span><br>    ) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;可以定位了&#x27;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;拒绝获取定位权限&#x27;</span>);<br>      <span class="hljs-title class_">Toast</span>.<span class="hljs-title function_">fail</span>(&#123;<br>        <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;拒绝获取定位权限&quot;</span>,<br>        <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>        <span class="hljs-attr">stackable</span>: <span class="hljs-literal">true</span>,<br>      &#125;);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(&#123;<span class="hljs-attr">msg</span>: <span class="hljs-string">&#x27;拒绝获取定位权限&#x27;</span>&#125;);<br>    &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(error);<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>();<br>  &#125;<br>&#125;;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleBackgroundTask</span> = <span class="hljs-keyword">async</span> type =&gt; &#123;<br>  <span class="hljs-comment">// 点击按钮后，将app切换到后台，即可执行后台任务，</span><br>  <span class="hljs-comment">// 或者这里通过AppState监听，app在后台，自动执行后台任务</span><br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;start&#x27;</span>) &#123;<br>      <span class="hljs-comment">// 申请定位权限</span><br>      <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleAndroidPositionPermission</span>();<br>      <span class="hljs-comment">// 开始后台任务</span><br>      <span class="hljs-keyword">await</span> <span class="hljs-title class_">BackgroundPosition</span>.<span class="hljs-title function_">startBackgroudTask</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-comment">// 结束后台任务</span><br>      <span class="hljs-keyword">await</span> <span class="hljs-title class_">BackgroundPosition</span>.<span class="hljs-title function_">stopBackgroudTask</span>();<br>    &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;handleBackgroundTask error&#x27;</span>, error);<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="6-实际测试结果和存在的问题"><a href="#6-实际测试结果和存在的问题" class="headerlink" title="6. 实际测试结果和存在的问题"></a>6. 实际测试结果和存在的问题</h2><blockquote>
+<p>测试机型小米10，android13</p>
+</blockquote>
+<ol>
+<li>开启后台任务后，手机锁屏，执行20分钟后，app被系统自己杀掉了，如果是在持续玩手机，app没被系统杀掉，可能和手机的省电策略有关；</li>
+<li>坐标保存不是很多，甚至出现中途有20分钟没保存坐标，不知道什么原因；</li>
+<li>保存的gps坐标，在google地图上和活动轨迹大概吻合，但是误差有点大；</li>
+<li>可能是<code>@react-native-async-storage/async-storage</code>的<code>watchPosition</code>有问题，需要自定义一个实时获取坐标的安卓原生模块对比测试下</li>
+</ol>
+<h2 id="7-关于在Headless-JS中如何执行setTimeout"><a href="#7-关于在Headless-JS中如何执行setTimeout" class="headerlink" title="7. 关于在Headless JS中如何执行setTimeout?"></a>7. 关于在Headless JS中如何执行<code>setTimeout</code>?</h2><p>ISSUE里搜了下，也没什么关键信息，甚至显示有人已经提交过PR了</p>
+<p><img src="/assets/img/react-native-headless-js/setTimeout.png" srcset="/img/loading.gif" lazyload alt="setTimeout.png"></p>
+<ol>
+<li><p>那使用<code>requestAnimationFrame</code>呢？经过实际测试，有时候执行，有时候不执行</p>
+</li>
+<li><p><code>setInterval</code>和<code>setImmediate</code>也不行</p>
+</li>
+<li><p>使用while循环，自己实现一个setTimeout，配合递归，就是一个setInterval了,经过实际测试，可行</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> sleep = <span class="hljs-keyword">function</span> (<span class="hljs-params">startTime, delay</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>();<br>    <span class="hljs-keyword">while</span> (cur &lt; startTime + delay) &#123;<br>      cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>();<br>    &#125;<br>  &#125;;<br>&#125;;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">fun</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-title function_">sleep</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>(), <span class="hljs-number">3000</span>)(); <span class="hljs-comment">// 3S后递归执行下面fun方法</span><br>  <span class="hljs-title function_">fun</span>();<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8. 参考资料"></a>8. 参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.reactnative.cn/docs/headless-js-android">headless-js中文文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.logrocket.com/run-react-native-background-tasks-headless-js/">Run React Native background tasks with Headless JS</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.qiniu.com/qfans/qnso-65547466">使用android WorkManager的React Native HeadlessJs任务调用</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/the-sixt-india-blog/how-to-run-a-background-task-in-react-native-cd4d36e40bf">How to Run a Background Task in React Native ?</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7058265721540706311">android位置权限的变更史</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/">develop</a>
+                    
+                      <a class="hover-with-bg" href="/categories/develop/react-native/">react native</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/react/">react</a>
+                    
+                      <a class="hover-with-bg" href="/tags/react-native/">react native</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8C%81%E7%BB%AD%E5%AE%9A%E4%BD%8D/">持续定位</a>
+                    
+                      <a class="hover-with-bg" href="/tags/android/">android</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/07/17/hbuilderx-tailwindcss/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一次uniapp HbuilderX创建的小程序项目中使用tailwindcss折腾记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/23/react-native/">
+                        <span class="hidden-mobile">React Native 练习时长 2 月半，踩坑总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize(null);
+    }
+  </script>
+
+
+
+
+
+
+  
+<script src="/assets/js/resetFavicon.js"></script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
